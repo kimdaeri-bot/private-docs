@@ -9,6 +9,8 @@
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f7f5f0;color:#2a2a2a;min-height:100vh}
 
+    /* 배경색·그라디언트 인쇄 강제 적용 */
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
     @media print {
       .no-print{display:none!important}
       body{background:#fff!important;color:#000!important}

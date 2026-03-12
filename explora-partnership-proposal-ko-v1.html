@@ -11,10 +11,12 @@
 
     @media print {
       .no-print{display:none!important}
-      body{background:#fff!important}
+      body{background:#f4f6f9!important}
       .doc-wrap{max-width:100%!important;padding:0!important}
       .section{page-break-inside:avoid}
     }
+    /* 배경색·그라디언트 인쇄 강제 적용 */
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
 
     .toolbar{position:sticky;top:0;z-index:100;background:#0a1a2e;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
     .toolbar-left{display:flex;align-items:center;gap:12px}
