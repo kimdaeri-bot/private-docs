@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>Explora Journeys — Official Partnership Proposal v1.0</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f4f6f9;color:#1a1a2e;min-height:100vh}
+
+    @media print {
+      .no-print{display:none!important}
+      body{background:#fff!important}
+      .doc-wrap{max-width:100%!important;padding:0!important}
+      .section{page-break-inside:avoid}
+    }
+
+    .toolbar{position:sticky;top:0;z-index:100;background:#0a1a2e;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .toolbar-left{display:flex;align-items:center;gap:12px}
+    .back-btn{color:#aaa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:5px}
+    .back-btn:hover{color:#fff}
+    .doc-title-small{color:#e0e0e0;font-size:13px;font-weight:700}
+    .toolbar-right{display:flex;gap:10px}
+    .btn-pdf{background:linear-gradient(135deg,#c8a45a,#a07830);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:opacity .2s}
+    .btn-pdf:hover{opacity:.85}
+
+    .doc-wrap{max-width:920px;margin:0 auto;padding:40px 24px 80px}
+
+    /* 커버 */
+    .cover{background:linear-gradient(135deg,#0a1628 0%,#0d3b6e 60%,#0a2040 100%);border-radius:16px;padding:52px 48px 44px;margin-bottom:28px;color:#fff;position:relative;overflow:hidden}
+    .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:rgba(200,164,90,.15);border-radius:50%}
+    .cover::after{content:'';position:absolute;bottom:-60px;left:-40px;width:200px;height:200px;background:rgba(255,255,255,.04);border-radius:50%}
+    .cover-tag{display:inline-block;background:rgba(200,164,90,.2);border:1px solid rgba(200,164,90,.4);color:#e8c87a;font-size:11px;font-weight:700;letter-spacing:1.5px;padding:5px 14px;border-radius:20px;margin-bottom:18px;text-transform:uppercase}
+    .cover-logo{font-size:13px;color:#a0b8d0;margin-bottom:10px;font-weight:600;letter-spacing:.5px}
+    .cover-title{font-size:30px;font-weight:900;line-height:1.3;margin-bottom:10px;letter-spacing:-0.5px}
+    .cover-sub{font-size:15px;color:#7aa8d0;margin-bottom:28px;line-height:1.6}
+    .cover-divider{height:1px;background:rgba(255,255,255,.12);margin:20px 0}
+    .cover-meta{display:flex;gap:28px;flex-wrap:wrap}
+    .cover-meta-item{display:flex;flex-direction:column;gap:3px}
+    .cover-meta-label{font-size:10px;color:#6a9abf;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+    .cover-meta-value{font-size:13px;color:#c8d8e8;font-weight:600}
+
+    /* 섹션 */
+    .section{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #e8f0f8}
+    .section-num{background:linear-gradient(135deg,#0a3060,#0d5090);color:#fff;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+    .section-title-text{font-size:17px;font-weight:800;color:#0a1628}
+    .section-en{font-size:11px;color:#6a9abf;font-weight:600;margin-left:auto}
+
+    /* 하이라이트 */
+    .highlight-box{background:linear-gradient(135deg,#f0f6ff,#e6f0ff);border-left:4px solid #0d5090;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:16px}
+    .highlight-box p{font-size:14px;color:#1a2a4e;line-height:1.75}
+    .highlight-box strong{color:#0a3060}
+
+    .gold-box{background:linear-gradient(135deg,#fffbf0,#fff8e6);border-left:4px solid #c8a45a;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:16px}
+    .gold-box p{font-size:14px;color:#3a2800;line-height:1.75}
+    .gold-box strong{color:#8a6020}
+
+    /* 카드 그리드 */
+    .card-grid{display:grid;gap:14px}
+    .card-grid-2{grid-template-columns:1fr 1fr}
+    .card-grid-3{grid-template-columns:1fr 1fr 1fr}
+    @media(max-width:640px){.card-grid-2,.card-grid-3{grid-template-columns:1fr}}
+
+    .info-card{background:#f8fafc;border:1px solid #e0eaf5;border-radius:10px;padding:18px 20px}
+    .info-card-label{font-size:11px;font-weight:700;color:#6a9abf;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+    .info-card-value{font-size:14px;font-weight:700;color:#1a2a4e;line-height:1.5}
+    .info-card-sub{font-size:12px;color:#7a9ab8;margin-top:4px;line-height:1.5}
+
+    .stat-card{background:linear-gradient(135deg,#0a1628,#0d3b6e);border-radius:10px;padding:20px 22px;color:#fff;text-align:center}
+    .stat-num{font-size:28px;font-weight:900;color:#e8c87a;line-height:1}
+    .stat-label{font-size:12px;color:#7aa8d0;margin-top:6px;font-weight:600}
+
+    /* 리스트 */
+    ul.styled{list-style:none;padding:0}
+    ul.styled li{padding:9px 0 9px 28px;position:relative;font-size:14px;line-height:1.65;color:#2a3a5a;border-bottom:1px solid #f0f4f8}
+    ul.styled li:last-child{border-bottom:none}
+    ul.styled li::before{content:'▸';position:absolute;left:0;color:#0d5090;font-size:13px;top:10px}
+
+    ol.styled{padding:0;list-style:none;counter-reset:ol-counter}
+    ol.styled li{counter-increment:ol-counter;padding:10px 0 10px 36px;position:relative;font-size:14px;line-height:1.65;color:#2a3a5a;border-bottom:1px solid #f0f4f8}
+    ol.styled li:last-child{border-bottom:none}
+    ol.styled li::before{content:counter(ol-counter);position:absolute;left:0;top:8px;background:linear-gradient(135deg,#0a3060,#0d5090);color:#fff;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+    /* 테이블 */
+    table{width:100%;border-collapse:collapse;font-size:13.5px}
+    th{background:#0a1628;color:#e0e8f5;padding:11px 14px;text-align:left;font-weight:700;font-size:12px}
+    td{padding:10px 14px;border-bottom:1px solid #eef2f8;color:#2a3a5a;vertical-align:top;line-height:1.55}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even) td{background:#f8fafc}
+
+    /* 배지 */
+    .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+    .badge-blue{background:#e6f0ff;color:#0a3060}
+    .badge-gold{background:#fff3d0;color:#8a6020}
+    .badge-green{background:#e6f5ee;color:#1a6a3a}
+
+    /* 스텝 */
+    .step-row{display:flex;gap:0;margin-bottom:8px}
+    .step-box{flex:1;text-align:center;padding:14px 10px;background:#f0f6ff;border:1px solid #c8dcf0;position:relative}
+    .step-box:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:#0d5090;font-weight:900;z-index:1;font-size:16px}
+    .step-num{font-size:10px;font-weight:700;color:#6a9abf;text-transform:uppercase;margin-bottom:5px}
+    .step-title{font-size:12px;font-weight:800;color:#0a1628}
+    .step-sub{font-size:11px;color:#7a9ab8;margin-top:3px}
+
+    /* CTA 섹션 */
+    .cta-section{background:linear-gradient(135deg,#0a1628,#0d3b6e);border-radius:14px;padding:32px 36px;color:#fff;margin-bottom:20px;text-align:center}
+    .cta-section h3{font-size:20px;font-weight:900;margin-bottom:10px}
+    .cta-section p{font-size:14px;color:#7aa8d0;margin-bottom:20px;line-height:1.7}
+    .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+    .contact-item{background:rgba(255,255,255,.08);border-radius:10px;padding:14px 18px}
+    .contact-label{font-size:10px;color:#6a9abf;font-weight:700;text-transform:uppercase;margin-bottom:6px;letter-spacing:.8px}
+    .contact-value{font-size:13px;color:#e0e8f5;font-weight:600}
+    @media(max-width:600px){.contact-grid{grid-template-columns:1fr}.step-row{flex-direction:column}}
+
+    p.body-text{font-size:14px;line-height:1.75;color:#2a3a5a;margin-bottom:14px}
+    h4.sub-heading{font-size:14px;font-weight:800;color:#0a1628;margin:18px 0 10px;padding-left:12px;border-left:3px solid #c8a45a}
+  </style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar no-print">
+  <div class="toolbar-left">
+    <a class="back-btn" href="index.html">← 문서함</a>
+    <span style="color:#3a5070">|</span>
+    <span class="doc-title-small">Explora Journeys · Partnership Proposal v1.0</span>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn-pdf" onclick="window.print()">🖨️ PDF 저장</button>
+  </div>
+</div>
+
+<div class="doc-wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-tag">✦ Official Partnership Proposal</div>
+    <div class="cover-logo">CruiseLink · Anam Airlines Co., Ltd.</div>
+    <div class="cover-title">Explora Journeys<br>Official Partner Registration Request</div>
+    <div class="cover-sub">A strategic proposal for trade partnership in the Korean luxury cruise market</div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">From</div>
+        <div class="cover-meta-value">CruiseLink / Anam Airlines Co., Ltd.</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">To</div>
+        <div class="cover-meta-value">Explora Journeys — Trade & Partnership</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Date</div>
+        <div class="cover-meta-value">March 2026</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Version</div>
+        <div class="cover-meta-value">v1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title-text">Why We Are Requesting Official Partner Status</div>
+      <div class="section-en">Partnership Rationale</div>
+    </div>
+
+    <div class="highlight-box">
+      <p>CruiseLink is South Korea's dedicated cruise discovery and booking platform. We are reaching out to formally establish trade partnership with Explora Journeys — to represent your brand with the credibility and quality it deserves in the Korean ultra-luxury market.</p>
+    </div>
+
+    <h4 class="sub-heading">Market Opportunity</h4>
+    <div class="card-grid card-grid-3" style="margin-bottom:18px">
+      <div class="stat-card">
+        <div class="stat-num">15M+</div>
+        <div class="stat-label">Korean outbound travelers per year</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">KRW 200M+</div>
+        <div class="stat-label">Target household income segment</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">9+</div>
+        <div class="stat-label">Global cruise lines on our platform</div>
+      </div>
+    </div>
+
+    <ul class="styled">
+      <li>South Korea is one of Asia's fastest-growing <strong>luxury travel markets</strong>, with high-net-worth travelers actively seeking ultra-premium, all-inclusive ocean experiences.</li>
+      <li>Post-pandemic Korean outbound cruise demand has surged, with a strong appetite for <strong>boutique, destination-focused luxury brands</strong> — precisely the segment Explora Journeys occupies.</li>
+      <li>Korean consumers are highly brand-responsive. Official partner status enables us to market Explora Journeys with credibility, access to official pricing, and licensed marketing materials.</li>
+      <li>We currently feature Explora Journeys in our <strong>Luxury Cruises</strong> section alongside Oceania and Regent Seven Seas, and are actively expanding dedicated content for the brand.</li>
+    </ul>
+
+    <h4 class="sub-heading">Our Platform in Numbers</h4>
+    <div class="card-grid card-grid-2">
+      <div class="info-card">
+        <div class="info-card-label">Live Platform</div>
+        <div class="info-card-value">www.cruiselink.co.kr</div>
+        <div class="info-card-sub">Korean-language cruise discovery &amp; booking platform, active since 2025</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Destination Coverage</div>
+        <div class="info-card-value">Mediterranean · Alaska · Caribbean · Northern Europe · Asia &amp; Middle East</div>
+        <div class="info-card-sub">+ Japan, Korea, Hawaii, Oceania routes</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Explora Content</div>
+        <div class="info-card-value">EXPLORA I · II · III · IV · V</div>
+        <div class="info-card-sub">Ship profiles, itineraries, Korean-language descriptions — live today</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Operator Ecosystem</div>
+        <div class="info-card-value">MSC · NCL · Royal Caribbean · Celebrity · Carnival · Oceania · Regent</div>
+        <div class="info-card-sub">Explora Journeys featured in dedicated Luxury category</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title-text">Explora Journeys Sales Strategy</div>
+      <div class="section-en">Sales Approach</div>
+    </div>
+
+    <h4 class="sub-heading">Target Customer Profile</h4>
+    <table style="margin-bottom:18px">
+      <thead>
+        <tr><th>Segment</th><th>Profile</th><th>Key Motivators</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-gold">Primary</span></td>
+          <td>Age 45–65 · Household income KRW 200M+ · Frequent international travelers</td>
+          <td>Exclusivity, privacy, no-crowds, all-inclusive value</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Secondary</span></td>
+          <td>Luxury honeymoon couples · Anniversary travelers · Bucket-list experiences</td>
+          <td>Romance, once-in-a-lifetime moments, instagrammable destinations</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Tertiary</span></td>
+          <td>Corporate incentive groups · C-suite executives</td>
+          <td>Premium brand, small ship intimacy, bespoke service</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">Brand Positioning in Korea</h4>
+    <div class="gold-box">
+      <p>Explora Journeys will be positioned as <strong>"the new standard of ocean travel"</strong> — distinct from traditional cruise brands. We will emphasize: all sea-view suites, all-inclusive luxury with no onboard currency, longer port stays with destination immersion, and the intimate yacht-like scale of fewer than 1,000 guests.</p>
+    </div>
+
+    <h4 class="sub-heading">Sales Execution Flow</h4>
+    <div class="step-row">
+      <div class="step-box">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">Discovery</div>
+        <div class="step-sub">CruiseLink website / SEO / Social</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">Engagement</div>
+        <div class="step-sub">Itinerary content / Ship pages</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">Inquiry</div>
+        <div class="step-sub">Consultation form / KakaoTalk</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 4</div>
+        <div class="step-title">Consultation</div>
+        <div class="step-sub">Expert advisor call</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 5</div>
+        <div class="step-title">Booking</div>
+        <div class="step-sub">Via GDS / Explora direct</div>
+      </div>
+    </div>
+
+    <ul class="styled" style="margin-top:16px">
+      <li><strong>Consultation-first model</strong> — Korean luxury consumers require personal guidance before committing to high-ticket purchases. Our team nurtures leads via phone and KakaoTalk.</li>
+      <li><strong>Itinerary storytelling</strong> — Korean-language content per voyage highlighting unique port experiences (e.g., overnight in Santorini, Gustavia access in St. Barths).</li>
+      <li><strong>Pricing transparency</strong> — We present all-inclusive value vs. competitor pricing to clearly justify the premium.</li>
+      <li><strong>Seasonal campaigns</strong> — Q4 (Nov–Feb) is Korea's peak luxury travel planning window. Explora-focused campaigns will be concentrated here.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title-text">Sales Platform</div>
+      <div class="section-en">Platform Architecture</div>
+    </div>
+
+    <div class="card-grid card-grid-2" style="margin-bottom:18px">
+      <div class="info-card">
+        <div class="info-card-label">🌐 Primary — Web Platform</div>
+        <div class="info-card-value">www.cruiselink.co.kr</div>
+        <div class="info-card-sub">Dedicated Luxury Cruises section · EXPLORA I–V ship pages · Korean-language SEO · Voyage search with Explora filter · Inquiry → consultant flow</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">🔍 Secondary — Search &amp; Discovery</div>
+        <div class="info-card-value">Voyage Search Engine</div>
+        <div class="info-card-sub">Explora voyages appear across all destination filters · Dedicated operator filter (search?operators=Explora) · "Luxury &amp; Premium" category prominence</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">📞 Tertiary — Inquiry &amp; Booking</div>
+        <div class="info-card-value">Consultation + KakaoTalk</div>
+        <div class="info-card-sub">All Explora inquiries captured and routed to licensed travel consultants · Lead data: departure preference, budget, group size, cabin interest</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">🚀 Future — Dedicated Explora Page</div>
+        <div class="info-card-value">Co-branded Landing Page</div>
+        <div class="info-card-sub">Designed to Explora brand guidelines · Live chat for high-intent inquiries · Monthly featured voyage spotlight on homepage</div>
+      </div>
+    </div>
+
+    <h4 class="sub-heading">Explora Content Live Today on CruiseLink</h4>
+    <table>
+      <thead><tr><th>Ship</th><th>Status</th><th>Itinerary Coverage</th></tr></thead>
+      <tbody>
+        <tr><td><strong>EXPLORA I</strong></td><td><span class="badge badge-green">Live</span></td><td>Mediterranean (May–Sep 2026)</td></tr>
+        <tr><td><strong>EXPLORA II</strong></td><td><span class="badge badge-green">Live</span></td><td>Mediterranean + Caribbean (Apr–Jun 2026)</td></tr>
+        <tr><td><strong>EXPLORA III</strong></td><td><span class="badge badge-green">Live</span></td><td>Mediterranean + Northern Europe (May–Aug 2026)</td></tr>
+        <tr><td><strong>EXPLORA IV</strong></td><td><span class="badge badge-blue">In Progress</span></td><td>2027 itineraries loading</td></tr>
+        <tr><td><strong>EXPLORA V</strong></td><td><span class="badge badge-blue">In Progress</span></td><td>2027 itineraries loading</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title-text">Marketing Strategy</div>
+      <div class="section-en">Go-to-Market Plan</div>
+    </div>
+
+    <h4 class="sub-heading">Digital Marketing</h4>
+    <table style="margin-bottom:18px">
+      <thead><tr><th>Channel</th><th>Tactic</th><th>Target</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Naver SEO</strong></td>
+          <td>"익스플로라 저니 크루즈", "럭셔리 크루즈 한국", "올인클루시브 크루즈 2026" — ship-specific Korean blog content</td>
+          <td>High-intent luxury search traffic</td>
+        </tr>
+        <tr>
+          <td><strong>Google Ads</strong></td>
+          <td>Display Network targeting HHI KRW 150M+ · Retargeting for Explora page visitors</td>
+          <td>Affluent Korean travelers</td>
+        </tr>
+        <tr>
+          <td><strong>Naver Search Ads</strong></td>
+          <td>Korea's #1 search engine · Cruise keywords + brand keyword campaigns</td>
+          <td>Active cruise researchers</td>
+        </tr>
+        <tr>
+          <td><strong>Instagram</strong></td>
+          <td>High-production voyage photography · Ship interior highlights · Destination Reels</td>
+          <td>Affluent 35–55 lifestyle audience</td>
+        </tr>
+        <tr>
+          <td><strong>KakaoTalk Channel</strong></td>
+          <td>Direct messaging to opted-in subscribers · Flash promotions · New itinerary alerts · Early-access offers</td>
+          <td>Warm leads &amp; past inquirers</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">Content Marketing</h4>
+    <ul class="styled">
+      <li><strong>Monthly Korean newsletter</strong> featuring one Explora voyage as "Voyage of the Month" — sent to 구독자 base</li>
+      <li><strong>Korean destination guides</strong> aligned with Explora itineraries: "Norwegian Fjords with EXPLORA III", "Caribbean Islands with EXPLORA II"</li>
+      <li><strong>Comparison content</strong>: Explora Journeys vs. Regent, Silversea — positioning Explora's unique all-inclusive value</li>
+      <li><strong>YouTube short-form</strong> "Explora Experience" video content tailored for Korean audiences</li>
+    </ul>
+
+    <h4 class="sub-heading">Offline &amp; Events</h4>
+    <ul class="styled">
+      <li><strong>KITF (Korea International Travel Fair)</strong> — Explora-branded presence, voyage brochures, lead capture</li>
+      <li><strong>VIP Client Evenings</strong> — Intimate briefings for high-net-worth prospects: ship presentations, onboard dining simulations, immersive brand experience</li>
+      <li><strong>Media &amp; Influencer Hosting</strong> — Korean luxury lifestyle media and travel KOLs for Explora FAM trips (subject to Explora approval)</li>
+    </ul>
+
+    <h4 class="sub-heading">Co-Marketing with Explora</h4>
+    <div class="gold-box">
+      <p>We are fully open to co-developing Korean market campaigns with Explora Journeys' trade marketing team — including <strong>co-branded digital campaigns</strong>, email co-ops, joint webinars for Korean travel agents, and access to the Explora trade portal and brand asset library.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>5 · Next Steps</h3>
+    <p>We would welcome the opportunity to discuss this proposal with the Explora Journeys trade partnership team. We are prepared to provide a full platform demo, sign a trade partner agreement, attend brand training, and align on a co-marketing calendar for H2 2026.</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-label">Company</div>
+        <div class="contact-value">Anam Airlines Co., Ltd.<br>아남항공 주식회사</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">Representative</div>
+        <div class="contact-value">김영성 (Kim Young-sung)<br>info@cruiselink.co.kr</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">Platform</div>
+        <div class="contact-value">www.cruiselink.co.kr<br>Biz No. 104-81-84918</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /doc-wrap -->
+</body>
+</html>
