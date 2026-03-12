@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>익스플로라 저니 — 공식 파트너십 제안서 v1.0</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f4f6f9;color:#1a1a2e;min-height:100vh}
+
+    @media print {
+      .no-print{display:none!important}
+      body{background:#fff!important}
+      .doc-wrap{max-width:100%!important;padding:0!important}
+      .section{page-break-inside:avoid}
+    }
+
+    .toolbar{position:sticky;top:0;z-index:100;background:#0a1a2e;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .toolbar-left{display:flex;align-items:center;gap:12px}
+    .back-btn{color:#aaa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:5px}
+    .back-btn:hover{color:#fff}
+    .doc-title-small{color:#e0e0e0;font-size:13px;font-weight:700}
+    .toolbar-right{display:flex;gap:10px}
+    .btn-pdf{background:linear-gradient(135deg,#c8a45a,#a07830);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:opacity .2s}
+    .btn-pdf:hover{opacity:.85}
+
+    .doc-wrap{max-width:920px;margin:0 auto;padding:40px 24px 80px}
+
+    /* 커버 */
+    .cover{background:linear-gradient(135deg,#0a1628 0%,#0d3b6e 60%,#0a2040 100%);border-radius:16px;padding:52px 48px 44px;margin-bottom:28px;color:#fff;position:relative;overflow:hidden}
+    .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:rgba(200,164,90,.15);border-radius:50%}
+    .cover::after{content:'';position:absolute;bottom:-60px;left:-40px;width:200px;height:200px;background:rgba(255,255,255,.04);border-radius:50%}
+    .cover-tag{display:inline-block;background:rgba(200,164,90,.2);border:1px solid rgba(200,164,90,.4);color:#e8c87a;font-size:11px;font-weight:700;letter-spacing:1.5px;padding:5px 14px;border-radius:20px;margin-bottom:18px;text-transform:uppercase}
+    .cover-logo{font-size:13px;color:#a0b8d0;margin-bottom:10px;font-weight:600;letter-spacing:.5px}
+    .cover-title{font-size:30px;font-weight:900;line-height:1.3;margin-bottom:10px;letter-spacing:-0.5px}
+    .cover-sub{font-size:15px;color:#7aa8d0;margin-bottom:28px;line-height:1.6}
+    .cover-divider{height:1px;background:rgba(255,255,255,.12);margin:20px 0}
+    .cover-meta{display:flex;gap:28px;flex-wrap:wrap}
+    .cover-meta-item{display:flex;flex-direction:column;gap:3px}
+    .cover-meta-label{font-size:10px;color:#6a9abf;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+    .cover-meta-value{font-size:13px;color:#c8d8e8;font-weight:600}
+
+    /* 섹션 */
+    .section{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #e8f0f8}
+    .section-num{background:linear-gradient(135deg,#0a3060,#0d5090);color:#fff;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+    .section-title-text{font-size:17px;font-weight:800;color:#0a1628}
+    .section-en{font-size:11px;color:#6a9abf;font-weight:600;margin-left:auto}
+
+    /* 하이라이트 */
+    .highlight-box{background:linear-gradient(135deg,#f0f6ff,#e6f0ff);border-left:4px solid #0d5090;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:16px}
+    .highlight-box p{font-size:14px;color:#1a2a4e;line-height:1.75}
+    .highlight-box strong{color:#0a3060}
+
+    .gold-box{background:linear-gradient(135deg,#fffbf0,#fff8e6);border-left:4px solid #c8a45a;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:16px}
+    .gold-box p{font-size:14px;color:#3a2800;line-height:1.75}
+    .gold-box strong{color:#8a6020}
+
+    /* 카드 그리드 */
+    .card-grid{display:grid;gap:14px}
+    .card-grid-2{grid-template-columns:1fr 1fr}
+    .card-grid-3{grid-template-columns:1fr 1fr 1fr}
+    @media(max-width:640px){.card-grid-2,.card-grid-3{grid-template-columns:1fr}}
+
+    .info-card{background:#f8fafc;border:1px solid #e0eaf5;border-radius:10px;padding:18px 20px}
+    .info-card-label{font-size:11px;font-weight:700;color:#6a9abf;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+    .info-card-value{font-size:14px;font-weight:700;color:#1a2a4e;line-height:1.5}
+    .info-card-sub{font-size:12px;color:#7a9ab8;margin-top:4px;line-height:1.5}
+
+    .stat-card{background:linear-gradient(135deg,#0a1628,#0d3b6e);border-radius:10px;padding:20px 22px;color:#fff;text-align:center}
+    .stat-num{font-size:28px;font-weight:900;color:#e8c87a;line-height:1}
+    .stat-label{font-size:12px;color:#7aa8d0;margin-top:6px;font-weight:600}
+
+    /* 리스트 */
+    ul.styled{list-style:none;padding:0}
+    ul.styled li{padding:9px 0 9px 28px;position:relative;font-size:14px;line-height:1.65;color:#2a3a5a;border-bottom:1px solid #f0f4f8}
+    ul.styled li:last-child{border-bottom:none}
+    ul.styled li::before{content:'▸';position:absolute;left:0;color:#0d5090;font-size:13px;top:10px}
+
+    ol.styled{padding:0;list-style:none;counter-reset:ol-counter}
+    ol.styled li{counter-increment:ol-counter;padding:10px 0 10px 36px;position:relative;font-size:14px;line-height:1.65;color:#2a3a5a;border-bottom:1px solid #f0f4f8}
+    ol.styled li:last-child{border-bottom:none}
+    ol.styled li::before{content:counter(ol-counter);position:absolute;left:0;top:8px;background:linear-gradient(135deg,#0a3060,#0d5090);color:#fff;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+
+    /* 테이블 */
+    table{width:100%;border-collapse:collapse;font-size:13.5px}
+    th{background:#0a1628;color:#e0e8f5;padding:11px 14px;text-align:left;font-weight:700;font-size:12px}
+    td{padding:10px 14px;border-bottom:1px solid #eef2f8;color:#2a3a5a;vertical-align:top;line-height:1.55}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even) td{background:#f8fafc}
+
+    /* 배지 */
+    .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+    .badge-blue{background:#e6f0ff;color:#0a3060}
+    .badge-gold{background:#fff3d0;color:#8a6020}
+    .badge-green{background:#e6f5ee;color:#1a6a3a}
+
+    /* 스텝 */
+    .step-row{display:flex;gap:0;margin-bottom:8px}
+    .step-box{flex:1;text-align:center;padding:14px 10px;background:#f0f6ff;border:1px solid #c8dcf0;position:relative}
+    .step-box:not(:last-child)::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:#0d5090;font-weight:900;z-index:1;font-size:16px}
+    .step-num{font-size:10px;font-weight:700;color:#6a9abf;text-transform:uppercase;margin-bottom:5px}
+    .step-title{font-size:12px;font-weight:800;color:#0a1628}
+    .step-sub{font-size:11px;color:#7a9ab8;margin-top:3px}
+
+    /* CTA 섹션 */
+    .cta-section{background:linear-gradient(135deg,#0a1628,#0d3b6e);border-radius:14px;padding:32px 36px;color:#fff;margin-bottom:20px;text-align:center}
+    .cta-section h3{font-size:20px;font-weight:900;margin-bottom:10px}
+    .cta-section p{font-size:14px;color:#7aa8d0;margin-bottom:20px;line-height:1.7}
+    .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}
+    .contact-item{background:rgba(255,255,255,.08);border-radius:10px;padding:14px 18px}
+    .contact-label{font-size:10px;color:#6a9abf;font-weight:700;text-transform:uppercase;margin-bottom:6px;letter-spacing:.8px}
+    .contact-value{font-size:13px;color:#e0e8f5;font-weight:600}
+    @media(max-width:600px){.contact-grid{grid-template-columns:1fr}.step-row{flex-direction:column}}
+
+    p.body-text{font-size:14px;line-height:1.75;color:#2a3a5a;margin-bottom:14px}
+    h4.sub-heading{font-size:14px;font-weight:800;color:#0a1628;margin:18px 0 10px;padding-left:12px;border-left:3px solid #c8a45a}
+  </style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar no-print">
+  <div class="toolbar-left">
+    <a class="back-btn" href="index.html">← 문서함</a>
+    <span style="color:#3a5070">|</span>
+    <span class="doc-title-small">익스플로라 저니 · 공식 파트너십 제안서 v1.0</span>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn-pdf" onclick="window.print()">🖨️ PDF 저장</button>
+  </div>
+</div>
+
+<div class="doc-wrap">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-tag">✦ 공식 파트너십 제안서</div>
+    <div class="cover-logo">크루즈링크 · 아남항공 주식회사</div>
+    <div class="cover-title">익스플로라 저니<br>공식 파트너 등록 요청서</div>
+    <div class="cover-sub">한국 럭셔리 크루즈 시장 공략을 위한 전략적 파트너십 제안</div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">제안사</div>
+        <div class="cover-meta-value">크루즈링크 / 아남항공 주식회사</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">수신</div>
+        <div class="cover-meta-value">Explora Journeys — Trade &amp; Partnership</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">작성일</div>
+        <div class="cover-meta-value">2026년 3월</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">버전</div>
+        <div class="cover-meta-value">v1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title-text">공식 파트너 등록을 요청하는 이유</div>
+      <div class="section-en">Partnership Rationale</div>
+    </div>
+
+    <div class="highlight-box">
+      <p>크루즈링크는 대한민국의 크루즈 전문 예약 플랫폼입니다. 익스플로라 저니와의 공식 트레이드 파트너십 체결을 통해, 한국 초고가 럭셔리 시장에서 귀사의 브랜드를 그 가치에 걸맞는 품격으로 대표하고자 합니다.</p>
+    </div>
+
+    <h4 class="sub-heading">시장 기회</h4>
+    <div class="card-grid card-grid-3" style="margin-bottom:18px">
+      <div class="stat-card">
+        <div class="stat-num">1,500만+</div>
+        <div class="stat-label">연간 한국인 해외 출국자 수</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">연 2억원+</div>
+        <div class="stat-label">타깃 가구소득 기준</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">9개+</div>
+        <div class="stat-label">플랫폼 내 크루즈 선사 수</div>
+      </div>
+    </div>
+
+    <ul class="styled">
+      <li>대한민국은 아시아에서 가장 빠르게 성장하는 <strong>럭셔리 여행 시장</strong> 중 하나로, 고자산 여행객들이 프리미엄 올인클루시브 크루즈 경험을 적극적으로 탐색하고 있습니다.</li>
+      <li>코로나19 이후 한국 아웃바운드 크루즈 수요는 급증했으며, 특히 <strong>소규모 부티크형 럭셔리 브랜드</strong>에 대한 관심이 높아지고 있습니다 — 익스플로라 저니가 바로 이 세그먼트에 위치합니다.</li>
+      <li>한국 소비자는 브랜드 공인에 매우 민감하게 반응합니다. 공식 파트너 지위는 공신력 있는 마케팅, 공식 요금 접근, 정식 마케팅 자료 활용을 가능하게 합니다.</li>
+      <li>현재 크루즈링크는 익스플로라 저니를 <strong>럭셔리 크루즈</strong> 카테고리에 오셔니아·리젠트 세븐 시즈와 함께 소개하고 있으며, 전용 콘텐츠를 지속 확대하고 있습니다.</li>
+    </ul>
+
+    <h4 class="sub-heading">플랫폼 현황</h4>
+    <div class="card-grid card-grid-2">
+      <div class="info-card">
+        <div class="info-card-label">라이브 플랫폼</div>
+        <div class="info-card-value">www.cruiselink.co.kr</div>
+        <div class="info-card-sub">한국어 크루즈 탐색·예약 플랫폼, 2025년부터 운영</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">목적지 커버리지</div>
+        <div class="info-card-value">지중해 · 알래스카 · 카리브해 · 북유럽 · 아시아&amp;중동</div>
+        <div class="info-card-sub">+ 일본, 한국, 하와이, 오세아니아 노선</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">익스플로라 콘텐츠</div>
+        <div class="info-card-value">익스플로라 I · II · III · IV · V</div>
+        <div class="info-card-sub">선박 프로필, 일정표, 한국어 상세 설명 — 현재 운영 중</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">선사 에코시스템</div>
+        <div class="info-card-value">MSC · NCL · Royal Caribbean · Celebrity · Carnival · Oceania · Regent</div>
+        <div class="info-card-sub">익스플로라 저니 — 럭셔리 카테고리 독립 섹션 배치</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title-text">익스플로라 저니 판매 전략</div>
+      <div class="section-en">Sales Approach</div>
+    </div>
+
+    <h4 class="sub-heading">타깃 고객 프로파일</h4>
+    <table style="margin-bottom:18px">
+      <thead>
+        <tr><th>세그먼트</th><th>프로파일</th><th>핵심 구매 동기</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-gold">주요 타깃</span></td>
+          <td>45~65세 · 가구소득 2억원 이상 · 해외여행 경험 풍부</td>
+          <td>프라이버시, 혼잡하지 않은 환경, 올인클루시브 가치</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">2차 타깃</span></td>
+          <td>럭셔리 허니문 커플 · 기념일 여행객 · 버킷리스트 경험 추구</td>
+          <td>로맨틱한 분위기, 평생 기억, 인스타그래머블 목적지</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">3차 타깃</span></td>
+          <td>기업 인센티브 단체 · C레벨 임원</td>
+          <td>프리미엄 브랜드 가치, 소형 선박의 프라이빗함, 맞춤형 서비스</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">한국 시장 브랜드 포지셔닝</h4>
+    <div class="gold-box">
+      <p>익스플로라 저니는 <strong>"오션 트래블의 새로운 기준"</strong>으로 포지셔닝합니다. 기존 크루즈 브랜드와의 차별화를 강조합니다: 전 객실 오션뷰 스위트, 선내 화폐 없는 완전 올인클루시브, 목적지 중심의 긴 정박 시간, 900명 미만의 프라이빗 요트급 규모.</p>
+    </div>
+
+    <h4 class="sub-heading">판매 실행 프로세스</h4>
+    <div class="step-row">
+      <div class="step-box">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">인지</div>
+        <div class="step-sub">크루즈링크 웹 / SEO / SNS</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">탐색</div>
+        <div class="step-sub">일정 콘텐츠 / 선박 상세 페이지</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">문의</div>
+        <div class="step-sub">상담 신청 / 카카오톡</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 4</div>
+        <div class="step-title">상담</div>
+        <div class="step-sub">전문 상담사 1:1 통화</div>
+      </div>
+      <div class="step-box">
+        <div class="step-num">Step 5</div>
+        <div class="step-title">예약</div>
+        <div class="step-sub">GDS 또는 익스플로라 직접 연동</div>
+      </div>
+    </div>
+
+    <ul class="styled" style="margin-top:16px">
+      <li><strong>상담 우선 모델</strong> — 한국 럭셔리 소비자는 고가 구매 전 전문가 상담을 선호합니다. 전화 및 카카오톡으로 잠재고객을 집중 관리합니다.</li>
+      <li><strong>일정 스토리텔링</strong> — 기항지별 특별 경험 강조 (예: 산토리니 1박, 생 바르텔레미 입항)를 한국어 콘텐츠로 제작합니다.</li>
+      <li><strong>가격 투명성</strong> — 경쟁 선사 대비 올인클루시브 가치를 명확히 비교하여 프리미엄 가격의 합리성을 제시합니다.</li>
+      <li><strong>시즌 캠페인</strong> — 4분기(11~2월)는 한국인의 럭셔리 여행 계획 성수기입니다. 이 시기에 익스플로라 집중 캠페인을 운영합니다.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title-text">판매 플랫폼</div>
+      <div class="section-en">Platform Architecture</div>
+    </div>
+
+    <div class="card-grid card-grid-2" style="margin-bottom:18px">
+      <div class="info-card">
+        <div class="info-card-label">🌐 메인 — 웹 플랫폼</div>
+        <div class="info-card-value">www.cruiselink.co.kr</div>
+        <div class="info-card-sub">럭셔리 크루즈 전용 섹션 · 익스플로라 I~V 선박 페이지 · 한국어 SEO · 익스플로라 필터 항로 검색 · 상담 연결 플로우</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">🔍 서브 — 검색·탐색</div>
+        <div class="info-card-value">항로 검색 엔진</div>
+        <div class="info-card-sub">전 목적지 필터에 익스플로라 항로 노출 · 전용 선사 필터 (search?operators=Explora) · "럭셔리&amp;프리미엄" 카테고리 우선 배치</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">📞 상담 — 문의·예약</div>
+        <div class="info-card-value">전화 상담 + 카카오톡</div>
+        <div class="info-card-sub">모든 익스플로라 문의를 전문 상담사에게 배정 · 수집 정보: 출발 희망일, 예산, 인원, 객실 등급</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">🚀 향후 — 전용 랜딩 페이지</div>
+        <div class="info-card-value">익스플로라 저니 코브랜딩 페이지</div>
+        <div class="info-card-sub">익스플로라 브랜드 가이드라인 적용 · 고의향 방문자 라이브 채팅 · 홈페이지 월별 추천 항로 스팟라이트</div>
+      </div>
+    </div>
+
+    <h4 class="sub-heading">현재 크루즈링크에 등록된 익스플로라 콘텐츠</h4>
+    <table>
+      <thead><tr><th>선박</th><th>상태</th><th>일정 커버리지</th></tr></thead>
+      <tbody>
+        <tr><td><strong>익스플로라 I</strong></td><td><span class="badge badge-green">운영 중</span></td><td>지중해 (2026년 5~9월)</td></tr>
+        <tr><td><strong>익스플로라 II</strong></td><td><span class="badge badge-green">운영 중</span></td><td>지중해 + 카리브해 (2026년 4~6월)</td></tr>
+        <tr><td><strong>익스플로라 III</strong></td><td><span class="badge badge-green">운영 중</span></td><td>지중해 + 북유럽 (2026년 5~8월)</td></tr>
+        <tr><td><strong>익스플로라 IV</strong></td><td><span class="badge badge-blue">준비 중</span></td><td>2027년 일정 등록 예정</td></tr>
+        <tr><td><strong>익스플로라 V</strong></td><td><span class="badge badge-blue">준비 중</span></td><td>2027년 일정 등록 예정</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title-text">마케팅 전략</div>
+      <div class="section-en">Go-to-Market Plan</div>
+    </div>
+
+    <h4 class="sub-heading">디지털 마케팅</h4>
+    <table style="margin-bottom:18px">
+      <thead><tr><th>채널</th><th>전술</th><th>타깃</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>네이버 SEO</strong></td>
+          <td>"익스플로라 저니 크루즈", "럭셔리 크루즈 한국", "올인클루시브 크루즈 2026" — 선박별 한국어 블로그 콘텐츠</td>
+          <td>고의향 럭셔리 검색 트래픽</td>
+        </tr>
+        <tr>
+          <td><strong>Google Ads</strong></td>
+          <td>가구소득 1.5억원+ 타깃 디스플레이 · 익스플로라 페이지 방문자 리타깃팅</td>
+          <td>고소득 한국인 여행객</td>
+        </tr>
+        <tr>
+          <td><strong>네이버 검색광고</strong></td>
+          <td>한국 최대 검색엔진 · 크루즈 키워드 + 브랜드 키워드 캠페인</td>
+          <td>적극적 크루즈 탐색 고객</td>
+        </tr>
+        <tr>
+          <td><strong>인스타그램</strong></td>
+          <td>고품질 항해 사진 · 선박 인테리어 하이라이트 · 목적지 릴스</td>
+          <td>35~55세 고소득 라이프스타일 오디언스</td>
+        </tr>
+        <tr>
+          <td><strong>카카오톡 채널</strong></td>
+          <td>구독자 다이렉트 메시지 · 특가 프로모션 · 신규 일정 알림 · 얼리버드 오퍼</td>
+          <td>문의 이력 보유 워밍업 고객</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="sub-heading">콘텐츠 마케팅</h4>
+    <ul class="styled">
+      <li><strong>월간 한국어 뉴스레터</strong> — "이달의 추천 항해"로 익스플로라 항로 1편을 집중 소개, 구독자 전체 발송</li>
+      <li><strong>한국어 목적지 가이드</strong> — 익스플로라 일정에 연계: "익스플로라 III와 함께하는 노르웨이 피요르드", "익스플로라 II 카리브해 아일랜드 호핑"</li>
+      <li><strong>비교 콘텐츠</strong>: 익스플로라 저니 vs 리젠트, 실버시 — 익스플로라의 차별화된 올인클루시브 가치를 명확히 포지셔닝</li>
+      <li><strong>유튜브 숏폼</strong> "익스플로라 경험" — 한국인 대상 맞춤형 영상 콘텐츠 제작</li>
+    </ul>
+
+    <h4 class="sub-heading">오프라인 &amp; 이벤트</h4>
+    <ul class="styled">
+      <li><strong>KITF (한국국제여행박람회)</strong> — 익스플로라 브랜딩 부스, 항해 브로슈어 배포, 리드 확보</li>
+      <li><strong>VIP 고객 초청 브리핑</strong> — 고자산 잠재 고객 대상 소규모 프레젠테이션: 선박 소개, 온보드 다이닝 시뮬레이션, 몰입형 브랜드 체험</li>
+      <li><strong>미디어 &amp; 인플루언서 초청</strong> — 한국 럭셔리 라이프스타일 미디어 및 여행 KOL 대상 익스플로라 팸 트립 (익스플로라 측 승인 조건)</li>
+    </ul>
+
+    <h4 class="sub-heading">익스플로라와의 공동 마케팅</h4>
+    <div class="gold-box">
+      <p>익스플로라 저니 트레이드 마케팅팀과 한국 시장 캠페인을 공동 개발할 의지가 있습니다 — <strong>코브랜딩 디지털 캠페인</strong>, 이메일 공동 발송, 국내 여행사 대상 합동 웨비나, 트레이드 포털 및 브랜드 에셋 라이브러리 접근권 포함.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h3>5 · 다음 단계</h3>
+    <p>익스플로라 저니 트레이드 파트너십 팀과 본 제안서를 바탕으로 논의할 기회를 요청드립니다. 플랫폼 데모 시연, 트레이드 파트너 계약 체결, 브랜드 교육 참여, 2026년 하반기 공동 마케팅 캘린더 수립을 즉시 진행할 준비가 되어 있습니다.</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-label">회사</div>
+        <div class="contact-value">아남항공 주식회사<br>Anam Airlines Co., Ltd.</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">대표</div>
+        <div class="contact-value">김영성 (Kim Young-sung)<br>info@cruiselink.co.kr</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-label">플랫폼</div>
+        <div class="contact-value">www.cruiselink.co.kr<br>사업자번호 104-81-84918</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /doc-wrap -->
+</body>
+</html>
