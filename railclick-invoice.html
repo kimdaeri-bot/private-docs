@@ -325,11 +325,15 @@ function applyParsed(data) {
   (data.routes||[]).forEach(r => {
     const id = addRoute(false);
     setRouteVal(id, 'trainNum', r.trainNumber||'');
-    setRouteVal(id, 'from', r.fromStation||'');
-    setRouteVal(id, 'to', r.toStation||'');
+    // 역명: 도시 + 역 조합
+    const fromFull = [r.fromCity, r.fromStation].filter(Boolean).join(' — ') || r.fromStation || r.fromCity || '';
+    const toFull = [r.toCity, r.toStation].filter(Boolean).join(' — ') || r.toStation || r.toCity || '';
+    setRouteVal(id, 'from', fromFull);
+    setRouteVal(id, 'to', toFull);
     setRouteVal(id, 'date', r.date||'');
     setRouteVal(id, 'depTime', r.departureTime||'');
     setRouteVal(id, 'arrTime', r.arrivalTime||'');
+    setRouteVal(id, 'duration', r.duration||'');
     setRouteVal(id, 'cls', r.class||'Standard');
     setRouteVal(id, 'pax', r.pax||1);
     setRouteVal(id, 'price', r.pricePerPax||0);
@@ -358,11 +362,7 @@ function addRoute(doRender=true) {
       <div class="form-row"><label>기차편명</label>
         <input id="r${id}_trainNum" placeholder="예: ES 9021, ICE 123" oninput="render()"></div>
       <div class="form-row"><label>좌석 등급</label>
-        <select id="r${id}_cls" onchange="render()">
-          <option>Standard</option><option>Standard Premier</option>
-          <option>Business</option><option>Business Premier</option>
-          <option>First</option>
-        </select></div>
+        <input id="r${id}_cls" placeholder="Standard / Business Premier / First" oninput="render()"></div>
     </div>
     <div class="row2">
       <div class="form-row"><label>출발역</label>
@@ -370,13 +370,15 @@ function addRoute(doRender=true) {
       <div class="form-row"><label>도착역</label>
         <input id="r${id}_to" placeholder="예: Paris Gare du Nord" oninput="render()"></div>
     </div>
-    <div class="row3">
+    <div class="row4">
       <div class="form-row"><label>출발일</label>
         <input type="date" id="r${id}_date" oninput="render()"></div>
       <div class="form-row"><label>출발시간</label>
         <input type="time" id="r${id}_depTime" oninput="render()"></div>
       <div class="form-row"><label>도착시간</label>
         <input type="time" id="r${id}_arrTime" oninput="render()"></div>
+      <div class="form-row"><label>소요시간</label>
+        <input id="r${id}_duration" placeholder="2h 16m" oninput="render()"></div>
     </div>
     <div class="route-divider"></div>
     <div class="row3">
@@ -423,6 +425,7 @@ function render() {
     const date = gv(`r${id}_date`);
     const depTime = gv(`r${id}_depTime`);
     const arrTime = gv(`r${id}_arrTime`);
+    const duration = gv(`r${id}_duration`);
     const cls = gv(`r${id}_cls`);
     const pax = parseInt(gv(`r${id}_pax`))||0;
     const price = parseFloat(gv(`r${id}_price`))||0;
@@ -431,7 +434,7 @@ function render() {
     const subEl = document.getElementById(`r${id}_sub`);
     if(subEl) subEl.value = fmt(sub);
     totalFX += sub;
-    return {trainNum,from,to,date,depTime,arrTime,cls,pax,price,note,sub};
+    return {trainNum,from,to,date,depTime,arrTime,duration,cls,pax,price,note,sub};
   });
 
   document.getElementById('calcBox').innerHTML=`
@@ -449,10 +452,13 @@ function render() {
   // 테이블 행
   const tableRows = routeData.map(r=>{
     const dateDisp = r.date ? new Date(r.date+'T00:00:00').toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
-    const timeDisp = (r.depTime||r.arrTime) ? `${r.depTime||'—'} → ${r.arrTime||'—'}` : '—';
+    const timeParts = [];
+    if(r.depTime||r.arrTime) timeParts.push(`${r.depTime||'—'} → ${r.arrTime||'—'}`);
+    if(r.duration) timeParts.push(`(${r.duration})`);
+    const timeDisp = timeParts.join(' ') || '—';
     return `<tr>
-      <td><span class="train-num">${r.trainNum||'—'}</span><br><span class="mono">${r.cls}</span></td>
-      <td><b>${r.from||'—'}</b><span class="station-arrow">→</span><b>${r.to||'—'}</b><br><span class="mono">${dateDisp} · ${timeDisp}</span></td>
+      <td><span class="train-num">${r.trainNum||'—'}</span><br><span class="mono">${r.cls||''}</span></td>
+      <td><b>${r.from||'—'}</b><span class="station-arrow">→</span><b>${r.to||'—'}</b><br><span class="mono">${dateDisp} &nbsp; ${timeDisp}</span></td>
       <td>${r.note||''}</td>
       <td class="num">${r.pax}</td>
       <td class="num">${cur} ${fmt(r.price)}</td>
