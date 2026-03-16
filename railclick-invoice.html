@@ -654,8 +654,8 @@ function render() {
     <div class="inv-total"><div class="total-box">
       <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmtKrw(rate)}</span></div>
       ${totalFee>0?`<div class="total-row sub"><span>티켓</span><span class="amt">${cur} ${fmt(totalFX)}</span></div><div class="total-row sub"><span>수수료</span><span class="amt">${cur} ${fmt(totalFee)}</span></div>`:''}
-      <div class="total-row big"><span>${cur} TOTAL</span><span class="amt">${cur} ${fmt(grandTotal)}</span></div>
-      <div class="total-row"><span>KRW 환산</span><span class="amt">₩${fmtKrw(grandTotal*rate)}</span></div>
+      <div class="total-row big"><span>${cur}</span><span class="amt">${cur} ${fmt(grandTotal)}</span></div>
+      <div class="total-row big"><span>KRW</span><span class="amt">₩${fmtKrw(grandTotal*rate)}</span></div>
     </div></div>
     <div class="inv-bank">
       <div class="bank-box"><h3>🏦 ${cur} 송금 계좌</h3>
