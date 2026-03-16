@@ -110,6 +110,12 @@ textarea{resize:vertical;min-height:60px}
 .memo-box{background:#f0f8ff;border-left:3px solid #2980b9;border-radius:0 6px 6px 0;padding:9px 11px;margin-bottom:10px;font-size:7.5pt;color:#444;line-height:1.8}
 .memo-box h3{font-size:8pt;font-weight:800;color:#2980b9;margin-bottom:4px}
 /* 여행사 저장 */
+/* 수수료 */
+.fee-item{background:#0d1828;border:1px solid #1e2e40;border-radius:8px;padding:10px 12px}
+.fee-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.fee-item-header span{font-size:12px;font-weight:700;color:#f59e0b}
+.inv-fee-row{background:#fefdf8;border-bottom:1px solid #e8ecf0}
+.inv-fee-row td{color:#666;font-style:italic}
 .agency-select-row{display:flex;gap:6px;margin-bottom:10px}
 .agency-select-row select{flex:1;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:12.5px;padding:7px 9px;outline:none}
 .agency-select-row select:focus{border-color:#4da6ff}
@@ -228,6 +234,13 @@ textarea{resize:vertical;min-height:60px}
     <div class="calc-box" id="calcBox"></div>
   </div>
 
+  <!-- 5-2. 수수료 -->
+  <div class="form-section">
+    <h2>💳 수수료 (선택)</h2>
+    <div id="feeList" class="routes-list"></div>
+    <button class="add-btn" onclick="addFee()">+ 수수료 항목 추가</button>
+  </div>
+
   <!-- 6. 환불 규정 -->
   <div class="form-section">
     <h2>📋 환불·변경 규정</h2>
@@ -262,6 +275,45 @@ textarea{resize:vertical;min-height:60px}
 </div>
 
 <script>
+// ─── 수수료 ──────────────────────────────────────
+let fees = [], feeId = 0;
+
+function addFee() {
+  const id = feeId++;
+  fees.push(id);
+  const div = document.createElement('div');
+  div.className = 'fee-item'; div.id = `fee-${id}`;
+  div.innerHTML = `
+    <div class="fee-item-header">
+      <span>💳 수수료 #${fees.indexOf(id)+1}</span>
+      <button class="remove-btn" onclick="removeFee(${id})">✕ 삭제</button>
+    </div>
+    <div class="row2">
+      <div class="form-row"><label>수수료 명칭</label>
+        <input id="f${id}_name" placeholder="예: 발권 수수료" value="발권 수수료" oninput="render()"></div>
+      <div class="form-row"><label>단가</label>
+        <input type="number" id="f${id}_price" value="5" step="0.01" oninput="render()"></div>
+    </div>
+    <div class="row3">
+      <div class="form-row"><label>수량</label>
+        <input type="number" id="f${id}_qty" value="1" min="1" oninput="render()"></div>
+      <div class="form-row"><label>자동(전체 인원)</label>
+        <label style="display:flex;align-items:center;gap:6px;margin-top:4px">
+          <input type="checkbox" id="f${id}_auto" onchange="render()"> 전체 pax 연동
+        </label></div>
+      <div class="form-row"><label>소계</label>
+        <input id="f${id}_sub" readonly></div>
+    </div>
+  `;
+  document.getElementById('feeList').appendChild(div);
+  render();
+}
+function removeFee(id) {
+  fees = fees.filter(f=>f!==id);
+  document.getElementById(`fee-${id}`).remove();
+  render();
+}
+
 // ─── 여행사 저장/불러오기 ─────────────────────────
 const AGENCY_KEY = 'railclick_agencies';
 
@@ -330,7 +382,7 @@ const BANK = {
   fx:  { bank:'국민은행', no:'214968-11-011656', holder:'디플랫코리아(정경준)' },
   krw: { bank:'국민은행', no:'214901-04-350408', holder:'디플랫코리아(정경준)' },
 };
-const RAILCLICK = { name:'레일클릭', phone:'02-3788-9175', email1:'yoonsim@apg-ga.co.kr', email2:'june.jeong@apg-ga.co.kr' };
+const RAILCLICK = { name:'레일클릭', phone:'02-3788-9175', email1:'yoonsim.choi@apg-ga.co.kr', email2:'june.jeong@apg-ga.co.kr' };
 const PARSE_API = 'https://enttix-omega.vercel.app/api/parse-schedule';
 
 let routes = [], routeId = 0, scheduleImgDataUrl = null, scheduleImgMime = 'image/png';
@@ -513,9 +565,30 @@ function render() {
     return {trainNum,from,to,date,depTime,arrTime,duration,cls,pax,price,note,sub};
   });
 
+  // 수수료 계산
+  const totalPax = routeData.reduce((s,r)=>s+r.pax, 0);
+  let totalFee = 0;
+  const feeData = fees.map(id=>{
+    const name = gv(`f${id}_name`)||'수수료';
+    const price = parseFloat(gv(`f${id}_price`))||0;
+    const isAuto = document.getElementById(`f${id}_auto`)?.checked;
+    const qty = isAuto ? totalPax : (parseInt(gv(`f${id}_qty`))||1);
+    // auto 체크 시 qty input 비활성화
+    const qtyEl = document.getElementById(`f${id}_qty`);
+    if(qtyEl) { qtyEl.value = qty; qtyEl.readOnly = isAuto; }
+    const sub = price * qty;
+    const subEl = document.getElementById(`f${id}_sub`);
+    if(subEl) subEl.value = fmt(sub);
+    totalFee += sub;
+    return {name, price, qty, sub};
+  });
+  const grandTotal = totalFX + totalFee;
+
   document.getElementById('calcBox').innerHTML=`
-    <div class="calc-row"><span>합계 (${cur})</span><span><b>${fmt(totalFX)} ${cur}</b></span></div>
-    <div class="calc-row krw"><span>환산 KRW (1${cur}=₩${fmtKrw(rate)})</span><span>₩${fmtKrw(totalFX*rate)}</span></div>`;
+    <div class="calc-row"><span>티켓 합계 (${cur})</span><span>${fmt(totalFX)} ${cur}</span></div>
+    ${totalFee>0?`<div class="calc-row"><span>수수료 합계 (${cur})</span><span>${fmt(totalFee)} ${cur}</span></div>`:''}
+    <div class="calc-row total"><span>총합계 (${cur})</span><span><b>${fmt(grandTotal)} ${cur}</b></span></div>
+    <div class="calc-row krw"><span>환산 KRW (1${cur}=₩${fmtKrw(rate)})</span><span>₩${fmtKrw(grandTotal*rate)}</span></div>`;
 
   // 날짜 포맷
   let dateStr = invDate;
@@ -569,13 +642,22 @@ function render() {
         <th>기차편 / 등급</th><th>노선 · 일정</th><th>비고</th>
         <th class="num">인원</th><th class="num">단가</th><th class="num">소계</th>
       </tr></thead>
-      <tbody>${tableRows||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:14px">노선을 추가하세요</td></tr>'}</tbody>
+      ${tableRows||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:14px">노선을 추가하세요</td></tr>'}
+      ${feeData.map(f=>`<tr class="inv-fee-row">
+        <td colspan="2"><span style="font-size:7.5pt;color:#888">▶ ${f.name}</span></td>
+        <td></td>
+        <td class="num">${f.qty}</td>
+        <td class="num">${cur} ${fmt(f.price)}</td>
+        <td class="num">${cur} ${fmt(f.sub)}</td>
+      </tr>`).join('')}
+      </tbody>
     </table>
     ${policyHtml}${memoHtml}
     <div class="inv-total"><div class="total-box">
       <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmtKrw(rate)}</span></div>
-      <div class="total-row big"><span>${cur} TOTAL</span><span class="amt">${cur} ${fmt(totalFX)}</span></div>
-      <div class="total-row"><span>KRW 환산</span><span class="amt">₩${fmtKrw(totalFX*rate)}</span></div>
+      ${totalFee>0?`<div class="total-row sub"><span>티켓</span><span class="amt">${cur} ${fmt(totalFX)}</span></div><div class="total-row sub"><span>수수료</span><span class="amt">${cur} ${fmt(totalFee)}</span></div>`:''}
+      <div class="total-row big"><span>${cur} TOTAL</span><span class="amt">${cur} ${fmt(grandTotal)}</span></div>
+      <div class="total-row"><span>KRW 환산</span><span class="amt">₩${fmtKrw(grandTotal*rate)}</span></div>
     </div></div>
     <div class="inv-bank">
       <div class="bank-box"><h3>🏦 ${cur} 송금 계좌</h3>
@@ -592,7 +674,9 @@ function render() {
 function resetForm() {
   if(!confirm('초기화하시겠습니까?')) return;
   routes=[]; routeId=0;
+  fees=[]; feeId=0;
   document.getElementById('routesList').innerHTML='';
+  document.getElementById('feeList').innerHTML='';
   ['clientCompany','clientName','clientPhone','clientEmail','memo'].forEach(id=>document.getElementById(id).value='');
   clearImg(); init();
 }
