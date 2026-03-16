@@ -109,6 +109,13 @@ textarea{resize:vertical;min-height:60px}
 .contact-info{text-align:right;color:#999}
 .memo-box{background:#f0f8ff;border-left:3px solid #2980b9;border-radius:0 6px 6px 0;padding:9px 11px;margin-bottom:10px;font-size:7.5pt;color:#444;line-height:1.8}
 .memo-box h3{font-size:8pt;font-weight:800;color:#2980b9;margin-bottom:4px}
+/* 여행사 저장 */
+.agency-select-row{display:flex;gap:6px;margin-bottom:10px}
+.agency-select-row select{flex:1;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:12.5px;padding:7px 9px;outline:none}
+.agency-select-row select:focus{border-color:#4da6ff}
+.agency-del-btn{background:#3a1020;color:#f87171;border:none;font-size:12px;padding:0 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.agency-save-btn{width:100%;background:#0d3a1a;color:#4ade80;border:1px solid #1a5a2a;font-size:12px;font-weight:700;padding:8px;border-radius:6px;cursor:pointer;margin-top:4px;transition:background .2s}
+.agency-save-btn:hover{background:#1a4a2a}
 @media print{
   body{background:#fff!important}.form-panel,.preview-panel>:not(.invoice-paper){display:none}
   .wrap{grid-template-columns:1fr}.preview-panel{padding:0;background:#fff}
@@ -165,6 +172,13 @@ textarea{resize:vertical;min-height:60px}
   <!-- 3. 클라이언트 -->
   <div class="form-section">
     <h2>🏢 클라이언트 정보</h2>
+    <!-- 저장된 여행사 불러오기 -->
+    <div class="agency-select-row">
+      <select id="agencySelect" onchange="loadAgency()">
+        <option value="">── 저장된 여행사 선택 ──</option>
+      </select>
+      <button class="agency-del-btn" onclick="deleteAgency()" title="선택한 여행사 삭제">🗑</button>
+    </div>
     <div class="form-row">
       <label>여행사명</label>
       <input id="clientCompany" placeholder="예: VIP 여행사">
@@ -183,6 +197,7 @@ textarea{resize:vertical;min-height:60px}
       <label>이메일</label>
       <input id="clientEmail" type="email" placeholder="example@travel.com">
     </div>
+    <button class="agency-save-btn" onclick="saveAgency()">💾 현재 여행사 정보 저장</button>
   </div>
 
   <!-- 4. 노선 / 서비스 내역 -->
@@ -247,6 +262,65 @@ textarea{resize:vertical;min-height:60px}
 </div>
 
 <script>
+// ─── 여행사 저장/불러오기 ─────────────────────────
+const AGENCY_KEY = 'railclick_agencies';
+
+function getAgencies() {
+  try { return JSON.parse(localStorage.getItem(AGENCY_KEY)||'[]'); } catch{ return []; }
+}
+function saveAgencies(list) {
+  localStorage.setItem(AGENCY_KEY, JSON.stringify(list));
+}
+function refreshAgencySelect() {
+  const sel = document.getElementById('agencySelect');
+  const list = getAgencies();
+  sel.innerHTML = '<option value="">── 저장된 여행사 선택 ──</option>' +
+    list.map((a,i)=>`<option value="${i}">${a.company}${a.name?' / '+a.name:''}</option>`).join('');
+}
+function saveAgency() {
+  const company = document.getElementById('clientCompany').value.trim();
+  if(!company) { alert('여행사명을 먼저 입력하세요.'); return; }
+  const list = getAgencies();
+  const entry = {
+    company,
+    name: document.getElementById('clientName').value.trim(),
+    phone: document.getElementById('clientPhone').value.trim(),
+    email: document.getElementById('clientEmail').value.trim(),
+  };
+  // 같은 여행사명 있으면 업데이트, 없으면 추가
+  const idx = list.findIndex(a=>a.company===company);
+  if(idx>=0) { list[idx]=entry; } else { list.push(entry); }
+  saveAgencies(list);
+  refreshAgencySelect();
+  // 방금 저장한 항목 선택 상태로
+  const newIdx = getAgencies().findIndex(a=>a.company===company);
+  document.getElementById('agencySelect').value = newIdx;
+  alert(`✅ "${company}" 저장 완료!`);
+}
+function loadAgency() {
+  const sel = document.getElementById('agencySelect');
+  if(!sel.value && sel.value!=='0') return;
+  const list = getAgencies();
+  const a = list[parseInt(sel.value)];
+  if(!a) return;
+  document.getElementById('clientCompany').value = a.company||'';
+  document.getElementById('clientName').value = a.name||'';
+  document.getElementById('clientPhone').value = a.phone||'';
+  document.getElementById('clientEmail').value = a.email||'';
+  render();
+}
+function deleteAgency() {
+  const sel = document.getElementById('agencySelect');
+  if(!sel.value && sel.value!=='0') { alert('삭제할 여행사를 선택하세요.'); return; }
+  const list = getAgencies();
+  const a = list[parseInt(sel.value)];
+  if(!a) return;
+  if(!confirm(`"${a.company}" 삭제하시겠습니까?`)) return;
+  list.splice(parseInt(sel.value),1);
+  saveAgencies(list);
+  refreshAgencySelect();
+}
+
 const COMPANY = {
   name:'DIPLAT KOREA', nameKo:'디플랫코리아',
   regNo:'604-49-00650', repName:'정경준',
@@ -543,6 +617,7 @@ function init() {
   dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('drag-over');});
   dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
   dz.addEventListener('drop', e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])readImgFile(e.dataTransfer.files[0]);});
+  refreshAgencySelect();
   addRoute();
   render();
 }
