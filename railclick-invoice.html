@@ -8,24 +8,40 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#0f1623;color:#e0e6f0;min-height:100vh}
-header{background:linear-gradient(135deg,#0a2540,#1a1a2e);padding:28px 40px 22px;border-bottom:2px solid #2a2a4a;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-header h1{font-size:20px;font-weight:900;color:#fff}
-header p{font-size:12px;color:rgba(255,255,255,.45);margin-top:4px}
-.lock-badge{background:#1a3a6a;color:#4da6ff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;letter-spacing:.5px}
-.wrap{display:grid;grid-template-columns:420px 1fr;gap:0;min-height:calc(100vh - 82px)}
+header{background:linear-gradient(135deg,#0a2540,#1a1a2e);padding:24px 36px 18px;border-bottom:2px solid #2a2a4a;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;font-weight:900;color:#fff}
+header p{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px}
+.lock-badge{background:#1a3a6a;color:#4da6ff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;letter-spacing:.5px;white-space:nowrap}
+.wrap{display:grid;grid-template-columns:440px 1fr;gap:0;min-height:calc(100vh - 74px)}
 @media(max-width:1000px){.wrap{grid-template-columns:1fr}}
-
-/* ── 좌측 폼 ── */
-.form-panel{background:#131e2e;padding:28px 24px;overflow-y:auto;border-right:1px solid #1e2e40}
-.form-panel h2{font-size:13px;font-weight:700;color:#6a8aaa;letter-spacing:1px;text-transform:uppercase;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid #1e2e40}
-.form-section{margin-bottom:24px}
-.form-row{margin-bottom:12px}
-label{display:block;font-size:11.5px;color:#7a9ab8;margin-bottom:4px;font-weight:600}
-input,select,textarea{width:100%;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:13px;padding:8px 10px;outline:none;transition:border-color .2s;font-family:inherit}
+.form-panel{background:#131e2e;padding:24px 20px;overflow-y:auto;border-right:1px solid #1e2e40}
+.form-panel h2{font-size:12px;font-weight:700;color:#6a8aaa;letter-spacing:1px;text-transform:uppercase;margin:0 0 12px;padding-bottom:7px;border-bottom:1px solid #1e2e40}
+.form-section{margin-bottom:22px}
+.form-row{margin-bottom:10px}
+label{display:block;font-size:11px;color:#7a9ab8;margin-bottom:3px;font-weight:600}
+input,select,textarea{width:100%;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:12.5px;padding:7px 9px;outline:none;transition:border-color .2s;font-family:inherit}
 input:focus,select:focus,textarea:focus{border-color:#4da6ff}
-textarea{resize:vertical;min-height:64px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+input[readonly]{color:#4da6ff;cursor:default;background:#0a1520}
+textarea{resize:vertical;min-height:60px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px}
+
+/* 이미지 드롭존 */
+.img-dropzone{border:2px dashed #2a4a6a;border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;background:#0d1828;position:relative;min-height:90px;display:flex;align-items:center;justify-content:center}
+.img-dropzone:hover,.img-dropzone.drag-over{border-color:#4da6ff;background:#0d2040}
+.img-dropzone p{font-size:11.5px;color:#5a80a0;line-height:1.8;pointer-events:none}
+.img-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-thumb{margin-top:10px;position:relative;display:inline-block;width:100%}
+.img-thumb img{max-width:100%;border-radius:6px;border:1px solid #243040;max-height:110px;object-fit:contain;width:100%}
+.img-clear{position:absolute;top:4px;right:4px;background:#cc3300;color:#fff;border:none;border-radius:4px;font-size:11px;padding:3px 7px;cursor:pointer;font-weight:700}
+.parse-btn{width:100%;margin-top:8px;background:#0d3a2a;color:#4ade80;border:1px solid #1a5a3a;font-size:12px;font-weight:700;padding:9px;border-radius:6px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.parse-btn:hover{background:#1a4a3a}
+.parse-btn:disabled{opacity:.5;cursor:not-allowed}
+.parse-status{margin-top:8px;font-size:11.5px;text-align:center;min-height:16px}
+.parse-status.loading{color:#f59e0b}
+.parse-status.success{color:#4ade80}
+.parse-status.error{color:#f87171}
 
 /* 노선 아이템 */
 .routes-list{display:flex;flex-direction:column;gap:10px}
@@ -35,88 +51,74 @@ textarea{resize:vertical;min-height:64px}
 .remove-btn{background:#3a1020;color:#f87171;border:none;font-size:11px;padding:3px 8px;border-radius:4px;cursor:pointer}
 .add-btn{background:#0d2347;color:#4da6ff;border:1px solid #1e3a6a;font-size:12px;font-weight:700;padding:8px 14px;border-radius:6px;cursor:pointer;width:100%;margin-top:6px;transition:background .2s}
 .add-btn:hover{background:#1a3a6a}
+.route-divider{height:1px;background:#1e2e40;margin:8px 0}
 
-.calc-box{background:#0d2347;border:1px solid #1e3a6a;border-radius:8px;padding:12px 14px;margin-top:6px}
-.calc-row{display:flex;justify-content:space-between;font-size:12px;color:#7a9ab8;margin-bottom:4px}
-.calc-row.total{color:#e0e6f0;font-weight:800;font-size:13px;border-top:1px solid #1e3a6a;padding-top:8px;margin-top:4px}
-.calc-row.krw{color:#c084fc;font-size:12px}
+.calc-box{background:#0d2347;border:1px solid #1e3a6a;border-radius:8px;padding:10px 12px;margin-top:6px}
+.calc-row{display:flex;justify-content:space-between;font-size:11.5px;color:#7a9ab8;margin-bottom:3px}
+.calc-row.total{color:#e0e6f0;font-weight:800;font-size:13px;border-top:1px solid #1e3a6a;padding-top:7px;margin-top:4px}
+.calc-row.krw{color:#c084fc;font-size:11.5px}
 
-.print-btn{width:100%;background:#7c5cbf;color:#fff;border:none;font-size:14px;font-weight:800;padding:13px;border-radius:8px;cursor:pointer;margin-top:8px;transition:background .2s}
+.print-btn{width:100%;background:#7c5cbf;color:#fff;border:none;font-size:14px;font-weight:800;padding:12px;border-radius:8px;cursor:pointer;margin-top:6px;transition:background .2s}
 .print-btn:hover{background:#6a4aad}
-.reset-btn{width:100%;background:#1e2e40;color:#7a9ab8;border:none;font-size:12px;padding:8px;border-radius:6px;cursor:pointer;margin-top:6px}
+.reset-btn{width:100%;background:#1e2e40;color:#7a9ab8;border:none;font-size:12px;padding:7px;border-radius:6px;cursor:pointer;margin-top:6px}
 
-/* 이미지 드롭존 */
-.img-dropzone{border:2px dashed #2a4a6a;border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:#0d1828;position:relative}
-.img-dropzone:hover,.img-dropzone.drag-over{border-color:#4da6ff;background:#0d2040}
-.img-dropzone p{font-size:12px;color:#5a80a0;line-height:1.7;pointer-events:none}
-.img-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.img-thumb{margin-top:10px;position:relative}
-.img-thumb img{max-width:100%;border-radius:6px;border:1px solid #243040;max-height:120px;object-fit:contain}
-.img-clear{position:absolute;top:4px;right:4px;background:#cc3300;color:#fff;border:none;border-radius:4px;font-size:11px;padding:3px 7px;cursor:pointer}
-.inv-schedule-img{margin-bottom:12px;text-align:center}
-.inv-schedule-img img{max-width:100%;border-radius:4px;border:1px solid #e0e4ea}
-
-/* ── 우측 프리뷰 ── */
-.preview-panel{background:#f5f4f0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:32px 20px}
-.invoice-paper{background:#fff;width:210mm;min-height:297mm;padding:16mm 18mm;box-shadow:0 4px 32px rgba(0,0,0,.18);font-family:'Pretendard','Apple SD Gothic Neo','Arial',sans-serif;font-size:9pt;color:#1a1a1a;position:relative}
+/* ── 인보이스 프리뷰 ── */
+.preview-panel{background:#f0ede8;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:28px 16px}
+.invoice-paper{background:#fff;width:210mm;min-height:297mm;padding:14mm 16mm;box-shadow:0 4px 32px rgba(0,0,0,.18);font-family:'Pretendard','Apple SD Gothic Neo','Arial',sans-serif;font-size:8.5pt;color:#1a1a1a;position:relative}
 @media(max-width:1000px){.invoice-paper{width:100%;min-height:auto}}
-
-.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid #1a3a6a}
-.inv-logo{font-size:18pt;font-weight:900;color:#1a3a6a;letter-spacing:-.5px}
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;padding-bottom:10px;border-bottom:2.5px solid #1a3a6a}
+.inv-logo{font-size:17pt;font-weight:900;color:#1a3a6a;letter-spacing:-.5px;line-height:1}
 .inv-logo span{color:#4da6ff}
-.inv-title{text-align:right}
-.inv-title h1{font-size:22pt;font-weight:900;color:#1a3a6a;letter-spacing:2px;margin-bottom:4px}
-.inv-title p{font-size:8pt;color:#666}
-
-.inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.meta-box{background:#f0f4fa;border-radius:6px;padding:10px 12px}
-.meta-box h3{font-size:7.5pt;font-weight:800;color:#1a3a6a;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
-.meta-box p{font-size:8.5pt;color:#333;line-height:1.7;margin:0}
-.meta-box strong{color:#1a1a1a}
-
-.inv-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:8.5pt}
+.inv-logo small{display:block;font-size:7pt;font-weight:400;color:#888;margin-top:3px}
+.inv-title h1{font-size:21pt;font-weight:900;color:#1a3a6a;letter-spacing:2px;margin-bottom:3px;text-align:right}
+.inv-title p{font-size:8pt;color:#555;text-align:right;line-height:1.6}
+.inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.meta-box{background:#f0f4fa;border-radius:6px;padding:9px 11px}
+.meta-box h3{font-size:7pt;font-weight:800;color:#1a3a6a;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid #d8e0ec}
+.meta-box p{font-size:8pt;color:#333;line-height:1.75;margin:0}
+.meta-box strong{color:#111}
+.inv-schedule-img{margin-bottom:10px;text-align:center;border:1px solid #e8ecf0;border-radius:4px;overflow:hidden}
+.inv-schedule-img img{max-width:100%;display:block}
+.inv-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:8pt}
 .inv-table thead tr{background:#1a3a6a;color:#fff}
-.inv-table th{padding:7px 8px;text-align:left;font-weight:700;font-size:7.5pt;letter-spacing:.3px}
-.inv-table td{padding:7px 8px;border-bottom:1px solid #e8ecf0;vertical-align:top}
+.inv-table th{padding:6px 7px;text-align:left;font-weight:700;font-size:7pt;letter-spacing:.2px}
+.inv-table td{padding:6px 7px;border-bottom:1px solid #e8ecf0;vertical-align:middle}
 .inv-table tr:last-child td{border-bottom:none}
 .inv-table tr:nth-child(even){background:#f8f9fb}
-.inv-table .num{text-align:right;font-feature-settings:'tnum'}
-
-.policy-box{background:#fff8f0;border-left:3px solid #e67e22;border-radius:0 6px 6px 0;padding:10px 12px;margin-bottom:12px;font-size:7.5pt;color:#444;line-height:1.8}
-.policy-box h3{font-size:8pt;font-weight:800;color:#e67e22;margin-bottom:6px}
-
-.inv-total{display:flex;justify-content:flex-end;margin-bottom:12px}
-.total-box{background:#1a3a6a;color:#fff;border-radius:8px;padding:12px 18px;min-width:200px}
-.total-row{display:flex;justify-content:space-between;gap:20px;font-size:8.5pt;margin-bottom:4px}
+.inv-table .num{text-align:right;font-feature-settings:'tnum';white-space:nowrap}
+.inv-table .mono{font-size:7.5pt;color:#666}
+.train-num{display:inline-block;background:#1a3a6a;color:#fff;font-size:7pt;font-weight:800;padding:1px 5px;border-radius:3px;margin-right:4px;letter-spacing:.3px}
+.station-arrow{color:#1a3a6a;font-weight:900;margin:0 3px}
+.policy-box{background:#fff8f0;border-left:3px solid #e67e22;border-radius:0 6px 6px 0;padding:9px 11px;margin-bottom:10px;font-size:7.5pt;color:#444;line-height:1.85}
+.policy-box h3{font-size:8pt;font-weight:800;color:#e67e22;margin-bottom:5px}
+.inv-total{display:flex;justify-content:flex-end;margin-bottom:10px}
+.total-box{background:#1a3a6a;color:#fff;border-radius:8px;padding:11px 16px;min-width:190px}
+.total-row{display:flex;justify-content:space-between;gap:18px;font-size:8pt;margin-bottom:3px}
 .total-row:last-child{margin-bottom:0}
-.total-row.big{font-size:11pt;font-weight:900;border-top:1px solid rgba(255,255,255,.3);padding-top:6px;margin-top:4px}
-.total-row.sub{color:rgba(255,255,255,.7);font-size:7.5pt}
+.total-row.big{font-size:11pt;font-weight:900;border-top:1px solid rgba(255,255,255,.3);padding-top:5px;margin-top:4px}
+.total-row.sub{color:rgba(255,255,255,.65);font-size:7.5pt}
 .total-row .amt{font-feature-settings:'tnum';text-align:right}
-
-.inv-bank{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.bank-box{background:#f0f4fa;border-radius:6px;padding:10px 12px;border:1px solid #dce4ef}
-.bank-box h3{font-size:7.5pt;font-weight:800;color:#1a3a6a;margin-bottom:6px;letter-spacing:.3px}
+.inv-bank{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.bank-box{background:#f0f4fa;border-radius:6px;padding:9px 11px;border:1px solid #dce4ef}
+.bank-box h3{font-size:7pt;font-weight:800;color:#1a3a6a;margin-bottom:5px;letter-spacing:.3px}
 .bank-box p{font-size:8pt;color:#333;line-height:1.8;margin:0}
-
-.inv-footer{border-top:1px solid #e0e4ea;padding-top:10px;display:flex;justify-content:space-between;align-items:flex-end;font-size:7.5pt;color:#666}
+.inv-footer{border-top:1px solid #e0e4ea;padding-top:8px;display:flex;justify-content:space-between;align-items:flex-end;font-size:7.5pt;color:#777}
 .company-info p{line-height:1.7}
-.contact-info{text-align:right;color:#888}
-
-/* 인쇄 */
+.contact-info{text-align:right;color:#999}
+.memo-box{background:#f0f8ff;border-left:3px solid #2980b9;border-radius:0 6px 6px 0;padding:9px 11px;margin-bottom:10px;font-size:7.5pt;color:#444;line-height:1.8}
+.memo-box h3{font-size:8pt;font-weight:800;color:#2980b9;margin-bottom:4px}
 @media print{
-  body{background:#fff !important}
-  .form-panel,.preview-panel > :not(.invoice-paper){display:none}
-  .wrap{grid-template-columns:1fr}
-  .preview-panel{padding:0;background:#fff}
-  .invoice-paper{box-shadow:none;width:100%;margin:0;padding:12mm 15mm}
+  body{background:#fff!important}.form-panel,.preview-panel>:not(.invoice-paper){display:none}
+  .wrap{grid-template-columns:1fr}.preview-panel{padding:0;background:#fff}
+  .invoice-paper{box-shadow:none;width:100%;margin:0;padding:10mm 13mm}
   header{display:none}
 }
 </style>
 </head>
 <body>
 <header>
+  <span class="lock-badge">🔒 INTERNAL</span>
   <div>
-    <span class="lock-badge">🔒 INTERNAL</span>
     <h1>🚂 레일클릭 인보이스 작성기</h1>
     <p>DIPLAT KOREA — 유럽철도 티켓 여행사용 인보이스</p>
   </div>
@@ -126,12 +128,30 @@ textarea{resize:vertical;min-height:64px}
 <!-- ─── 좌측 폼 ─── -->
 <div class="form-panel">
 
+  <!-- 1. 스케줄 이미지 (최상단) -->
+  <div class="form-section">
+    <h2>🖼️ 스케줄 / 일정 이미지</h2>
+    <div class="img-dropzone" id="dropzone">
+      <input type="file" id="imgFile" accept="image/*" onchange="handleImgFile(this)">
+      <p>📋 <b>Ctrl+V</b> 붙여넣기<br>또는 클릭해서 파일 선택 / 드래그 앤 드롭</p>
+    </div>
+    <div id="imgThumb" style="display:none" class="img-thumb">
+      <img id="imgPreviewSmall" src="" alt="스케줄 이미지">
+      <button class="img-clear" onclick="clearImg()">✕</button>
+    </div>
+    <button class="parse-btn" id="parseBtn" onclick="parseImage()" disabled>
+      ✨ AI 자동 파싱 — 노선 정보 자동 입력
+    </button>
+    <div class="parse-status" id="parseStatus"></div>
+  </div>
+
+  <!-- 2. 인보이스 기본 정보 -->
   <div class="form-section">
     <h2>📄 인보이스 기본 정보</h2>
     <div class="row2">
       <div class="form-row">
         <label>인보이스 번호</label>
-        <input id="invNo" value="" placeholder="자동 생성">
+        <input id="invNo" placeholder="자동 생성">
       </div>
       <div class="form-row">
         <label>발행일</label>
@@ -140,6 +160,7 @@ textarea{resize:vertical;min-height:64px}
     </div>
   </div>
 
+  <!-- 3. 클라이언트 -->
   <div class="form-section">
     <h2>🏢 클라이언트 정보</h2>
     <div class="form-row">
@@ -162,12 +183,14 @@ textarea{resize:vertical;min-height:64px}
     </div>
   </div>
 
+  <!-- 4. 노선 / 서비스 내역 -->
   <div class="form-section">
     <h2>🚂 노선 / 서비스 내역</h2>
     <div id="routesList" class="routes-list"></div>
     <button class="add-btn" onclick="addRoute()">+ 노선 추가</button>
   </div>
 
+  <!-- 5. 환율 -->
   <div class="form-section">
     <h2>💱 환율</h2>
     <div class="row2">
@@ -188,14 +211,13 @@ textarea{resize:vertical;min-height:64px}
     <div class="calc-box" id="calcBox"></div>
   </div>
 
+  <!-- 6. 환불 규정 -->
   <div class="form-section">
     <h2>📋 환불·변경 규정</h2>
     <div class="form-row">
-      <label><input type="checkbox" id="inclPolicy" checked onchange="render()"> 환불/변경 규정 포함</label>
+      <label><input type="checkbox" id="inclPolicy" checked onchange="render()"> 인보이스에 포함</label>
     </div>
-    <div class="form-row">
-      <label>규정 텍스트 (수정 가능)</label>
-      <textarea id="policyText" oninput="render()" rows="7">[ 환불 규정 ]
+    <textarea id="policyText" oninput="render()" rows="7">[ 환불 규정 ]
 • 탑승일 기준 31일전까지 환불 시 80% 환불 가능
 • 탑승일 기준 30일 ~ 9일전까지 환불 시 50% 환불 가능
 • 탑승일 기준 8일전부터 환불 불가
@@ -204,21 +226,9 @@ textarea{resize:vertical;min-height:64px}
 • 탑승일 기준 31일전까지 변경 가능
   (단, 시간/날짜 변경 시 티켓 차액 발생될 수 있으며,
    기존 티켓가보다 낮은 요금으로 변경된 경우 차액 환불 불가)</textarea>
-    </div>
   </div>
 
-  <div class="form-section">
-    <h2>🖼️ 스케줄 / 일정 이미지</h2>
-    <div class="img-dropzone" id="dropzone">
-      <input type="file" id="imgFile" accept="image/*" onchange="handleImgFile(this)">
-      <p>📋 <b>Ctrl+V</b> 로 붙여넣기<br>또는 클릭해서 파일 선택<br>또는 여기에 드래그 앤 드롭</p>
-    </div>
-    <div class="img-thumb" id="imgThumb" style="display:none">
-      <img id="imgPreviewSmall" src="" alt="스케줄 이미지">
-      <button class="img-clear" onclick="clearImg()">✕</button>
-    </div>
-  </div>
-
+  <!-- 7. 메모 -->
   <div class="form-section">
     <h2>✉️ 메모 (선택)</h2>
     <textarea id="memo" placeholder="추가 안내사항..." rows="3" oninput="render()"></textarea>
@@ -230,132 +240,159 @@ textarea{resize:vertical;min-height:64px}
 
 <!-- ─── 우측 프리뷰 ─── -->
 <div class="preview-panel">
-  <div class="invoice-paper" id="invoicePaper">
-    <!-- JS로 렌더링 -->
-  </div>
+  <div class="invoice-paper" id="invoicePaper"></div>
 </div>
 </div>
 
 <script>
-// ─── 이미지 ──────────────────────────────────────
-let scheduleImgDataUrl = null;
+const COMPANY = {
+  name:'DIPLAT KOREA', nameKo:'디플랫코리아',
+  regNo:'604-49-00650', repName:'정경준',
+  address:'5F, 152, Magokseo-ro, Gangseo-gu, Seoul, Republic of Korea',
+};
+const BANK = {
+  fx:  { bank:'국민은행', no:'214968-11-011656', holder:'디플랫코리아(정경준)' },
+  krw: { bank:'국민은행', no:'214901-04-350408', holder:'디플랫코리아(정경준)' },
+};
+const RAILCLICK = { name:'레일클릭', phone:'02-3788-9175', email1:'yoonsim@apg-ga.co.kr', email2:'june.jeong@apg-ga.co.kr' };
+const PARSE_API = 'https://enttix-omega.vercel.app/api/parse-schedule';
 
-function handleImgFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  readImgFile(file);
-}
+let routes = [], routeId = 0, scheduleImgDataUrl = null, scheduleImgMime = 'image/png';
+
+// ─── 이미지 처리 ──────────────────────────────
+function handleImgFile(input) { if(input.files[0]) readImgFile(input.files[0]); }
 function readImgFile(file) {
-  if (!file.type.startsWith('image/')) return;
+  if(!file.type.startsWith('image/')) return;
+  scheduleImgMime = file.type;
   const reader = new FileReader();
-  reader.onload = e => { setImg(e.target.result); };
+  reader.onload = e => setImg(e.target.result);
   reader.readAsDataURL(file);
 }
 function setImg(dataUrl) {
   scheduleImgDataUrl = dataUrl;
   document.getElementById('imgPreviewSmall').src = dataUrl;
   document.getElementById('imgThumb').style.display = 'block';
+  document.getElementById('parseBtn').disabled = false;
+  setParseStatus('');
   render();
 }
 function clearImg() {
   scheduleImgDataUrl = null;
   document.getElementById('imgThumb').style.display = 'none';
   document.getElementById('imgFile').value = '';
+  document.getElementById('parseBtn').disabled = true;
+  setParseStatus('');
   render();
 }
-
-// ─── 상수 ───────────────────────────────────────
-const COMPANY = {
-  name: 'DIPLAT KOREA',
-  nameKo: '디플랫코리아',
-  regNo: '604-49-00650',
-  address: '5F, 152, Magokseo-ro, Gangseo-gu, Seoul, Republic of Korea',
-  repName: '정경준',
-};
-const BANK = {
-  eur: { bank:'국민은행', no:'214968-11-011656', holder:'디플랫코리아(정경준)' },
-  krw: { bank:'국민은행', no:'214901-04-350408', holder:'디플랫코리아(정경준)' },
-};
-const RAILCLICK = {
-  name: '레일클릭',
-  phone: '02-3788-9175',
-  email1: 'yoonsim@apg-ga.co.kr',
-  email2: 'june.jeong@apg-ga.co.kr',
-};
-
-// ─── 초기화 ──────────────────────────────────────
-let routes = [];
-let routeId = 0;
-
-function init() {
-  // 오늘 날짜
-  const now = new Date();
-  const ymd = now.toISOString().slice(0,10);
-  document.getElementById('invDate').value = ymd;
-  // 인보이스 번호 자동 생성
-  const seq = String(Math.floor(Math.random()*90)+10);
-  document.getElementById('invNo').value = `DPL-RAIL-${ymd.replace(/-/g,'')}-${seq}`;
-  // 기본 노선 1개
-  addRoute();
-  // 입력 이벤트 전체
-  document.querySelectorAll('input,select,textarea').forEach(el=>{
-    el.addEventListener('input', render);
-    el.addEventListener('change', render);
-  });
-
-  // 클립보드 붙여넣기 (Ctrl+V)
-  document.addEventListener('paste', e => {
-    const items = e.clipboardData?.items;
-    if (!items) return;
-    for (const item of items) {
-      if (item.type.startsWith('image/')) {
-        const file = item.getAsFile();
-        if (file) { readImgFile(file); break; }
-      }
-    }
-  });
-
-  // 드래그 앤 드롭
-  const dz = document.getElementById('dropzone');
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault();
-    dz.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) readImgFile(file);
-  });
-
-  render();
+function setParseStatus(msg, cls='') {
+  const el = document.getElementById('parseStatus');
+  el.textContent = msg; el.className = 'parse-status ' + cls;
 }
 
-// ─── 노선 추가/삭제 ──────────────────────────────
-function addRoute() {
+// ─── AI 파싱 ──────────────────────────────────
+async function parseImage() {
+  if(!scheduleImgDataUrl) return;
+  const btn = document.getElementById('parseBtn');
+  btn.disabled = true;
+  setParseStatus('✨ AI 분석 중...', 'loading');
+  try {
+    const base64 = scheduleImgDataUrl.split(',')[1];
+    const res = await fetch(PARSE_API, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ imageBase64: base64, mediaType: scheduleImgMime }),
+    });
+    const data = await res.json();
+    if(!res.ok || data.error) throw new Error(data.error||'파싱 실패');
+    applyParsed(data);
+    setParseStatus(`✅ ${(data.routes||[]).length}개 노선 자동 입력 완료`, 'success');
+  } catch(e) {
+    setParseStatus('❌ 파싱 실패: ' + e.message, 'error');
+  } finally { btn.disabled = false; }
+}
+
+function applyParsed(data) {
+  // 기존 노선 초기화
+  routes = []; routeId = 0;
+  document.getElementById('routesList').innerHTML = '';
+  // 통화
+  if(data.currency) {
+    const sel = document.getElementById('currency');
+    [...sel.options].forEach(o=>{ if(o.value===data.currency) sel.value=data.currency; });
+  }
+  if(data.exchangeRate && data.exchangeRate > 0) document.getElementById('exchangeRate').value = data.exchangeRate;
+  // 노선 추가
+  (data.routes||[]).forEach(r => {
+    const id = addRoute(false);
+    setRouteVal(id, 'trainNum', r.trainNumber||'');
+    setRouteVal(id, 'from', r.fromStation||'');
+    setRouteVal(id, 'to', r.toStation||'');
+    setRouteVal(id, 'date', r.date||'');
+    setRouteVal(id, 'depTime', r.departureTime||'');
+    setRouteVal(id, 'arrTime', r.arrivalTime||'');
+    setRouteVal(id, 'cls', r.class||'Standard');
+    setRouteVal(id, 'pax', r.pax||1);
+    setRouteVal(id, 'price', r.pricePerPax||0);
+    setRouteVal(id, 'note', r.note||'');
+  });
+  render();
+}
+function setRouteVal(id, field, val) {
+  const el = document.getElementById(`r${id}_${field}`);
+  if(el) el.value = val;
+}
+
+// ─── 노선 추가/삭제 ──────────────────────────
+function addRoute(doRender=true) {
   const id = routeId++;
   routes.push(id);
+  const num = routes.indexOf(id)+1;
   const div = document.createElement('div');
-  div.className = 'route-item';
-  div.id = `route-${id}`;
+  div.className = 'route-item'; div.id = `route-${id}`;
   div.innerHTML = `
     <div class="route-item-header">
-      <span>노선 #${routes.indexOf(id)+1}</span>
+      <span>🚂 구간 #${num}</span>
       <button class="remove-btn" onclick="removeRoute(${id})">✕ 삭제</button>
     </div>
-    <div class="form-row"><label>노선명 / 서비스명</label>
-      <input id="r${id}_name" placeholder="예: Eurostar Standard, ICE Frankfurt→Paris" oninput="render()"></div>
+    <div class="row2">
+      <div class="form-row"><label>기차편명</label>
+        <input id="r${id}_trainNum" placeholder="예: ES 9021, ICE 123" oninput="render()"></div>
+      <div class="form-row"><label>좌석 등급</label>
+        <select id="r${id}_cls" onchange="render()">
+          <option>Standard</option><option>Standard Premier</option>
+          <option>Business</option><option>Business Premier</option>
+          <option>First</option>
+        </select></div>
+    </div>
+    <div class="row2">
+      <div class="form-row"><label>출발역</label>
+        <input id="r${id}_from" placeholder="예: London St Pancras" oninput="render()"></div>
+      <div class="form-row"><label>도착역</label>
+        <input id="r${id}_to" placeholder="예: Paris Gare du Nord" oninput="render()"></div>
+    </div>
+    <div class="row3">
+      <div class="form-row"><label>출발일</label>
+        <input type="date" id="r${id}_date" oninput="render()"></div>
+      <div class="form-row"><label>출발시간</label>
+        <input type="time" id="r${id}_depTime" oninput="render()"></div>
+      <div class="form-row"><label>도착시간</label>
+        <input type="time" id="r${id}_arrTime" oninput="render()"></div>
+    </div>
+    <div class="route-divider"></div>
     <div class="row3">
       <div class="form-row"><label>인원(pax)</label>
         <input type="number" id="r${id}_pax" value="1" min="1" oninput="render()"></div>
       <div class="form-row"><label>단가</label>
-        <input type="number" id="r${id}_price" value="5" step="0.01" oninput="render()"></div>
+        <input type="number" id="r${id}_price" value="0" step="0.01" oninput="render()"></div>
       <div class="form-row"><label>소계</label>
-        <input id="r${id}_sub" readonly style="color:#4da6ff;font-weight:700;cursor:default"></div>
+        <input id="r${id}_sub" readonly></div>
     </div>
-    <div class="form-row"><label>비고 (선택)</label>
-      <input id="r${id}_note" placeholder="예: 발권 수수료" oninput="render()"></div>
+    <div class="form-row"><label>비고</label>
+      <input id="r${id}_note" placeholder="발권 수수료, 비고 등" oninput="render()"></div>
   `;
   document.getElementById('routesList').appendChild(div);
-  render();
+  if(doRender) render();
+  return id;
 }
 
 function removeRoute(id) {
@@ -364,188 +401,143 @@ function removeRoute(id) {
   render();
 }
 
-// ─── 숫자 포맷 ───────────────────────────────────
-function fmt(n, dec=2) {
-  return Number(n).toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
-}
-function fmtKrw(n) {
-  return Math.round(n).toLocaleString('ko-KR');
-}
+// ─── 유틸 ────────────────────────────────────
+function fmt(n,d=2){return Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}
+function fmtKrw(n){return Math.round(n).toLocaleString('ko-KR')}
+function gv(id){const el=document.getElementById(id);return el?el.value:'';}
 
-// ─── 렌더링 ──────────────────────────────────────
+// ─── 렌더링 ──────────────────────────────────
 function render() {
-  const cur = document.getElementById('currency').value;
+  const cur = gv('currency');
   document.getElementById('currLabel').textContent = cur;
-
-  const rate = parseFloat(document.getElementById('exchangeRate').value)||0;
-  const invNo = document.getElementById('invNo').value;
-  const invDate = document.getElementById('invDate').value;
-  const clientCo = document.getElementById('clientCompany').value || '—';
-  const clientName = document.getElementById('clientName').value || '—';
-  const clientPhone = document.getElementById('clientPhone').value || '—';
-  const clientEmail = document.getElementById('clientEmail').value || '—';
+  const rate = parseFloat(gv('exchangeRate'))||0;
+  const invNo = gv('invNo');
+  const invDate = gv('invDate');
   const inclPolicy = document.getElementById('inclPolicy').checked;
-  const policyText = document.getElementById('policyText').value;
-  const memo = document.getElementById('memo').value;
 
-  // 노선별 계산
   let totalFX = 0;
-  const routeData = routes.map(id => {
-    const name = (document.getElementById(`r${id}_name`)?.value)||'';
-    const pax = parseInt(document.getElementById(`r${id}_pax`)?.value)||0;
-    const price = parseFloat(document.getElementById(`r${id}_price`)?.value)||0;
-    const note = (document.getElementById(`r${id}_note`)?.value)||'';
+  const routeData = routes.map(id=>{
+    const trainNum = gv(`r${id}_trainNum`);
+    const from = gv(`r${id}_from`);
+    const to = gv(`r${id}_to`);
+    const date = gv(`r${id}_date`);
+    const depTime = gv(`r${id}_depTime`);
+    const arrTime = gv(`r${id}_arrTime`);
+    const cls = gv(`r${id}_cls`);
+    const pax = parseInt(gv(`r${id}_pax`))||0;
+    const price = parseFloat(gv(`r${id}_price`))||0;
+    const note = gv(`r${id}_note`);
     const sub = pax * price;
-    if(document.getElementById(`r${id}_sub`)) document.getElementById(`r${id}_sub`).value = fmt(sub);
+    const subEl = document.getElementById(`r${id}_sub`);
+    if(subEl) subEl.value = fmt(sub);
     totalFX += sub;
-    return {name, pax, price, note, sub};
+    return {trainNum,from,to,date,depTime,arrTime,cls,pax,price,note,sub};
   });
 
-  const totalKrw = totalFX * rate;
-
-  // 계산 박스
-  document.getElementById('calcBox').innerHTML = `
+  document.getElementById('calcBox').innerHTML=`
     <div class="calc-row"><span>합계 (${cur})</span><span><b>${fmt(totalFX)} ${cur}</b></span></div>
-    <div class="calc-row krw"><span>환산 (KRW, 1${cur}=${fmtKrw(rate)})</span><span>₩${fmtKrw(totalKrw)}</span></div>
-  `;
+    <div class="calc-row krw"><span>환산 KRW (1${cur}=₩${fmtKrw(rate)})</span><span>₩${fmtKrw(totalFX*rate)}</span></div>`;
 
   // 날짜 포맷
   let dateStr = invDate;
-  if(invDate) {
-    const d = new Date(invDate);
-    const mo = ['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()];
-    dateStr = `${mo} ${d.getDate()}, ${d.getFullYear()}`;
+  if(invDate){
+    const d=new Date(invDate);
+    const mo=['January','February','March','April','May','June','July','August','September','October','November','December'][d.getMonth()];
+    dateStr=`${mo} ${d.getDate()}, ${d.getFullYear()}`;
   }
 
-  // 노선 테이블 rows
-  const tableRows = routeData.map(r=>`
-    <tr>
-      <td>${r.name||'—'}</td>
-      <td>${r.note||'—'}</td>
+  // 테이블 행
+  const tableRows = routeData.map(r=>{
+    const dateDisp = r.date ? new Date(r.date+'T00:00:00').toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}) : '—';
+    const timeDisp = (r.depTime||r.arrTime) ? `${r.depTime||'—'} → ${r.arrTime||'—'}` : '—';
+    return `<tr>
+      <td><span class="train-num">${r.trainNum||'—'}</span><br><span class="mono">${r.cls}</span></td>
+      <td><b>${r.from||'—'}</b><span class="station-arrow">→</span><b>${r.to||'—'}</b><br><span class="mono">${dateDisp} · ${timeDisp}</span></td>
+      <td>${r.note||''}</td>
       <td class="num">${r.pax}</td>
       <td class="num">${cur} ${fmt(r.price)}</td>
       <td class="num"><b>${cur} ${fmt(r.sub)}</b></td>
-    </tr>
-  `).join('');
+    </tr>`;
+  }).join('');
 
-  // 정책 섹션
-  const policyHtml = inclPolicy ? `
-    <div class="policy-box">
-      <h3>📋 환불 · 변경 규정</h3>
-      ${policyText.split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join('')}
-    </div>` : '';
+  const policyHtml = inclPolicy ? `<div class="policy-box"><h3>📋 환불 · 변경 규정</h3>${gv('policyText').split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join('')}</div>` : '';
+  const memo = gv('memo');
+  const memoHtml = memo ? `<div class="memo-box"><h3>📝 메모</h3>${memo.split('\n').map(l=>`<p>${l}</p>`).join('')}</div>` : '';
+  const imgHtml = scheduleImgDataUrl ? `<div class="inv-schedule-img"><img src="${scheduleImgDataUrl}" alt="스케줄"></div>` : '';
 
-  // 메모
-  const memoHtml = memo ? `<div class="policy-box" style="border-color:#2980b9;background:#f0f8ff;margin-bottom:12px">
-    <h3 style="color:#2980b9">📝 메모</h3>
-    ${memo.split('\n').map(l=>`<p>${l}</p>`).join('')}
-  </div>` : '';
-
-  // EUR/USD 계좌 분기
-  const fxBankLabel = cur === 'GBP' ? 'GBP' : cur === 'USD' ? 'USD' : cur === 'CHF' ? 'CHF' : 'EUR';
-
-  // 인보이스 HTML
   document.getElementById('invoicePaper').innerHTML = `
     <div class="inv-header">
       <div>
-        <div class="inv-logo">DIPLAT <span>KOREA</span></div>
-        <div style="font-size:7pt;color:#666;margin-top:4px">${COMPANY.address}</div>
-        <div style="font-size:7pt;color:#666">사업자등록번호: ${COMPANY.regNo} | 대표: ${COMPANY.repName}</div>
+        <div class="inv-logo">DIPLAT <span>KOREA</span><small>${COMPANY.address}</small><small>사업자등록번호: ${COMPANY.regNo} | 대표: ${COMPANY.repName}</small></div>
       </div>
       <div class="inv-title">
         <h1>INVOICE</h1>
-        <p>Invoice #: <b>${invNo||'DPL-RAIL-XXXXXXXX-XX'}</b></p>
-        <p>Date: <b>${dateStr||'—'}</b></p>
+        <p>Invoice #: <b>${invNo||'DPL-RAIL-XXXXXXXX-XX'}</b><br>Date: <b>${dateStr||'—'}</b></p>
       </div>
     </div>
-
     <div class="inv-meta">
-      <div class="meta-box">
-        <h3>CLIENT</h3>
-        <p><strong>${clientCo}</strong></p>
-        <p>Name: ${clientName}</p>
-        <p>Contact: ${clientPhone}</p>
-        <p>E-mail: ${clientEmail}</p>
-      </div>
-      <div class="meta-box">
-        <h3>ISSUED BY</h3>
-        <p><strong>${COMPANY.name}</strong> (${COMPANY.nameKo})</p>
-        <p>대표: ${COMPANY.repName}</p>
-        <p>사업자등록번호: ${COMPANY.regNo}</p>
-        <p style="font-size:7pt;color:#888;margin-top:4px">Contact: ${RAILCLICK.name} | ${RAILCLICK.phone}</p>
-        <p style="font-size:7pt;color:#888">${RAILCLICK.email1} / ${RAILCLICK.email2}</p>
-      </div>
+      <div class="meta-box"><h3>CLIENT</h3>
+        <p><strong>${gv('clientCompany')||'—'}</strong><br>Name: ${gv('clientName')||'—'}<br>Contact: ${gv('clientPhone')||'—'}<br>E-mail: ${gv('clientEmail')||'—'}</p></div>
+      <div class="meta-box"><h3>ISSUED BY</h3>
+        <p><strong>${COMPANY.name}</strong> (${COMPANY.nameKo})<br>대표: ${COMPANY.repName} | 사업자: ${COMPANY.regNo}<br><span style="font-size:7pt;color:#888">${RAILCLICK.name} | ${RAILCLICK.phone}<br>${RAILCLICK.email1} / ${RAILCLICK.email2}</span></p></div>
     </div>
-
-    ${scheduleImgDataUrl ? `<div class="inv-schedule-img"><img src="${scheduleImgDataUrl}" alt="스케줄 이미지"></div>` : ''}
+    ${imgHtml}
     <table class="inv-table">
-      <thead>
-        <tr>
-          <th>노선 / 서비스</th>
-          <th>내용</th>
-          <th class="num">인원</th>
-          <th class="num">단가</th>
-          <th class="num">소계</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${tableRows||'<tr><td colspan="5" style="text-align:center;color:#aaa;padding:16px">노선을 추가하세요</td></tr>'}
-      </tbody>
+      <thead><tr>
+        <th>기차편 / 등급</th><th>노선 · 일정</th><th>비고</th>
+        <th class="num">인원</th><th class="num">단가</th><th class="num">소계</th>
+      </tr></thead>
+      <tbody>${tableRows||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:14px">노선을 추가하세요</td></tr>'}</tbody>
     </table>
-
-    ${policyHtml}
-    ${memoHtml}
-
-    <div class="inv-total">
-      <div class="total-box">
-        <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmtKrw(rate)}</span></div>
-        <div class="total-row big"><span>${cur} TOTAL</span><span class="amt">${cur} ${fmt(totalFX)}</span></div>
-        <div class="total-row"><span>KRW 환산</span><span class="amt">₩${fmtKrw(totalKrw)}</span></div>
-      </div>
-    </div>
-
+    ${policyHtml}${memoHtml}
+    <div class="inv-total"><div class="total-box">
+      <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmtKrw(rate)}</span></div>
+      <div class="total-row big"><span>${cur} TOTAL</span><span class="amt">${cur} ${fmt(totalFX)}</span></div>
+      <div class="total-row"><span>KRW 환산</span><span class="amt">₩${fmtKrw(totalFX*rate)}</span></div>
+    </div></div>
     <div class="inv-bank">
-      <div class="bank-box">
-        <h3>🏦 ${fxBankLabel} 송금 계좌</h3>
-        <p>은행: <b>${BANK.eur.bank}</b></p>
-        <p>계좌번호: <b>${BANK.eur.no}</b></p>
-        <p>예금주: ${BANK.eur.holder}</p>
-      </div>
-      <div class="bank-box">
-        <h3>🏦 원화(KRW) 송금 계좌</h3>
-        <p>은행: <b>${BANK.krw.bank}</b></p>
-        <p>계좌번호: <b>${BANK.krw.no}</b></p>
-        <p>예금주: ${BANK.krw.holder}</p>
-      </div>
+      <div class="bank-box"><h3>🏦 ${cur} 송금 계좌</h3>
+        <p>은행: <b>${BANK.fx.bank}</b><br>계좌번호: <b>${BANK.fx.no}</b><br>예금주: ${BANK.fx.holder}</p></div>
+      <div class="bank-box"><h3>🏦 원화(KRW) 송금 계좌</h3>
+        <p>은행: <b>${BANK.krw.bank}</b><br>계좌번호: <b>${BANK.krw.no}</b><br>예금주: ${BANK.krw.holder}</p></div>
     </div>
-
     <div class="inv-footer">
-      <div class="company-info">
-        <p><b>${COMPANY.name}</b> | 사업자등록번호: ${COMPANY.regNo}</p>
-        <p>${COMPANY.address}</p>
-      </div>
-      <div class="contact-info">
-        <p>레일클릭 | ${RAILCLICK.phone}</p>
-        <p>${RAILCLICK.email1}</p>
-        <p>${RAILCLICK.email2}</p>
-      </div>
-    </div>
-  `;
+      <div class="company-info"><p><b>${COMPANY.name}</b> | ${COMPANY.regNo}</p><p>${COMPANY.address}</p></div>
+      <div class="contact-info"><p>레일클릭 | ${RAILCLICK.phone}</p><p>${RAILCLICK.email1} / ${RAILCLICK.email2}</p></div>
+    </div>`;
 }
 
 function resetForm() {
   if(!confirm('초기화하시겠습니까?')) return;
-  routes = [];
-  routeId = 0;
-  document.getElementById('routesList').innerHTML = '';
-  document.getElementById('clientCompany').value='';
-  document.getElementById('clientName').value='';
-  document.getElementById('clientPhone').value='';
-  document.getElementById('clientEmail').value='';
-  document.getElementById('memo').value='';
-  init();
+  routes=[]; routeId=0;
+  document.getElementById('routesList').innerHTML='';
+  ['clientCompany','clientName','clientPhone','clientEmail','memo'].forEach(id=>document.getElementById(id).value='');
+  clearImg(); init();
 }
 
+function init() {
+  const now = new Date();
+  const ymd = now.toISOString().slice(0,10);
+  document.getElementById('invDate').value = ymd;
+  document.getElementById('invNo').value = `DPL-RAIL-${ymd.replace(/-/g,'')}-${String(Math.floor(Math.random()*90)+10)}`;
+  document.querySelectorAll('input,select,textarea').forEach(el=>{
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  });
+  // 클립보드 붙여넣기
+  document.addEventListener('paste', e=>{
+    const items = e.clipboardData?.items;
+    if(!items) return;
+    for(const item of items) if(item.type.startsWith('image/')){readImgFile(item.getAsFile());break;}
+  });
+  // 드래그 앤 드롭
+  const dz = document.getElementById('dropzone');
+  dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])readImgFile(e.dataTransfer.files[0]);});
+  addRoute();
+  render();
+}
 init();
 </script>
 </body>
