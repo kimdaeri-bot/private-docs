@@ -215,7 +215,7 @@ textarea{resize:vertical;min-height:60px}
 
   <!-- 4-2. 수수료 -->
   <div class="form-section">
-    <h2>💳 수수료 (선택)</h2>
+    <h2>💳 수수료</h2>
     <div id="feeList" class="routes-list"></div>
     <button class="add-btn" onclick="addFee()">+ 수수료 항목 추가</button>
   </div>
@@ -698,6 +698,7 @@ function init() {
   dz.addEventListener('drop', e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])readImgFile(e.dataTransfer.files[0]);});
   refreshAgencySelect();
   addRoute();
+  addFee();
   render();
 }
 init();
