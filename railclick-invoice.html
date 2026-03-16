@@ -213,6 +213,13 @@ textarea{resize:vertical;min-height:60px}
     <button class="add-btn" onclick="addRoute()">+ 노선 추가</button>
   </div>
 
+  <!-- 4-2. 수수료 -->
+  <div class="form-section">
+    <h2>💳 수수료 (선택)</h2>
+    <div id="feeList" class="routes-list"></div>
+    <button class="add-btn" onclick="addFee()">+ 수수료 항목 추가</button>
+  </div>
+
   <!-- 5. 환율 -->
   <div class="form-section">
     <h2>💱 환율</h2>
@@ -232,13 +239,6 @@ textarea{resize:vertical;min-height:60px}
       </div>
     </div>
     <div class="calc-box" id="calcBox"></div>
-  </div>
-
-  <!-- 5-2. 수수료 -->
-  <div class="form-section">
-    <h2>💳 수수료 (선택)</h2>
-    <div id="feeList" class="routes-list"></div>
-    <button class="add-btn" onclick="addFee()">+ 수수료 항목 추가</button>
   </div>
 
   <!-- 6. 환불 규정 -->
@@ -517,8 +517,6 @@ function addRoute(doRender=true) {
       <div class="form-row"><label>소계</label>
         <input id="r${id}_sub" readonly></div>
     </div>
-    <div class="form-row"><label>비고</label>
-      <input id="r${id}_note" placeholder="발권 수수료, 비고 등" oninput="render()"></div>
   `;
   document.getElementById('routesList').appendChild(div);
   if(doRender) render();
@@ -557,12 +555,11 @@ function render() {
     const cls = gv(`r${id}_cls`);
     const pax = parseInt(gv(`r${id}_pax`))||0;
     const price = parseFloat(gv(`r${id}_price`))||0;
-    const note = gv(`r${id}_note`);
     const sub = pax * price;
     const subEl = document.getElementById(`r${id}_sub`);
     if(subEl) subEl.value = fmt(sub);
     totalFX += sub;
-    return {trainNum,from,to,date,depTime,arrTime,duration,cls,pax,price,note,sub};
+    return {trainNum,from,to,date,depTime,arrTime,duration,cls,pax,price,sub};
   });
 
   // 수수료 계산
@@ -608,7 +605,6 @@ function render() {
     return `<tr>
       <td><span class="train-num">${r.trainNum||'—'}</span><br><span class="mono">${r.cls||''}</span></td>
       <td><b>${r.from||'—'}</b><span class="station-arrow">→</span><b>${r.to||'—'}</b><br><span class="mono">${dateDisp} &nbsp; ${timeDisp}</span></td>
-      <td>${r.note||''}</td>
       <td class="num">${r.pax}</td>
       <td class="num">${cur} ${fmt(r.price)}</td>
       <td class="num"><b>${cur} ${fmt(r.sub)}</b></td>
@@ -639,13 +635,12 @@ function render() {
     ${imgHtml}
     <table class="inv-table">
       <thead><tr>
-        <th>기차편 / 등급</th><th>노선 · 일정</th><th>비고</th>
+        <th>기차편 / 등급</th><th>노선 · 일정</th>
         <th class="num">인원</th><th class="num">단가</th><th class="num">소계</th>
       </tr></thead>
       ${tableRows||'<tr><td colspan="6" style="text-align:center;color:#aaa;padding:14px">노선을 추가하세요</td></tr>'}
       ${feeData.map(f=>`<tr class="inv-fee-row">
         <td colspan="2"><span style="font-size:7.5pt;color:#888">▶ ${f.name}</span></td>
-        <td></td>
         <td class="num">${f.qty}</td>
         <td class="num">${cur} ${fmt(f.price)}</td>
         <td class="num">${cur} ${fmt(f.sub)}</td>
