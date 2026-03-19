@@ -145,19 +145,12 @@ textarea{resize:vertical;min-height:60px}
 <!-- ─── 좌측 폼 ─── -->
 <div class="form-panel">
 
-  <!-- 1. 스케줄 이미지 (최상단) -->
+  <!-- 1. 스케줄 이미지 (최상단, 최대 4개) -->
   <div class="form-section">
-    <h2>🖼️ 스케줄 / 일정 이미지</h2>
-    <div class="img-dropzone" id="dropzone">
-      <input type="file" id="imgFile" accept="image/*" onchange="handleImgFile(this)">
-      <p>📋 <b>Ctrl+V</b> 붙여넣기<br>또는 클릭해서 파일 선택 / 드래그 앤 드롭</p>
-    </div>
-    <div id="imgThumb" style="display:none" class="img-thumb">
-      <img id="imgPreviewSmall" src="" alt="스케줄 이미지">
-      <button class="img-clear" onclick="clearImg()">✕</button>
-    </div>
-    <button class="parse-btn" id="parseBtn" onclick="parseImage()" disabled>
-      ✨ AI 자동 파싱 — 노선 정보 자동 입력
+    <h2>🖼️ 스케줄 이미지 (최대 4개 — 구간별 각각)</h2>
+    <div id="imgSlots" style="display:flex;flex-direction:column;gap:8px"></div>
+    <button class="parse-btn" id="parseBtn" onclick="parseAllImages()" disabled>
+      ✨ AI 일괄 파싱 — 전체 노선 자동 입력
     </button>
     <div class="parse-status" id="parseStatus"></div>
   </div>
@@ -387,90 +380,120 @@ const BANK = {
 const RAILCLICK = { name:'레일클릭', phone:'02-3788-9175', email1:'yoonsim.choi@apg-ga.co.kr', email2:'june.jeong@apg-ga.co.kr' };
 const PARSE_API = 'https://enttix-omega.vercel.app/api/parse-schedule';
 
-let routes = [], routeId = 0, scheduleImgDataUrl = null, scheduleImgMime = 'image/png';
+let routes = [], routeId = 0;
+// 이미지 슬롯 (최대 4개) — {dataUrl, mime}
+const MAX_IMG_SLOTS = 4;
+let imgSlots = [null, null, null, null]; // 각 슬롯 null or {dataUrl, mime}
 
-// ─── 이미지 처리 ──────────────────────────────
-function handleImgFile(input) { if(input.files[0]) readImgFile(input.files[0]); }
-function readImgFile(file) {
+// ─── 이미지 슬롯 UI 생성 ──────────────────────
+function buildImgSlots() {
+  const container = document.getElementById('imgSlots');
+  container.innerHTML = '';
+  for (let i = 0; i < MAX_IMG_SLOTS; i++) {
+    const slot = imgSlots[i];
+    const div = document.createElement('div');
+    div.id = `imgSlot-${i}`;
+    div.style.cssText = 'position:relative';
+    if (slot) {
+      div.innerHTML = `
+        <div style="position:relative;border:1px solid #243040;border-radius:6px;overflow:hidden;background:#0d1828">
+          <img src="${slot.dataUrl}" style="max-width:100%;max-height:90px;object-fit:contain;display:block;width:100%">
+          <div style="position:absolute;top:4px;left:6px;background:#0a3a6a;color:#4da6ff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">구간 ${i+1}</div>
+          <button onclick="clearSlot(${i})" style="position:absolute;top:4px;right:4px;background:#cc3300;color:#fff;border:none;border-radius:4px;font-size:10px;padding:2px 7px;cursor:pointer;font-weight:700">✕</button>
+        </div>`;
+    } else {
+      div.innerHTML = `
+        <div class="img-dropzone" id="dz-${i}" style="min-height:54px;padding:10px">
+          <input type="file" accept="image/*" onchange="handleSlotFile(${i},this)">
+          <p style="font-size:10.5px">구간 ${i+1} — 📋 Ctrl+V · 클릭 · 드래그</p>
+        </div>`;
+      // 드래그 앤 드롭
+      setTimeout(()=>{
+        const dz = document.getElementById(`dz-${i}`);
+        if(!dz) return;
+        dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('drag-over');});
+        dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
+        dz.addEventListener('drop', e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])readSlotFile(i,e.dataTransfer.files[0]);});
+      }, 0);
+    }
+    container.appendChild(div);
+  }
+  // 하나라도 있으면 파싱 버튼 활성화
+  document.getElementById('parseBtn').disabled = !imgSlots.some(s=>s!==null);
+}
+function handleSlotFile(i, input) { if(input.files[0]) readSlotFile(i, input.files[0]); }
+function readSlotFile(i, file) {
   if(!file.type.startsWith('image/')) return;
-  scheduleImgMime = file.type;
   const reader = new FileReader();
-  reader.onload = e => setImg(e.target.result);
+  reader.onload = e => { imgSlots[i] = {dataUrl: e.target.result, mime: file.type}; buildImgSlots(); render(); };
   reader.readAsDataURL(file);
 }
-function setImg(dataUrl) {
-  scheduleImgDataUrl = dataUrl;
-  document.getElementById('imgPreviewSmall').src = dataUrl;
-  document.getElementById('imgThumb').style.display = 'block';
-  document.getElementById('parseBtn').disabled = false;
-  setParseStatus('');
-  render();
-}
-function clearImg() {
-  scheduleImgDataUrl = null;
-  document.getElementById('imgThumb').style.display = 'none';
-  document.getElementById('imgFile').value = '';
-  document.getElementById('parseBtn').disabled = true;
-  setParseStatus('');
-  render();
+function clearSlot(i) {
+  imgSlots[i] = null; buildImgSlots(); render();
 }
 function setParseStatus(msg, cls='') {
   const el = document.getElementById('parseStatus');
   el.textContent = msg; el.className = 'parse-status ' + cls;
 }
 
-// ─── AI 파싱 ──────────────────────────────────
-async function parseImage() {
-  if(!scheduleImgDataUrl) return;
-  const btn = document.getElementById('parseBtn');
-  btn.disabled = true;
-  setParseStatus('✨ AI 분석 중...', 'loading');
-  try {
-    const base64 = scheduleImgDataUrl.split(',')[1];
-    const res = await fetch(PARSE_API, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ imageBase64: base64, mediaType: scheduleImgMime }),
-    });
-    const data = await res.json();
-    if(!res.ok || data.error) throw new Error(data.error||'파싱 실패');
-    applyParsed(data);
-    setParseStatus(`✅ ${(data.routes||[]).length}개 노선 자동 입력 완료`, 'success');
-  } catch(e) {
-    setParseStatus('❌ 파싱 실패: ' + e.message, 'error');
-  } finally { btn.disabled = false; }
+// paste: 비어있는 첫 슬롯에 자동 삽입
+function pasteToNextSlot(file) {
+  const idx = imgSlots.findIndex(s=>s===null);
+  if(idx<0) { alert('이미지 슬롯이 가득 찼습니다 (최대 4개). 기존 이미지를 삭제 후 다시 붙여넣으세요.'); return; }
+  readSlotFile(idx, file);
 }
 
-function applyParsed(data) {
+// ─── AI 일괄 파싱 ────────────────────────────
+async function parseAllImages() {
+  const filled = imgSlots.map((s,i)=>({s,i})).filter(({s})=>s!==null);
+  if(!filled.length) return;
+  const btn = document.getElementById('parseBtn');
+  btn.disabled = true;
   // 기존 노선 초기화
   routes = []; routeId = 0;
   document.getElementById('routesList').innerHTML = '';
-  // 통화
-  if(data.currency) {
-    const sel = document.getElementById('currency');
-    [...sel.options].forEach(o=>{ if(o.value===data.currency) sel.value=data.currency; });
+  let totalRoutes = 0, errors = 0;
+  for (let k = 0; k < filled.length; k++) {
+    const {s, i} = filled[k];
+    setParseStatus(`✨ 구간 ${i+1} 분석 중... (${k+1}/${filled.length})`, 'loading');
+    try {
+      const base64 = s.dataUrl.split(',')[1];
+      const res = await fetch(PARSE_API, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ imageBase64: base64, mediaType: s.mime }),
+      });
+      const data = await res.json();
+      if(!res.ok || data.error) throw new Error(data.error||'파싱 실패');
+      // 통화/환율은 첫 번째 이미지에서만 적용
+      if(k === 0) {
+        if(data.currency){
+          const sel=document.getElementById('currency');
+          [...sel.options].forEach(o=>{if(o.value===data.currency)sel.value=data.currency;});
+        }
+        if(data.exchangeRate && data.exchangeRate > 0)
+          document.getElementById('exchangeRate').value = data.exchangeRate;
+      }
+      (data.routes||[]).forEach(r => {
+        const id = addRoute(false);
+        setRouteVal(id,'trainNum',r.trainNumber||'');
+        const fromFull=[r.fromCity,r.fromStation].filter(Boolean).join(' — ')||r.fromStation||r.fromCity||'';
+        const toFull=[r.toCity,r.toStation].filter(Boolean).join(' — ')||r.toStation||r.toCity||'';
+        setRouteVal(id,'from',fromFull); setRouteVal(id,'to',toFull);
+        setRouteVal(id,'date',r.date||''); setRouteVal(id,'depTime',r.departureTime||'');
+        setRouteVal(id,'arrTime',r.arrivalTime||''); setRouteVal(id,'duration',r.duration||'');
+        setRouteVal(id,'cls',r.class||'Standard'); setRouteVal(id,'pax',r.pax||1);
+        setRouteVal(id,'price',r.pricePerPax||0); setRouteVal(id,'note',r.note||'');
+        totalRoutes++;
+      });
+    } catch(e) { errors++; console.warn(`슬롯 ${i+1} 파싱 오류:`, e.message); }
   }
-  if(data.exchangeRate && data.exchangeRate > 0) document.getElementById('exchangeRate').value = data.exchangeRate;
-  // 노선 추가
-  (data.routes||[]).forEach(r => {
-    const id = addRoute(false);
-    setRouteVal(id, 'trainNum', r.trainNumber||'');
-    // 역명: 도시 + 역 조합
-    const fromFull = [r.fromCity, r.fromStation].filter(Boolean).join(' — ') || r.fromStation || r.fromCity || '';
-    const toFull = [r.toCity, r.toStation].filter(Boolean).join(' — ') || r.toStation || r.toCity || '';
-    setRouteVal(id, 'from', fromFull);
-    setRouteVal(id, 'to', toFull);
-    setRouteVal(id, 'date', r.date||'');
-    setRouteVal(id, 'depTime', r.departureTime||'');
-    setRouteVal(id, 'arrTime', r.arrivalTime||'');
-    setRouteVal(id, 'duration', r.duration||'');
-    setRouteVal(id, 'cls', r.class||'Standard');
-    setRouteVal(id, 'pax', r.pax||1);
-    setRouteVal(id, 'price', r.pricePerPax||0);
-    setRouteVal(id, 'note', r.note||'');
-  });
   render();
+  if(errors>0) setParseStatus(`⚠️ ${totalRoutes}개 입력 완료 (${errors}개 실패)`, 'error');
+  else setParseStatus(`✅ ${totalRoutes}개 노선 자동 입력 완료`, 'success');
+  btn.disabled = false;
 }
+
+
 function setRouteVal(id, field, val) {
   const el = document.getElementById(`r${id}_${field}`);
   if(el) el.value = val;
@@ -617,7 +640,8 @@ function render() {
   const policyHtml = inclPolicy ? `<div class="policy-box"><h3>📋 환불 · 변경 규정</h3>${gv('policyText').split('\n').map(l=>l.trim()?`<p>${l}</p>`:'').join('')}</div>` : '';
   const memo = gv('memo');
   const memoHtml = memo ? `<div class="memo-box"><h3>📝 메모</h3>${memo.split('\n').map(l=>`<p>${l}</p>`).join('')}</div>` : '';
-  const imgHtml = scheduleImgDataUrl ? `<div class="inv-schedule-img"><img src="${scheduleImgDataUrl}" alt="스케줄"></div>` : '';
+  const filledImgs = imgSlots.filter(s=>s!==null);
+  const imgHtml = filledImgs.length ? `<div class="inv-schedule-img" style="display:flex;flex-wrap:wrap;gap:6px">${filledImgs.map((s,i)=>`<img src="${s.dataUrl}" alt="구간${i+1}" style="max-height:140px;max-width:48%;object-fit:contain;border-radius:4px;border:1px solid #e8ecf0">`).join('')}</div>` : '';
 
   document.getElementById('invoicePaper').innerHTML = `
     <div class="inv-header">
@@ -676,7 +700,9 @@ function resetForm() {
   document.getElementById('routesList').innerHTML='';
   document.getElementById('feeList').innerHTML='';
   ['clientCompany','clientName','clientPhone','clientEmail','memo'].forEach(id=>document.getElementById(id).value='');
-  clearImg(); init();
+  imgSlots = [null,null,null,null];
+  setParseStatus('');
+  init();
 }
 
 function init() {
@@ -688,17 +714,13 @@ function init() {
     el.addEventListener('input', render);
     el.addEventListener('change', render);
   });
-  // 클립보드 붙여넣기
+  // 클립보드 붙여넣기 → 빈 슬롯에 순서대로 자동 삽입
   document.addEventListener('paste', e=>{
     const items = e.clipboardData?.items;
     if(!items) return;
-    for(const item of items) if(item.type.startsWith('image/')){readImgFile(item.getAsFile());break;}
+    for(const item of items) if(item.type.startsWith('image/')){pasteToNextSlot(item.getAsFile());break;}
   });
-  // 드래그 앤 드롭
-  const dz = document.getElementById('dropzone');
-  dz.addEventListener('dragover', e=>{e.preventDefault();dz.classList.add('drag-over');});
-  dz.addEventListener('dragleave', ()=>dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])readImgFile(e.dataTransfer.files[0]);});
+  buildImgSlots();
   refreshAgencySelect();
   addRoute();
   addFee();
