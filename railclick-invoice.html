@@ -675,17 +675,19 @@ function render() {
       </tbody>
     </table>
     ${policyHtml}${memoHtml}
-    <div class="inv-total"><div class="total-box">
-      <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmt(rate,2)}</span></div>
-      ${totalFee>0?`<div class="total-row sub"><span>티켓</span><span class="amt">${cur} ${fmt(totalFX)}</span></div><div class="total-row sub"><span>수수료</span><span class="amt">${cur} ${fmt(totalFee)}</span></div>`:''}
-      <div class="total-row big"><span>${cur}</span><span class="amt">${cur} ${fmt(grandTotal)}</span></div>
-      <div class="total-row big"><span>KRW</span><span class="amt">₩${fmtKrw(grandTotal*rate)}</span></div>
-    </div></div>
-    <div class="inv-bank">
-      <div class="bank-box"><h3>🏦 ${cur} 송금 계좌</h3>
-        <p>은행: <b>${BANK.fx.bank}</b><br>계좌번호: <b>${BANK.fx.no}</b><br>예금주: ${BANK.fx.holder}</p></div>
-      <div class="bank-box"><h3>🏦 원화(KRW) 송금 계좌</h3>
-        <p>은행: <b>${BANK.krw.bank}</b><br>계좌번호: <b>${BANK.krw.no}</b><br>예금주: ${BANK.krw.holder}</p></div>
+    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+      <div class="inv-bank" style="flex:1;margin-bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="bank-box"><h3>🏦 ${cur} 송금 계좌</h3>
+          <p>은행: <b>${BANK.fx.bank}</b><br>계좌번호: <b>${BANK.fx.no}</b><br>예금주: ${BANK.fx.holder}</p></div>
+        <div class="bank-box"><h3>🏦 원화(KRW) 송금 계좌</h3>
+          <p>은행: <b>${BANK.krw.bank}</b><br>계좌번호: <b>${BANK.krw.no}</b><br>예금주: ${BANK.krw.holder}</p></div>
+      </div>
+      <div class="total-box" style="flex-shrink:0;min-width:190px">
+        <div class="total-row sub"><span>환율</span><span class="amt">1 ${cur} = ₩${fmt(rate,2)}</span></div>
+        ${totalFee>0?`<div class="total-row sub"><span>티켓</span><span class="amt">${cur} ${fmt(totalFX)}</span></div><div class="total-row sub"><span>수수료</span><span class="amt">${cur} ${fmt(totalFee)}</span></div>`:''}
+        <div class="total-row big"><span>${cur}</span><span class="amt">${cur} ${fmt(grandTotal)}</span></div>
+        <div class="total-row big"><span>KRW</span><span class="amt">₩${fmtKrw(grandTotal*rate)}</span></div>
+      </div>
     </div>
     <div class="inv-footer">
       <div class="company-info"><p><b>${COMPANY.name}</b> | ${COMPANY.regNo}</p><p>${COMPANY.address}</p></div>
