@@ -29,9 +29,61 @@
     .open-btn{display:inline-flex;align-items:center;gap:6px;background:#7c5cbf;color:#fff;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:background .2s}
     .open-btn:hover{background:#6a4aad}
     .empty{color:#3a5060;font-size:14px;padding:20px 0}
+
+    /* ── 잠금 화면 ── */
+    #lockScreen{
+      position:fixed;inset:0;z-index:9999;
+      background:#0a1020;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .lock-box{
+      background:#111827;border:1px solid #1e3050;border-radius:16px;
+      padding:48px 44px;width:100%;max-width:380px;text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.5);
+    }
+    .lock-box .lock-icon{font-size:48px;margin-bottom:16px}
+    .lock-box h2{font-size:20px;font-weight:900;color:#e8f0fe;margin-bottom:6px}
+    .lock-box p{font-size:13px;color:#5a80a0;margin-bottom:28px}
+    .lock-box input{
+      width:100%;padding:14px 16px;
+      background:#0f1e30;border:1.5px solid #1e3050;border-radius:10px;
+      color:#e0e6f0;font-size:15px;letter-spacing:3px;text-align:center;
+      outline:none;transition:border-color .2s;
+      font-family:monospace;
+    }
+    .lock-box input:focus{border-color:#7c5cbf}
+    .lock-box input::placeholder{letter-spacing:0;font-size:13px;color:#3a5060}
+    .lock-btn{
+      width:100%;margin-top:14px;padding:14px;
+      background:#7c5cbf;color:#fff;border:none;border-radius:10px;
+      font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;
+    }
+    .lock-btn:hover{background:#6a4aad}
+    .lock-error{
+      margin-top:12px;font-size:12.5px;color:#ef4444;
+      min-height:18px;
+    }
+    .lock-hint{margin-top:16px;font-size:11.5px;color:#2a4060}
   </style>
 </head>
 <body>
+
+<!-- 잠금 화면 -->
+<div id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <h2>사장님 문서함</h2>
+    <p>접근하려면 비밀번호를 입력하세요</p>
+    <input type="password" id="pwInput" placeholder="비밀번호 입력" maxlength="30"
+      onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="lock-btn" onclick="checkPw()">잠금 해제</button>
+    <div class="lock-error" id="lockError"></div>
+    <div class="lock-hint">🔒 비밀번호를 모르시면 관리자에게 문의하세요</div>
+  </div>
+</div>
+
+<!-- 문서함 본문 (잠금 해제 전까지 숨김) -->
+<div id="mainContent" style="display:none">
 <header>
   <div class="lock-badge">🔒 PRIVATE — 검색엔진 차단</div>
   <h1>📁 사장님 문서함</h1>
@@ -96,10 +148,13 @@
     <a class="card" href="explora-partnership-proposal-ko-v1.html">
       <div class="card-body">
         <span class="card-category cat-planning">파트너십 제안서</span>
-        <div class="card-title">익스플로라 저니 공식 파트너십 제안서 (한국어) v1.0</div>
+        <h3>익스플로라 저니<br>공식 파트너십 제안서 (한국어)</h3>
+        <div class="card-meta">📅 2026-03-12 · v1.0 · KO</div>
         <div class="card-desc">파트너 등록 이유 / 판매 전략 / 판매 플랫폼 / 마케팅 전략 — 한국어 버전</div>
+        <span class="open-btn">열기 →</span>
       </div>
     </a>
+
     <a class="card" href="explora-partnership-proposal-v1.html">
       <div class="card-body">
         <span class="card-category cat-planning">파트너십 제안서</span>
@@ -118,5 +173,40 @@
   </div>
 
 </div>
+</div><!-- /mainContent -->
+
+<script>
+  // 비밀번호 해시 (SHA-256)
+  const PW_HASH = '9b71a7796696103da20359aef4ee8b8035e7e8784aae7bde83d5fb2f2eca4d51';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // 세션 유지 (탭 닫을 때까지)
+  if (sessionStorage.getItem('doc_unlocked') === '1') {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  }
+
+  async function checkPw() {
+    const input = document.getElementById('pwInput').value;
+    const errEl = document.getElementById('lockError');
+    if (!input) { errEl.textContent = '비밀번호를 입력하세요'; return; }
+
+    const hash = await sha256(input);
+    if (hash === PW_HASH) {
+      sessionStorage.setItem('doc_unlocked', '1');
+      document.getElementById('lockScreen').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+    } else {
+      errEl.textContent = '❌ 비밀번호가 올바르지 않습니다';
+      document.getElementById('pwInput').value = '';
+      document.getElementById('pwInput').focus();
+      setTimeout(() => { errEl.textContent = ''; }, 3000);
+    }
+  }
+</script>
 </body>
 </html>
