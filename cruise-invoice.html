@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<title>크루즈 인보이스 — 아남항공</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#0f1623;color:#e0e6f0;min-height:100vh}
+
+/* ── 공통 ── */
+header{background:linear-gradient(135deg,#0a2540,#1a1a2e);padding:20px 36px 16px;border-bottom:2px solid #2a2a4a;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;font-weight:900;color:#fff}
+header p{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.badge{background:#1a3a6a;color:#4da6ff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;letter-spacing:.5px}
+
+/* ── FORM MODE ── */
+#formMode{display:grid;grid-template-columns:420px 1fr;min-height:calc(100vh - 66px)}
+@media(max-width:1000px){#formMode{grid-template-columns:1fr}}
+.form-panel{background:#131e2e;padding:22px 18px;overflow-y:auto;border-right:1px solid #1e2e40}
+.form-panel h2{font-size:11px;font-weight:700;color:#6a8aaa;letter-spacing:1px;text-transform:uppercase;margin:0 0 10px;padding-bottom:7px;border-bottom:1px solid #1e2e40}
+.form-section{margin-bottom:20px}
+.form-row{margin-bottom:9px}
+label{display:block;font-size:11px;color:#7a9ab8;margin-bottom:3px;font-weight:600}
+input,select,textarea{width:100%;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:12.5px;padding:7px 9px;outline:none;transition:border-color .2s;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#4da6ff}
+textarea{resize:vertical;min-height:56px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+
+/* 항목 리스트 */
+.items-list{display:flex;flex-direction:column;gap:8px}
+.item-row{background:#0d1828;border:1px solid #1e2e40;border-radius:7px;padding:10px 10px 8px}
+.item-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.item-row-head span{font-size:11px;font-weight:700;color:#4da6ff}
+.remove-btn{background:#3a1020;color:#f87171;border:none;font-size:11px;padding:2px 8px;border-radius:4px;cursor:pointer}
+.add-item-btn{width:100%;background:#0d2347;color:#4da6ff;border:1px solid #1e3a6a;font-size:12px;font-weight:700;padding:8px;border-radius:6px;cursor:pointer;margin-top:6px;transition:background .2s}
+.add-item-btn:hover{background:#1a3a6a}
+
+/* 합계 */
+.calc-box{background:#0d2347;border:1px solid #1e3a6a;border-radius:8px;padding:10px 12px;margin:8px 0}
+.calc-row{display:flex;justify-content:space-between;font-size:11.5px;color:#7a9ab8;margin-bottom:4px}
+.calc-row.total{color:#fff;font-weight:900;font-size:16px;border-top:1px solid #2a4a7a;padding-top:8px;margin-top:4px}
+.calc-row.total .v{color:#4da6ff;font-size:18px;font-weight:900}
+
+/* 버튼들 */
+.link-btn{width:100%;background:linear-gradient(135deg,#7c5cbf,#4da6ff);color:#fff;border:none;font-size:14px;font-weight:800;padding:13px;border-radius:8px;cursor:pointer;margin-top:4px;transition:opacity .2s}
+.link-btn:hover{opacity:.9}
+.reset-btn{width:100%;background:#1e2e40;color:#7a9ab8;border:none;font-size:12px;padding:7px;border-radius:6px;cursor:pointer;margin-top:6px}
+
+/* 링크 결과 */
+.link-result{background:#0d2a10;border:1.5px solid #2a5a30;border-radius:8px;padding:12px;margin-top:10px;display:none}
+.link-result p{font-size:11px;color:#4ade80;font-weight:700;margin-bottom:6px}
+.link-result-url{background:#0a1a0d;border:1px solid #1e3a20;border-radius:6px;padding:8px 10px;font-size:10.5px;color:#86efac;word-break:break-all;font-family:monospace;line-height:1.5;margin-bottom:8px;max-height:60px;overflow-y:auto}
+.copy-btn{background:#1a5a2a;color:#4ade80;border:none;font-size:12px;font-weight:700;padding:7px 16px;border-radius:6px;cursor:pointer;width:100%}
+.copy-btn:hover{background:#2a7a3a}
+.copy-btn.copied{background:#2a5a2a;color:#86efac}
+
+/* ── 프리뷰 ── */
+.preview-panel{background:#ddd9d2;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:28px 16px}
+.preview-label{font-size:11px;color:#888;margin-bottom:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+/* ── VIEW MODE ── */
+#viewMode{display:none;background:#ddd9d2;min-height:100vh;padding:28px 16px;flex-direction:column;align-items:center}
+.view-actions{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;justify-content:center}
+.print-btn{background:#1a3a6a;color:#fff;border:none;font-size:13px;font-weight:700;padding:10px 24px;border-radius:8px;cursor:pointer}
+.print-btn:hover{background:#2a4a8a}
+.new-btn{background:#2a1a4a;color:#c084fc;border:none;font-size:13px;font-weight:700;padding:10px 24px;border-radius:8px;cursor:pointer}
+.new-btn:hover{background:#3a2a5a}
+
+/* ── 인보이스 페이퍼 (공통) ── */
+.invoice-paper{background:#fff;width:210mm;min-height:297mm;padding:14mm 16mm 12mm;box-shadow:0 4px 32px rgba(0,0,0,.2);font-family:'Apple SD Gothic Neo','Noto Sans KR','Arial',sans-serif;font-size:8.5pt;color:#1a1a1a;position:relative}
+@media(max-width:900px){.invoice-paper{width:100%;min-height:auto;padding:12px}}
+
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:10px;border-bottom:2.5px solid #1a3a6a;margin-bottom:12px}
+.inv-logo-name{font-size:16pt;font-weight:900;color:#1a3a6a;letter-spacing:-.5px;line-height:1.1}
+.inv-logo-name small{display:block;font-size:7pt;font-weight:400;color:#888;margin-top:2px;letter-spacing:.5px}
+.inv-title-block{text-align:right}
+.inv-title-block h1{font-size:20pt;font-weight:900;color:#1a3a6a;letter-spacing:2px;margin-bottom:3px}
+.inv-title-block p{font-size:7.5pt;color:#666;line-height:1.7}
+
+.inv-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.meta-box{background:#f0f4fa;border-radius:6px;padding:8px 10px}
+.meta-box h3{font-size:7pt;font-weight:700;color:#1a3a6a;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;border-bottom:1px solid #d0d8e8;padding-bottom:4px}
+.meta-row{display:flex;font-size:7.5pt;margin-bottom:2.5px;line-height:1.4}
+.meta-row .lbl{color:#888;width:68px;flex-shrink:0}
+.meta-row .val{color:#1a1a1a;font-weight:600;word-break:break-all}
+
+.cruise-info-box{background:#f0f8ff;border:1px solid #c8dff5;border-radius:6px;padding:9px 11px;margin-bottom:12px}
+.cruise-info-box h3{font-size:7pt;font-weight:700;color:#1a3a6a;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;border-bottom:1px solid #c8dff5;padding-bottom:4px}
+.cruise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 10px}
+.cruise-cell .lbl{font-size:6.5pt;color:#888}
+.cruise-cell .val{font-size:8pt;font-weight:700;color:#1a1a1a}
+
+.items-table{width:100%;border-collapse:collapse;margin-bottom:10px}
+.items-table th{background:#1a3a6a;color:#fff;font-size:7.5pt;padding:6px 8px;text-align:left;font-weight:700}
+.items-table th:last-child,.items-table td:last-child{text-align:right}
+.items-table td{font-size:7.5pt;padding:6px 8px;border-bottom:1px solid #e8eef8;vertical-align:top}
+.items-table tr:nth-child(even) td{background:#f8fafc}
+.items-table .subtotal-row td{font-size:8pt;font-weight:700;color:#1a3a6a;border-top:1.5px solid #c8dff5;border-bottom:none}
+.items-table .total-row td{font-size:10pt;font-weight:900;color:#1a3a6a;background:#f0f4fa;border-top:2px solid #1a3a6a}
+.items-table .total-row td:last-child{color:#cc3300;font-size:12pt}
+
+.inv-footer{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bank-box{background:#f0f4fa;border-radius:6px;padding:9px 11px}
+.bank-box h3{font-size:7pt;font-weight:700;color:#1a3a6a;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px;border-bottom:1px solid #d0d8e8;padding-bottom:4px}
+.bank-row{display:flex;font-size:8pt;margin-bottom:3px}
+.bank-row .lbl{color:#888;width:64px;flex-shrink:0}
+.bank-row .val{color:#1a1a1a;font-weight:700}
+.bank-acct{font-size:11pt;font-weight:900;color:#1a3a6a;letter-spacing:1px;margin-top:4px}
+
+.notes-box{background:#fffaf0;border:1px solid #f0e0b0;border-radius:6px;padding:9px 11px}
+.notes-box h3{font-size:7pt;font-weight:700;color:#8a6a20;letter-spacing:.8px;text-transform:uppercase;margin-bottom:5px}
+.notes-box p{font-size:7pt;color:#555;line-height:1.7;white-space:pre-wrap}
+
+.inv-stamp{position:absolute;bottom:28mm;right:20mm;width:70px;height:70px;border:3px solid rgba(26,58,106,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(26,58,106,.25);font-size:9pt;font-weight:900;letter-spacing:1px;transform:rotate(-20deg);pointer-events:none}
+.inv-bottom{margin-top:10px;text-align:center;font-size:6.5pt;color:#aaa;border-top:1px solid #e8eef8;padding-top:8px}
+
+@media print{
+  body,html{background:#fff}
+  #viewMode{background:#fff;padding:0}
+  .view-actions{display:none}
+  .invoice-paper{box-shadow:none;width:100%;min-height:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🚢 크루즈 인보이스 작성기</h1>
+    <p>아남항공 주식회사 — 견적서 생성 및 링크 공유</p>
+  </div>
+  <span class="badge">아남항공 INTERNAL</span>
+</header>
+
+<!-- ══ FORM MODE ══ -->
+<div id="formMode">
+
+  <!-- 좌: 폼 -->
+  <div class="form-panel">
+
+    <div class="form-section">
+      <h2>📄 기본 정보</h2>
+      <div class="row2">
+        <div class="form-row">
+          <label>인보이스 번호</label>
+          <input type="text" id="invNum" placeholder="자동 생성">
+        </div>
+        <div class="form-row">
+          <label>발행일</label>
+          <input type="date" id="invDate">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="form-row">
+          <label>담당자</label>
+          <input type="text" id="manager" placeholder="홍길동">
+        </div>
+        <div class="form-row">
+          <label>담당자 연락처</label>
+          <input type="text" id="managerTel" placeholder="010-0000-0000">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>👤 고객 정보</h2>
+      <div class="form-row">
+        <label>고객명 / 업체명 *</label>
+        <input type="text" id="custName" placeholder="홍길동 / (주)여행사">
+      </div>
+      <div class="row2">
+        <div class="form-row">
+          <label>연락처</label>
+          <input type="text" id="custTel" placeholder="010-0000-0000">
+        </div>
+        <div class="form-row">
+          <label>이메일</label>
+          <input type="email" id="custEmail" placeholder="name@example.com">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>🚢 크루즈 정보</h2>
+      <div class="row2">
+        <div class="form-row">
+          <label>선사</label>
+          <input type="text" id="cruiseLine" placeholder="MSC, Costa, NCL…">
+        </div>
+        <div class="form-row">
+          <label>선박명</label>
+          <input type="text" id="shipName" placeholder="MSC Seashore">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>항로 / 일정명</label>
+        <input type="text" id="route" placeholder="지중해 7박 8일 (바르셀로나 출발)">
+      </div>
+      <div class="row3">
+        <div class="form-row">
+          <label>출항일</label>
+          <input type="date" id="departDate">
+        </div>
+        <div class="form-row">
+          <label>귀항일</label>
+          <input type="date" id="returnDate">
+        </div>
+        <div class="form-row">
+          <label>객실 유형</label>
+          <input type="text" id="cabinType" placeholder="발코니 / 내부">
+        </div>
+      </div>
+      <div class="row3">
+        <div class="form-row">
+          <label>성인</label>
+          <input type="number" id="adults" value="2" min="0">
+        </div>
+        <div class="form-row">
+          <label>소아</label>
+          <input type="number" id="children" value="0" min="0">
+        </div>
+        <div class="form-row">
+          <label>유아</label>
+          <input type="number" id="infants" value="0" min="0">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>💰 요금 내역</h2>
+      <div class="form-row">
+        <label>통화</label>
+        <select id="currency" onchange="calcTotal();renderPreview()">
+          <option value="USD">USD (달러)</option>
+          <option value="KRW">KRW (원화)</option>
+          <option value="EUR">EUR (유로)</option>
+        </select>
+      </div>
+      <div id="itemsList" class="items-list"></div>
+      <button class="add-item-btn" onclick="addItem()">+ 항목 추가</button>
+      <div class="calc-box" id="calcBox">
+        <div class="calc-row total"><span>합계</span><span class="v" id="totalDisplay">—</span></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>📝 비고</h2>
+      <div class="form-row">
+        <textarea id="notes" rows="3" placeholder="유효기간, 취소 규정, 특이사항 등"></textarea>
+      </div>
+    </div>
+
+    <button class="link-btn" onclick="generateLink()">🔗 링크 생성 &amp; 복사</button>
+    <button class="reset-btn" onclick="resetForm()">↺ 초기화</button>
+
+    <div class="link-result" id="linkResult">
+      <p>✅ 링크가 생성되었습니다! 복사해서 공유하세요.</p>
+      <div class="link-result-url" id="linkUrl"></div>
+      <button class="copy-btn" id="copyBtn" onclick="copyLink()">📋 링크 복사</button>
+    </div>
+
+  </div><!-- /form-panel -->
+
+  <!-- 우: 프리뷰 -->
+  <div class="preview-panel">
+    <div class="preview-label">실시간 미리보기</div>
+    <div id="previewPaper" class="invoice-paper"></div>
+  </div>
+
+</div><!-- /formMode -->
+
+<!-- ══ VIEW MODE ══ -->
+<div id="viewMode">
+  <div class="view-actions">
+    <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="new-btn" onclick="location.href=location.pathname">✏️ 새 인보이스 작성</button>
+  </div>
+  <div id="viewPaper" class="invoice-paper"></div>
+</div>
+
+<script>
+// ── 상수 ──────────────────────────────────────────────
+const COMPANY = {
+  name: '아남항공 주식회사',
+  ceo: '김영성',
+  biz_no: '104-81-84918',
+  addr: '서울특별시 강서구 마곡서로 152 두산 더 랜드타워 5층',
+  tel: '02-2661-6638'
+};
+const ACCOUNTS = {
+  USD: { bank:'하나은행', num:'109-890027-46938', holder:'아남항공 주식회사' },
+  KRW: { bank:'하나은행', num:'109-910025-06504', holder:'아남항공 주식회사' },
+  EUR: { bank:'하나은행', num:'109-890027-46938', holder:'아남항공 주식회사' }
+};
+const DEFAULT_NOTES = `• 본 견적서의 유효기간은 발행일로부터 3일입니다.
+• 입금 후 담당자에게 입금 확인 연락 부탁드립니다.
+• 취소 및 환불 규정은 해당 선사 약관에 따릅니다.
+• 크루즈 요금은 선사 상황에 따라 변동될 수 있습니다.`;
+
+let itemCount = 0;
+
+// ── 초기화 ────────────────────────────────────────────
+function init() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#v=')) {
+    // VIEW MODE
+    try {
+      const encoded = hash.slice(3);
+      const json = decodeURIComponent(escape(atob(encoded)));
+      const data = JSON.parse(json);
+      enterViewMode(data);
+    } catch(e) {
+      alert('링크가 손상되었습니다.');
+      location.href = location.pathname;
+    }
+    return;
+  }
+  // FORM MODE
+  setDefaults();
+  addItem('크루즈 요금', 1, '');
+  renderPreview();
+  // 모든 input 변경 시 프리뷰 갱신
+  document.querySelectorAll('input,select,textarea').forEach(el => {
+    el.addEventListener('input', () => renderPreview());
+    el.addEventListener('change', () => renderPreview());
+  });
+}
+
+function setDefaults() {
+  const today = new Date();
+  const fmt = d => d.toISOString().slice(0,10);
+  document.getElementById('invDate').value = fmt(today);
+  const rnd = String(Math.floor(Math.random()*900)+100);
+  document.getElementById('invNum').value = 'ANNAM-' + fmt(today).replace(/-/g,'') + '-' + rnd;
+  document.getElementById('notes').value = DEFAULT_NOTES;
+}
+
+// ── 항목 관리 ─────────────────────────────────────────
+function addItem(desc='', qty=1, price='') {
+  itemCount++;
+  const id = itemCount;
+  const list = document.getElementById('itemsList');
+  const div = document.createElement('div');
+  div.className = 'item-row';
+  div.id = 'item-' + id;
+  div.innerHTML = `
+    <div class="item-row-head">
+      <span>항목 #${id}</span>
+      <button class="remove-btn" onclick="removeItem(${id})">✕ 삭제</button>
+    </div>
+    <div class="form-row"><label>항목명</label>
+      <input type="text" id="iDesc${id}" value="${desc}" placeholder="크루즈 요금 / 항만세 등" oninput="calcTotal();renderPreview()">
+    </div>
+    <div class="row2">
+      <div class="form-row"><label>수량</label>
+        <input type="number" id="iQty${id}" value="${qty}" min="1" oninput="calcTotal();renderPreview()">
+      </div>
+      <div class="form-row"><label>단가</label>
+        <input type="number" id="iPrice${id}" value="${price}" placeholder="0" oninput="calcTotal();renderPreview()">
+      </div>
+    </div>
+  `;
+  list.appendChild(div);
+  calcTotal();
+}
+
+function removeItem(id) {
+  const el = document.getElementById('item-' + id);
+  if (el) el.remove();
+  calcTotal();
+  renderPreview();
+}
+
+function getItems() {
+  const items = [];
+  document.querySelectorAll('.item-row').forEach(row => {
+    const id = row.id.replace('item-','');
+    const desc = document.getElementById('iDesc'+id)?.value || '';
+    const qty = parseFloat(document.getElementById('iQty'+id)?.value) || 0;
+    const price = parseFloat(document.getElementById('iPrice'+id)?.value) || 0;
+    items.push({desc, qty, price});
+  });
+  return items;
+}
+
+function calcTotal() {
+  const cur = document.getElementById('currency').value;
+  const items = getItems();
+  const total = items.reduce((s,i) => s + i.qty * i.price, 0);
+  const fmt = n => cur === 'KRW' ? n.toLocaleString('ko-KR') + '원' : cur + ' ' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('totalDisplay').textContent = fmt(total);
+}
+
+// ── 폼 데이터 수집 ─────────────────────────────────────
+function collectData() {
+  const v = id => document.getElementById(id)?.value?.trim() || '';
+  const n = id => parseFloat(document.getElementById(id)?.value) || 0;
+  const cur = v('currency') || 'USD';
+  return {
+    invNum: v('invNum'),
+    invDate: v('invDate'),
+    manager: v('manager'),
+    managerTel: v('managerTel'),
+    custName: v('custName'),
+    custTel: v('custTel'),
+    custEmail: v('custEmail'),
+    cruiseLine: v('cruiseLine'),
+    shipName: v('shipName'),
+    route: v('route'),
+    departDate: v('departDate'),
+    returnDate: v('returnDate'),
+    cabinType: v('cabinType'),
+    adults: n('adults'),
+    children: n('children'),
+    infants: n('infants'),
+    currency: cur,
+    items: getItems(),
+    notes: v('notes'),
+    account: ACCOUNTS[cur] || ACCOUNTS['USD']
+  };
+}
+
+// ── 인보이스 HTML 생성 ────────────────────────────────
+function buildInvoiceHTML(d) {
+  const cur = d.currency || 'USD';
+  const acc = d.account || ACCOUNTS[cur] || ACCOUNTS['USD'];
+  const fmtMoney = (n) => {
+    if (!n && n !== 0) return '—';
+    if (cur === 'KRW') return n.toLocaleString('ko-KR') + '원';
+    return cur + ' ' + parseFloat(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  };
+  const fmtDate = s => s ? s.replace(/-/g,'.') : '—';
+  const pax = [
+    d.adults ? `성인 ${d.adults}명` : '',
+    d.children ? `소아 ${d.children}명` : '',
+    d.infants ? `유아 ${d.infants}명` : ''
+  ].filter(Boolean).join(' / ') || '—';
+  const total = (d.items||[]).reduce((s,i) => s + (i.qty||0)*(i.price||0), 0);
+
+  const itemRows = (d.items||[]).map((it, idx) => {
+    const sub = (it.qty||0) * (it.price||0);
+    return `<tr>
+      <td>${idx+1}</td>
+      <td>${it.desc||'—'}</td>
+      <td style="text-align:center">${it.qty||0}</td>
+      <td style="text-align:right">${fmtMoney(it.price)}</td>
+      <td style="text-align:right;font-weight:700">${fmtMoney(sub)}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+    <div class="inv-header">
+      <div class="inv-logo-name">
+        🚢 ${COMPANY.name}
+        <small>ANAM AVIATION CO., LTD.</small>
+      </div>
+      <div class="inv-title-block">
+        <h1>INVOICE</h1>
+        <p>No. ${d.invNum||'—'}<br>
+        발행일: ${fmtDate(d.invDate)}<br>
+        유효기간: 발행일로부터 3일</p>
+      </div>
+    </div>
+
+    <div class="inv-meta">
+      <div class="meta-box">
+        <h3>공급자 정보</h3>
+        <div class="meta-row"><span class="lbl">상호</span><span class="val">${COMPANY.name}</span></div>
+        <div class="meta-row"><span class="lbl">대표</span><span class="val">${COMPANY.ceo}</span></div>
+        <div class="meta-row"><span class="lbl">사업자번호</span><span class="val">${COMPANY.biz_no}</span></div>
+        <div class="meta-row"><span class="lbl">주소</span><span class="val">${COMPANY.addr}</span></div>
+        <div class="meta-row"><span class="lbl">연락처</span><span class="val">${COMPANY.tel}</span></div>
+        ${d.manager ? `<div class="meta-row"><span class="lbl">담당자</span><span class="val">${d.manager}${d.managerTel?' · '+d.managerTel:''}</span></div>` : ''}
+      </div>
+      <div class="meta-box">
+        <h3>청구 대상</h3>
+        <div class="meta-row"><span class="lbl">고객명</span><span class="val">${d.custName||'—'}</span></div>
+        ${d.custTel ? `<div class="meta-row"><span class="lbl">연락처</span><span class="val">${d.custTel}</span></div>` : ''}
+        ${d.custEmail ? `<div class="meta-row"><span class="lbl">이메일</span><span class="val">${d.custEmail}</span></div>` : ''}
+      </div>
+    </div>
+
+    <div class="cruise-info-box">
+      <h3>크루즈 상품 정보</h3>
+      <div class="cruise-grid">
+        <div class="cruise-cell"><div class="lbl">선사</div><div class="val">${d.cruiseLine||'—'}</div></div>
+        <div class="cruise-cell"><div class="lbl">선박명</div><div class="val">${d.shipName||'—'}</div></div>
+        <div class="cruise-cell"><div class="lbl">항로</div><div class="val">${d.route||'—'}</div></div>
+        <div class="cruise-cell"><div class="lbl">출항일</div><div class="val">${fmtDate(d.departDate)}</div></div>
+        <div class="cruise-cell"><div class="lbl">귀항일</div><div class="val">${fmtDate(d.returnDate)}</div></div>
+        <div class="cruise-cell"><div class="lbl">객실유형</div><div class="val">${d.cabinType||'—'}</div></div>
+        <div class="cruise-cell"><div class="lbl">인원 구성</div><div class="val">${pax}</div></div>
+      </div>
+    </div>
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th style="width:28px">#</th>
+          <th>항목</th>
+          <th style="width:44px;text-align:center">수량</th>
+          <th style="width:90px;text-align:right">단가</th>
+          <th style="width:110px;text-align:right">소계</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemRows}
+        <tr class="total-row">
+          <td colspan="4" style="text-align:right;letter-spacing:.5px">합 계</td>
+          <td>${fmtMoney(total)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="inv-footer">
+      <div class="bank-box">
+        <h3>입금 계좌</h3>
+        <div class="bank-row"><span class="lbl">은행</span><span class="val">${acc.bank}</span></div>
+        <div class="bank-row"><span class="lbl">예금주</span><span class="val">${acc.holder}</span></div>
+        <div class="bank-acct">${acc.num}</div>
+      </div>
+      <div class="notes-box">
+        <h3>⚠ 안내 사항</h3>
+        <p>${(d.notes||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+      </div>
+    </div>
+
+    <div class="inv-stamp">ANAM<br>AVIATION</div>
+    <div class="inv-bottom">${COMPANY.name} · ${COMPANY.biz_no} · ${COMPANY.addr}</div>
+  `;
+}
+
+// ── 프리뷰 렌더 ───────────────────────────────────────
+function renderPreview() {
+  const data = collectData();
+  document.getElementById('previewPaper').innerHTML = buildInvoiceHTML(data);
+}
+
+// ── 링크 생성 ─────────────────────────────────────────
+function generateLink() {
+  const data = collectData();
+  if (!data.custName) { alert('고객명을 입력해주세요.'); return; }
+  const json = JSON.stringify(data);
+  const encoded = btoa(unescape(encodeURIComponent(json)));
+  const url = location.origin + location.pathname + '#v=' + encoded;
+  document.getElementById('linkUrl').textContent = url;
+  document.getElementById('linkResult').style.display = 'block';
+  document.getElementById('copyBtn').textContent = '📋 링크 복사';
+  document.getElementById('copyBtn').classList.remove('copied');
+  document.getElementById('linkResult').scrollIntoView({behavior:'smooth'});
+}
+
+function copyLink() {
+  const url = document.getElementById('linkUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ 복사됨!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 링크 복사'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── VIEW MODE ─────────────────────────────────────────
+function enterViewMode(data) {
+  document.getElementById('formMode').style.display = 'none';
+  const vm = document.getElementById('viewMode');
+  vm.style.display = 'flex';
+  document.getElementById('viewPaper').innerHTML = buildInvoiceHTML(data);
+  // 타이틀 업데이트
+  document.title = `인보이스 ${data.invNum||''} — ${data.custName||''} — 아남항공`;
+}
+
+function resetForm() {
+  if (!confirm('작성 중인 내용을 모두 초기화할까요?')) return;
+  location.href = location.pathname;
+}
+
+// ── 시작 ──────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
