@@ -177,7 +177,7 @@
 
 <script>
   // 비밀번호 해시 (SHA-256)
-  const PW_HASH = '9b71a7796696103da20359aef4ee8b8035e7e8784aae7bde83d5fb2f2eca4d51';
+  const PW_HASH = 'a4aad2d6c3a6306c5c20b3bbec62ef46148ae87025b393dae9b6a5b846f4c983';
 
   async function sha256(str) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
