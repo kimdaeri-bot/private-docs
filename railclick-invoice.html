@@ -137,10 +137,22 @@ textarea{resize:vertical;min-height:60px}
 .inv-overwrite-btn{width:100%;background:#2a2a0a;color:#facc15;border:1px solid #5a5a1a;font-size:12px;font-weight:700;padding:9px;border-radius:6px;cursor:pointer;margin-top:4px;transition:background .2s}
 .inv-overwrite-btn:hover{background:#3a3a1a}
 @media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
   body{background:#fff!important}.form-panel,.preview-panel>:not(.invoice-paper){display:none}
   .wrap{grid-template-columns:1fr}.preview-panel{padding:0;background:#fff}
   .invoice-paper{box-shadow:none;width:100%;margin:0;padding:10mm 13mm}
   header{display:none}
+  /* 배경색 강제 출력 */
+  .inv-table thead tr{background:#1a3a6a!important;color:#fff!important}
+  .inv-table tr:nth-child(even){background:#f8f9fb!important}
+  .inv-fee-row{background:#fefdf8!important}
+  .meta-box{background:#f0f4fa!important}
+  .bank-box{background:#f0f4fa!important}
+  .total-box{background:#1a3a6a!important;color:#fff!important}
+  .total-row.sub{color:rgba(255,255,255,.65)!important}
+  .policy-box{background:#fff8f0!important}
+  .memo-box{background:#f0f8ff!important}
+  .train-num{background:#1a3a6a!important;color:#fff!important}
 }
 </style>
 </head>
