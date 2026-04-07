@@ -215,6 +215,16 @@ textarea{resize:vertical;min-height:60px}
     <button class="add-btn" onclick="addFee()">+ 수수료 항목 추가</button>
   </div>
 
+  <!-- 4-3. EUR 송금 계좌 선택 -->
+  <div class="form-section">
+    <h2>🏦 EUR 송금 계좌 선택</h2>
+    <div class="form-row">
+      <label>외화(EUR/USD/GBP/CHF) 수령 계좌</label>
+      <select id="fxBankSelect" onchange="onFxBankChange()">
+      </select>
+    </div>
+  </div>
+
   <!-- 5. 환율 -->
   <div class="form-section">
     <h2>💱 환율</h2>
@@ -373,8 +383,12 @@ const COMPANY = {
   regNo:'604-49-00650', repName:'정경준',
   address:'5F, 152, Magokseo-ro, Gangseo-gu, Seoul, Republic of Korea',
 };
+const BANK_FX_LIST = [
+  { bank:'국민은행', no:'214968-11-011656', holder:'디플랫코리아(정경준)', label:'국민은행 214968-11-011656' },
+  { bank:'KEB 하나은행', no:'557-910028-02938', holder:'디플랫코리아(정경준)', label:'KEB 하나은행 557-910028-02938' },
+];
 const BANK = {
-  fx:  { bank:'국민은행', no:'214968-11-011656', holder:'디플랫코리아(정경준)' },
+  fx:  BANK_FX_LIST[0],
   krw: { bank:'국민은행', no:'214901-04-350408', holder:'디플랫코리아(정경준)' },
 };
 const RAILCLICK = { name:'레일클릭', phone:'02-3788-9175', email1:'yoonsim.choi@apg-ga.co.kr', email2:'june.jeong@apg-ga.co.kr' };
@@ -708,6 +722,17 @@ function resetForm() {
   init();
 }
 
+function initFxBankSelect() {
+  const sel = document.getElementById('fxBankSelect');
+  sel.innerHTML = BANK_FX_LIST.map((b,i)=>`<option value="${i}">${b.label}</option>`).join('');
+  sel.value = '0';
+}
+function onFxBankChange() {
+  const idx = parseInt(document.getElementById('fxBankSelect').value)||0;
+  BANK.fx = BANK_FX_LIST[idx];
+  render();
+}
+
 function init() {
   const now = new Date();
   const ymd = now.toISOString().slice(0,10);
@@ -723,6 +748,7 @@ function init() {
     if(!items) return;
     for(const item of items) if(item.type.startsWith('image/')){pasteToNextSlot(item.getAsFile());break;}
   });
+  initFxBankSelect();
   buildImgSlots();
   refreshAgencySelect();
   addRoute();
