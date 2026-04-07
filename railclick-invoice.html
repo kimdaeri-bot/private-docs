@@ -124,6 +124,18 @@ textarea{resize:vertical;min-height:60px}
 .agency-del-btn{background:#3a1020;color:#f87171;border:none;font-size:12px;padding:0 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
 .agency-save-btn{width:100%;background:#0d3a1a;color:#4ade80;border:1px solid #1a5a2a;font-size:12px;font-weight:700;padding:8px;border-radius:6px;cursor:pointer;margin-top:4px;transition:background .2s}
 .agency-save-btn:hover{background:#1a4a2a}
+/* 인보이스 저장/불러오기 */
+.inv-save-bar{display:flex;gap:6px;margin-bottom:10px}
+.inv-save-bar select{flex:1;background:#0f1a28;border:1px solid #243040;border-radius:6px;color:#e0e6f0;font-size:12px;padding:7px 9px;outline:none}
+.inv-save-bar select:focus{border-color:#4da6ff}
+.inv-save-btn{background:#1a3a6a;color:#4da6ff;border:1px solid #2a5a9a;font-size:12px;font-weight:700;padding:0 12px;border-radius:6px;cursor:pointer;white-space:nowrap;transition:background .2s}
+.inv-save-btn:hover{background:#2a4a8a}
+.inv-load-btn{background:#0d2347;color:#7ec8ff;border:1px solid #1e3a6a;font-size:12px;font-weight:700;padding:0 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.inv-del-btn{background:#3a1020;color:#f87171;border:none;font-size:12px;padding:0 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.inv-saveas-btn{width:100%;background:#0d3a4a;color:#38bdf8;border:1px solid #1a5a7a;font-size:12px;font-weight:700;padding:9px;border-radius:6px;cursor:pointer;margin-top:4px;transition:background .2s}
+.inv-saveas-btn:hover{background:#1a4a6a}
+.inv-overwrite-btn{width:100%;background:#2a2a0a;color:#facc15;border:1px solid #5a5a1a;font-size:12px;font-weight:700;padding:9px;border-radius:6px;cursor:pointer;margin-top:4px;transition:background .2s}
+.inv-overwrite-btn:hover{background:#3a3a1a}
 @media print{
   body{background:#fff!important}.form-panel,.preview-panel>:not(.invoice-paper){display:none}
   .wrap{grid-template-columns:1fr}.preview-panel{padding:0;background:#fff}
@@ -144,6 +156,20 @@ textarea{resize:vertical;min-height:60px}
 <div class="wrap">
 <!-- ─── 좌측 폼 ─── -->
 <div class="form-panel">
+
+  <!-- 0. 인보이스 저장/불러오기 -->
+  <div class="form-section">
+    <h2>💾 저장된 인보이스</h2>
+    <div class="inv-save-bar">
+      <select id="invListSelect">
+        <option value="">── 저장된 인보이스 선택 ──</option>
+      </select>
+      <button class="inv-load-btn" onclick="loadInvoice()">📂 불러오기</button>
+      <button class="inv-del-btn" onclick="deleteInvoice()" title="선택 삭제">🗑</button>
+    </div>
+    <button class="inv-overwrite-btn" onclick="overwriteInvoice()">💾 덮어쓰기 (선택 항목 업데이트)</button>
+    <button class="inv-saveas-btn" onclick="saveInvoiceAs()">📋 새 이름으로 저장</button>
+  </div>
 
   <!-- 1. 스케줄 이미지 (최상단, 최대 4개) -->
   <div class="form-section">
@@ -719,7 +745,169 @@ function resetForm() {
   ['clientCompany','clientName','clientPhone','clientEmail','memo'].forEach(id=>document.getElementById(id).value='');
   imgSlots = [null,null,null,null];
   setParseStatus('');
+  document.getElementById('invListSelect').value = '';
   init();
+}
+
+// ─── 인보이스 저장/불러오기 ────────────────────────
+const INV_STORE_KEY = 'railclick_invoices';
+
+function getInvStore() {
+  try { return JSON.parse(localStorage.getItem(INV_STORE_KEY)||'[]'); } catch { return []; }
+}
+function setInvStore(list) { localStorage.setItem(INV_STORE_KEY, JSON.stringify(list)); }
+
+function refreshInvList() {
+  const sel = document.getElementById('invListSelect');
+  const list = getInvStore();
+  sel.innerHTML = '<option value="">── 저장된 인보이스 선택 ──</option>' +
+    list.map((inv,i)=>`<option value="${i}">${inv.label}</option>`).join('');
+}
+
+function collectInvState() {
+  // 현재 폼 전체 상태를 직렬화
+  const routeData = routes.map(id=>({
+    trainNum: gv(`r${id}_trainNum`), from: gv(`r${id}_from`), to: gv(`r${id}_to`),
+    date: gv(`r${id}_date`), depTime: gv(`r${id}_depTime`), arrTime: gv(`r${id}_arrTime`),
+    duration: gv(`r${id}_duration`), cls: gv(`r${id}_cls`),
+    pax: gv(`r${id}_pax`), price: gv(`r${id}_price`),
+  }));
+  const feeData = fees.map(id=>({
+    name: gv(`f${id}_name`), price: gv(`f${id}_price`), qty: gv(`f${id}_qty`),
+    auto: document.getElementById(`f${id}_auto`)?.checked||false,
+  }));
+  return {
+    invNo: gv('invNo'), invDate: gv('invDate'),
+    clientCompany: gv('clientCompany'), clientName: gv('clientName'),
+    clientPhone: gv('clientPhone'), clientEmail: gv('clientEmail'),
+    currency: gv('currency'), exchangeRate: gv('exchangeRate'),
+    fxBankIdx: document.getElementById('fxBankSelect').value||'0',
+    inclPolicy: document.getElementById('inclPolicy').checked,
+    policyText: gv('policyText'), memo: gv('memo'),
+    routes: routeData, fees: feeData,
+    imgSlots: imgSlots.map(s=>s ? {dataUrl: s.dataUrl, mime: s.mime} : null),
+  };
+}
+
+function applyInvState(state) {
+  // 폼에 상태 복원
+  ['invNo','invDate','clientCompany','clientName','clientPhone','clientEmail',
+   'currency','exchangeRate','policyText','memo'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && state[id]!==undefined) el.value = state[id];
+  });
+  document.getElementById('inclPolicy').checked = !!state.inclPolicy;
+  // 외화 계좌 선택
+  const fxSel = document.getElementById('fxBankSelect');
+  if(fxSel && state.fxBankIdx!==undefined) {
+    fxSel.value = state.fxBankIdx;
+    onFxBankChange();
+  }
+  // 노선 복원
+  routes=[]; routeId=0;
+  document.getElementById('routesList').innerHTML='';
+  (state.routes||[]).forEach(r=>{
+    const id = addRoute(false);
+    Object.entries(r).forEach(([k,v])=>{ const el=document.getElementById(`r${id}_${k}`); if(el) el.value=v; });
+  });
+  // 수수료 복원
+  fees=[]; feeId=0;
+  document.getElementById('feeList').innerHTML='';
+  (state.fees||[]).forEach(f=>{
+    const id2 = addFeeRaw(false);
+    const nameEl=document.getElementById(`f${id2}_name`); if(nameEl) nameEl.value=f.name||'발권 수수료';
+    const priceEl=document.getElementById(`f${id2}_price`); if(priceEl) priceEl.value=f.price||0;
+    const qtyEl=document.getElementById(`f${id2}_qty`); if(qtyEl) qtyEl.value=f.qty||1;
+    const autoEl=document.getElementById(`f${id2}_auto`); if(autoEl) autoEl.checked=!!f.auto;
+  });
+  // 이미지 복원
+  imgSlots = (state.imgSlots||[null,null,null,null]).map(s=>s?{dataUrl:s.dataUrl,mime:s.mime}:null);
+  while(imgSlots.length<4) imgSlots.push(null);
+  buildImgSlots();
+  render();
+}
+
+function addFeeRaw(doRender=true) {
+  // addFee와 동일하지만 return id 포함
+  const id = feeId++;
+  fees.push(id);
+  const div = document.createElement('div');
+  div.className = 'fee-item'; div.id = `fee-${id}`;
+  div.innerHTML = `
+    <div class="fee-item-header">
+      <span>💳 수수료 #${fees.indexOf(id)+1}</span>
+      <button class="remove-btn" onclick="removeFee(${id})">✕ 삭제</button>
+    </div>
+    <div class="row2">
+      <div class="form-row"><label>수수료 명칭</label>
+        <input id="f${id}_name" placeholder="발권 수수료" value="발권 수수료" oninput="render()"></div>
+      <div class="form-row"><label>단가</label>
+        <input type="number" id="f${id}_price" value="5" step="0.01" oninput="render()"></div>
+    </div>
+    <div class="row3">
+      <div class="form-row"><label>수량</label>
+        <input type="number" id="f${id}_qty" value="1" min="1" oninput="render()"></div>
+      <div class="form-row"><label>자동(전체 인원)</label>
+        <label style="display:flex;align-items:center;gap:6px;margin-top:4px">
+          <input type="checkbox" id="f${id}_auto" onchange="render()"> 전체 pax 연동
+        </label></div>
+      <div class="form-row"><label>소계</label>
+        <input id="f${id}_sub" readonly></div>
+    </div>
+  `;
+  document.getElementById('feeList').appendChild(div);
+  if(doRender) render();
+  return id;
+}
+
+function saveInvoiceAs() {
+  const invNo = gv('invNo');
+  const client = gv('clientCompany');
+  const defaultLabel = [invNo, client].filter(Boolean).join(' — ') || '인보이스 ' + new Date().toLocaleDateString('ko-KR');
+  const label = prompt('저장 이름을 입력하세요:', defaultLabel);
+  if(!label) return;
+  const list = getInvStore();
+  list.unshift({ label, savedAt: new Date().toISOString(), state: collectInvState() });
+  setInvStore(list);
+  refreshInvList();
+  document.getElementById('invListSelect').value = '0';
+  alert(`✅ "${label}" 저장 완료!`);
+}
+
+function overwriteInvoice() {
+  const sel = document.getElementById('invListSelect');
+  if(!sel.value && sel.value!=='0') { alert('덮어쓸 인보이스를 목록에서 선택하세요.'); return; }
+  const list = getInvStore();
+  const idx = parseInt(sel.value);
+  const inv = list[idx];
+  if(!inv) { alert('선택된 인보이스가 없습니다.'); return; }
+  if(!confirm(`"${inv.label}" 을 현재 내용으로 덮어쓰시겠습니까?`)) return;
+  list[idx].state = collectInvState();
+  list[idx].savedAt = new Date().toISOString();
+  setInvStore(list);
+  alert(`✅ "${inv.label}" 업데이트 완료!`);
+}
+
+function loadInvoice() {
+  const sel = document.getElementById('invListSelect');
+  if(!sel.value && sel.value!=='0') { alert('불러올 인보이스를 선택하세요.'); return; }
+  const list = getInvStore();
+  const inv = list[parseInt(sel.value)];
+  if(!inv) return;
+  if(!confirm(`"${inv.label}" 을 불러오시겠습니까?\n현재 작업 중인 내용은 사라집니다.`)) return;
+  applyInvState(inv.state);
+}
+
+function deleteInvoice() {
+  const sel = document.getElementById('invListSelect');
+  if(!sel.value && sel.value!=='0') { alert('삭제할 인보이스를 선택하세요.'); return; }
+  const list = getInvStore();
+  const inv = list[parseInt(sel.value)];
+  if(!inv) return;
+  if(!confirm(`"${inv.label}" 을 삭제하시겠습니까?`)) return;
+  list.splice(parseInt(sel.value),1);
+  setInvStore(list);
+  refreshInvList();
 }
 
 function initFxBankSelect() {
@@ -749,6 +937,7 @@ function init() {
     for(const item of items) if(item.type.startsWith('image/')){pasteToNextSlot(item.getAsFile());break;}
   });
   initFxBankSelect();
+  refreshInvList();
   buildImgSlots();
   refreshAgencySelect();
   addRoute();
