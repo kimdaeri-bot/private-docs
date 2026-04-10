@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>APG 팬딩케이스 관리</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#0f1623;color:#e0e6f0;min-height:100vh}
+    header{background:linear-gradient(135deg,#0a2540,#1a1a2e);padding:28px 40px 20px;border-bottom:2px solid #2a2a4a}
+    header h1{font-size:22px;font-weight:900;color:#fff;margin-bottom:4px}
+    header p{font-size:12px;color:rgba(255,255,255,.45)}
+    .container{max-width:1200px;margin:0 auto;padding:32px 24px}
+    .stats{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+    .stat{background:#1a2536;border:1px solid #243040;border-radius:10px;padding:16px 24px;flex:1;min-width:140px;text-align:center}
+    .stat-num{font-size:28px;font-weight:900}
+    .stat-label{font-size:11px;color:#6a8aaa;margin-top:4px;letter-spacing:.5px}
+    .s-wait{color:#f59e0b}.s-progress{color:#3b82f6}.s-done{color:#22c55e}.s-total{color:#e0e6f0}
+    table{width:100%;border-collapse:collapse;background:#1a2536;border-radius:12px;overflow:hidden;border:1px solid #243040}
+    thead{background:#0d2347}
+    th{padding:12px 14px;text-align:left;font-size:12px;font-weight:700;color:#8ab4f8;letter-spacing:.5px;white-space:nowrap}
+    td{padding:10px 14px;font-size:13px;border-top:1px solid #1e2e40;vertical-align:top}
+    tbody tr:hover{background:#1e2e40}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+    .b-wait{background:#422006;color:#fbbf24}
+    .b-progress{background:#172554;color:#60a5fa}
+    .b-done{background:#052e16;color:#4ade80}
+    .td-content{max-width:350px;line-height:1.6;color:#b0c4d8}
+    .td-date{white-space:nowrap;color:#7a9ab8;font-size:12px}
+    .td-airline{font-weight:700;color:#e0e6f0;white-space:nowrap}
+    .td-mail{font-family:'SF Mono',monospace;font-size:12px;color:#a78bfa;white-space:nowrap}
+    .empty-msg{text-align:center;padding:60px 20px;color:#3a5060;font-size:14px}
+    .updated{font-size:11px;color:#3a5060;text-align:right;margin-top:24px}
+  </style>
+</head>
+<body>
+<header>
+  <h1>📋 APG 팬딩케이스 관리</h1>
+  <p>본사 답변 대기 케이스 — 근아차장님 공유</p>
+</header>
+<div class="container">
+  <div class="stats" id="stats"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>메일번호</th>
+        <th>시작날짜</th>
+        <th>항공사</th>
+        <th>내용</th>
+        <th>상태</th>
+        <th>완료날짜</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty-msg" id="empty">등록된 케이스가 없습니다.</div>
+  <div class="updated" id="updated"></div>
+</div>
+<script>
+const cases = [
+];
+
+const tbody = document.getElementById('tbody');
+const empty = document.getElementById('empty');
+const statsEl = document.getElementById('stats');
+const updatedEl = document.getElementById('updated');
+
+if (cases.length === 0) {
+  empty.style.display = 'block';
+  document.querySelector('table').style.display = 'none';
+} else {
+  empty.style.display = 'none';
+  cases.forEach(c => {
+    const tr = document.createElement('tr');
+    const bc = c.status === '대기' ? 'b-wait' : c.status === '진행중' ? 'b-progress' : 'b-done';
+    tr.innerHTML = `
+      <td class="td-mail">${c.mail || '-'}</td>
+      <td class="td-date">${c.start || '-'}</td>
+      <td class="td-airline">${c.airline || '-'}</td>
+      <td class="td-content">${c.content || '-'}</td>
+      <td><span class="badge ${bc}">${c.status || '-'}</span></td>
+      <td class="td-date">${c.done || '-'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const wait = cases.filter(c => c.status === '대기').length;
+  const prog = cases.filter(c => c.status === '진행중').length;
+  const done = cases.filter(c => c.status === '완료').length;
+  statsEl.innerHTML = `
+    <div class="stat"><div class="stat-num s-total">${cases.length}</div><div class="stat-label">전체</div></div>
+    <div class="stat"><div class="stat-num s-wait">${wait}</div><div class="stat-label">대기</div></div>
+    <div class="stat"><div class="stat-num s-progress">${prog}</div><div class="stat-label">진행중</div></div>
+    <div class="stat"><div class="stat-num s-done">${done}</div><div class="stat-label">완료</div></div>
+  `;
+}
+updatedEl.textContent = '마지막 업데이트: 2026-04-10 14:05';
+</script>
+</body>
+</html>
