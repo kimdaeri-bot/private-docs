@@ -22,6 +22,7 @@
     thead{background:#0d2347}
     th{padding:12px 14px;text-align:left;font-size:12px;font-weight:700;color:#8ab4f8;letter-spacing:.5px;white-space:nowrap}
     td{padding:10px 14px;font-size:13px;border-top:1px solid #1e2e40;vertical-align:top}
+    .td-seq{font-weight:900;color:#7c5cbf;font-size:14px;text-align:center;white-space:nowrap}
     tbody tr:hover{background:#1e2e40}
     .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
     .b-wait{background:#422006;color:#fbbf24}
@@ -50,6 +51,7 @@
   <table>
     <thead>
       <tr>
+        <th>번호</th>
         <th>메일번호</th>
         <th>시작날짜</th>
         <th>항공사</th>
@@ -85,6 +87,7 @@ if (cases.length === 0) {
     const tr = document.createElement('tr');
     const bc = c.status === '대기' ? 'b-wait' : c.status === '진행중' ? 'b-progress' : 'b-done';
     tr.innerHTML = `
+      <td class="td-seq">${i + 1}</td>
       <td class="td-mail">${c.mail || '-'}</td>
       <td class="td-date">${c.start || '-'}</td>
       <td class="td-airline">${c.airline || '-'}</td>
