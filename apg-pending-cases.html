@@ -17,7 +17,7 @@
     .stat{background:#1a2536;border:1px solid #243040;border-radius:10px;padding:16px 24px;flex:1;min-width:140px;text-align:center}
     .stat-num{font-size:28px;font-weight:900}
     .stat-label{font-size:11px;color:#6a8aaa;margin-top:4px;letter-spacing:.5px}
-    .s-wait{color:#f59e0b}.s-progress{color:#3b82f6}.s-done{color:#22c55e}.s-total{color:#e0e6f0}
+    .s-wait{color:#f59e0b}.s-done{color:#22c55e}.s-total{color:#e0e6f0}
     table{width:100%;border-collapse:collapse;background:#1a2536;border-radius:12px;overflow:hidden;border:1px solid #243040}
     thead{background:#0d2347}
     th{padding:12px 14px;text-align:left;font-size:12px;font-weight:700;color:#8ab4f8;letter-spacing:.5px;white-space:nowrap}
@@ -26,7 +26,6 @@
     tbody tr:hover{background:#1e2e40}
     .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
     .b-wait{background:#422006;color:#fbbf24}
-    .b-progress{background:#172554;color:#60a5fa}
     .b-done{background:#052e16;color:#4ade80}
     .td-content{max-width:350px;line-height:1.6;color:#b0c4d8}
     .td-date{white-space:nowrap;color:#7a9ab8;font-size:12px}
@@ -85,7 +84,7 @@ if (cases.length === 0) {
   empty.style.display = 'none';
   cases.forEach((c, i) => {
     const tr = document.createElement('tr');
-    const bc = c.status === '대기' ? 'b-wait' : c.status === '진행중' ? 'b-progress' : 'b-done';
+    const bc = c.status === '대기' ? 'b-wait' : 'b-done';
     tr.innerHTML = `
       <td class="td-seq">${i + 1}</td>
       <td class="td-mail">${c.mail || '-'}</td>
@@ -98,12 +97,10 @@ if (cases.length === 0) {
     tbody.appendChild(tr);
   });
   const wait = cases.filter(c => c.status === '대기').length;
-  const prog = cases.filter(c => c.status === '진행중').length;
   const done = cases.filter(c => c.status === '완료').length;
   statsEl.innerHTML = `
     <div class="stat"><div class="stat-num s-total">${cases.length}</div><div class="stat-label">전체</div></div>
     <div class="stat"><div class="stat-num s-wait">${wait}</div><div class="stat-label">대기</div></div>
-    <div class="stat"><div class="stat-num s-progress">${prog}</div><div class="stat-label">진행중</div></div>
     <div class="stat"><div class="stat-num s-done">${done}</div><div class="stat-label">완료</div></div>
   `;
 }
