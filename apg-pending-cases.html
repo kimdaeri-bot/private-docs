@@ -83,7 +83,7 @@ if (cases.length === 0) {
   document.querySelector('table').style.display = 'none';
 } else {
   empty.style.display = 'none';
-  cases.forEach(c => {
+  cases.forEach((c, i) => {
     const tr = document.createElement('tr');
     const bc = c.status === '대기' ? 'b-wait' : c.status === '진행중' ? 'b-progress' : 'b-done';
     tr.innerHTML = `
