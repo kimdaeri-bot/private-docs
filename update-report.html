@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김대리 주간 업데이트 리포트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a1a;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .date {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #252525;
+            border-radius: 12px;
+            border: 1px solid #333;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .emoji {
+            font-size: 1.4rem;
+        }
+
+        .update-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .update-list li {
+            padding: 12px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #c0c0c0;
+            border-bottom: 1px solid #333;
+        }
+
+        .update-list li:last-child {
+            border-bottom: none;
+        }
+
+        .update-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #60a5fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .status-complete {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-in-progress {
+            background-color: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+
+        .status-pending {
+            background-color: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .metric {
+            display: inline-block;
+            margin-right: 20px;
+            padding: 10px 15px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        footer {
+            background-color: #1f1f1f;
+            padding: 20px 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .section {
+                padding: 20px 15px;
+            }
+
+            .section h2 {
+                font-size: 1.4rem;
+            }
+
+            .metric {
+                display: block;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .date {
+                font-size: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.2rem;
+            }
+
+            .update-list li {
+                font-size: 0.95rem;
+                padding-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>김대리 주간 업데이트 리포트</h1>
+            <div class="date">2026년 4월 11일</div>
+        </header>
+
+        <div class="content">
+            <div class="section">
+                <h2><span class="emoji">🚢</span> CruiseLink V2 — 주간 업데이트 내역</h2>
+                <ul class="update-list">
+                    <li>SEO 선박시설 7,989페이지 생성 <span class="status-badge status-complete">완료</span></li>
+                    <li>일정소개 600+페이지 업데이트 <span class="status-badge status-complete">완료</span></li>
+                    <li>NCL/Oceania 프로모션 업데이트 <span class="status-badge status-complete">완료</span></li>
+                    <li>검색 필터 복수선택 기능 개선 <span class="status-badge status-complete">완료</span></li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">🎭</span> Enttix — 진행 상황</h2>
+                <ul class="update-list">
+                    <li>Tixstock API 연동 <span class="status-badge status-in-progress">진행중</span></li>
+                    <li>결제시스템 INNOPAY 설정 완료 <span class="status-badge status-complete">완료</span></li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">📊</span> 시스템 현황</h2>
+                <div style="margin-top: 20px;">
+                    <div class="metric">
+                        <div class="metric-label">API 비용</div>
+                        <div class="metric-value">일평균 $6.87</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Claude CLI 코딩에이전트</div>
+                        <div class="metric-value">3개 세팅 완료</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2><span class="emoji">📋</span> 대기 중인 작업</h2>
+                <ul class="update-list">
+                    <li>하계시즌 배너 교체 <span class="status-badge status-pending">대기</span></li>
+                    <li>Celestyal 취소 안내 <span class="status-badge status-pending">대기</span></li>
+                    <li>Hero of the Seas 카드 추가 <span class="status-badge status-pending">대기</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            아남항공 주식회사 | 김대리 AI 비서 | 자동 생성
+        </footer>
+    </div>
+</body>
+</html>
