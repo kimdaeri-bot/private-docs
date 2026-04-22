@@ -512,11 +512,11 @@
 let editing = false;
 function toggleEdit() {
   editing = !editing;
-  document.querySelectorAll('h1,h2,h3,h4,p,td,th,li,span').forEach(el => {
-    if (el.children.length === 0 || el.tagName === 'LI' || el.tagName === 'TD' || el.tagName === 'TH') {
-      el.contentEditable = editing ? 'true' : 'false';
-    }
+  document.querySelector('.page').querySelectorAll('*').forEach(el => {
+    el.contentEditable = editing ? 'true' : 'false';
   });
+  // 버튼은 편집 안 되게
+  document.querySelectorAll('.edit-btn,.save-btn').forEach(el => el.contentEditable = 'false');
   const btn = document.getElementById('editBtn');
   btn.classList.toggle('active', editing);
   btn.textContent = editing ? '✏️ 편집 중 (클릭시 종료)' : '✏️ 편집 모드';
