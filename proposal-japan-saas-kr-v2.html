@@ -34,7 +34,7 @@
     user-select: text;
   }
 
-  /* ===== SLIDE NAVIGATION ===== */
+  /* ===== SLIDE SYSTEM ===== */
   .slide-container {
     width: 100vw;
     height: 100vh;
@@ -57,273 +57,237 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 16px 16px 68px 16px;
   }
 
+  /* 균일 슬라이드 크기 */
   .slide-inner {
     width: 100%;
-    max-width: 960px;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-width: 920px;
+    height: 100%;
+    max-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
     background: var(--bg-white);
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    position: relative;
+    overflow: hidden;
   }
-  .slide-inner::-webkit-scrollbar { width: 4px; }
-  .slide-inner::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
-  /* Nav controls */
+  .slide-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .slide-body::-webkit-scrollbar { width: 4px; }
+  .slide-body::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+  .content { padding: 40px 52px; }
+
+  /* Nav */
   .nav-bar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     background: rgba(26,26,46,0.95);
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 24px;
-    gap: 16px;
+    padding: 10px 20px;
+    gap: 12px;
     z-index: 100;
   }
   .nav-btn {
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.2);
     color: white;
-    padding: 8px 20px;
+    padding: 7px 16px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-family: inherit;
     transition: all 0.2s;
   }
   .nav-btn:hover { background: rgba(255,255,255,0.2); }
   .nav-btn:disabled { opacity: 0.3; cursor: default; }
-  .slide-counter {
-    color: rgba(255,255,255,0.7);
-    font-size: 13px;
-    min-width: 60px;
-    text-align: center;
-  }
-  .edit-mode-btn {
-    background: rgba(255,107,53,0.2);
-    border-color: rgba(255,107,53,0.4);
-  }
-  .edit-mode-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .save-btn {
-    background: rgba(54,179,126,0.2);
-    border-color: rgba(54,179,126,0.4);
-    display: none;
-  }
+  .slide-counter { color: rgba(255,255,255,0.7); font-size: 12px; min-width: 50px; text-align: center; }
+  .edit-mode-btn { background: rgba(255,107,53,0.2); border-color: rgba(255,107,53,0.4); }
+  .edit-mode-btn.active { background: var(--accent); border-color: var(--accent); }
+  .save-btn { background: rgba(54,179,126,0.2); border-color: rgba(54,179,126,0.4); display: none; }
   .save-btn.show { display: inline-block; }
   .save-btn:hover { background: var(--success); color: white; }
 
-  /* Dot indicators */
   .dots {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 100;
+    position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 6px; z-index: 100;
   }
   .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    cursor: pointer;
-    transition: all 0.3s;
-    border: none;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); cursor: pointer;
+    transition: all 0.3s; border: none;
   }
-  .dot.active {
-    background: var(--primary-light);
-    transform: scale(1.3);
-  }
+  .dot.active { background: var(--primary-light); transform: scale(1.4); }
   .dot:hover { background: rgba(255,255,255,0.5); }
 
   /* ===== CONTENT STYLES ===== */
-  .content { padding: 48px 56px; }
-
   .cover {
-    background: var(--gradient);
-    color: white;
-    padding: 64px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px 16px 0 0;
+    background: var(--gradient); color: white;
+    padding: 48px 52px; text-align: center;
+    position: relative; overflow: hidden;
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
   .cover::before {
-    content: '🚢';
-    position: absolute;
-    font-size: 180px;
-    opacity: 0.07;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    content: '🚢'; position: absolute; font-size: 160px; opacity: 0.07;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
   }
-  .cover-logo { font-size: 32px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+  .cover-logo { font-size: 30px; font-weight: 700; letter-spacing: -1px; margin-bottom: 6px; }
   .cover-logo span { color: #FFD700; }
-  .cover-subtitle { font-size: 13px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-bottom: 40px; }
-  .cover h1 { font-size: 28px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
-  .cover h2 { font-size: 16px; font-weight: 300; opacity: 0.9; margin-bottom: 40px; }
-  .cover-meta { font-size: 12px; opacity: 0.7; font-weight: 300; }
-  .cover-divider { width: 60px; height: 2px; background: rgba(255,255,255,0.5); margin: 28px auto; }
+  .cover-subtitle { font-size: 12px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-bottom: 32px; }
+  .cover h1 { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+  .cover h2 { font-size: 15px; font-weight: 300; opacity: 0.9; margin-bottom: 32px; }
+  .cover-meta { font-size: 11px; opacity: 0.7; font-weight: 300; }
+  .cover-divider { width: 50px; height: 2px; background: rgba(255,255,255,0.5); margin: 24px auto; }
 
-  .section { margin-bottom: 40px; }
+  .section { margin-bottom: 32px; }
   .section-num {
     display: inline-block; background: var(--gradient); color: white;
-    width: 26px; height: 26px; border-radius: 50%; text-align: center;
-    line-height: 26px; font-size: 12px; font-weight: 600; margin-right: 8px; vertical-align: middle;
+    width: 24px; height: 24px; border-radius: 50%; text-align: center;
+    line-height: 24px; font-size: 11px; font-weight: 600; margin-right: 8px; vertical-align: middle;
   }
   .section-title {
-    font-size: 20px; font-weight: 700; color: var(--primary-dark);
-    margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary);
+    font-size: 18px; font-weight: 700; color: var(--primary-dark);
+    margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary);
     display: flex; align-items: center;
   }
-  .text { font-size: 14px; color: var(--text-gray); line-height: 1.8; margin-bottom: 14px; }
+  .text { font-size: 13px; color: var(--text-gray); line-height: 1.8; margin-bottom: 12px; }
 
-  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
-  .card { background: var(--bg-light); border-radius: 12px; padding: 20px; border-left: 4px solid var(--primary); }
-  .card-icon { font-size: 24px; margin-bottom: 10px; }
-  .card h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
-  .card p { font-size: 12px; color: var(--text-gray); line-height: 1.6; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .card { background: var(--bg-light); border-radius: 10px; padding: 16px; border-left: 3px solid var(--primary); }
+  .card-icon { font-size: 22px; margin-bottom: 8px; }
+  .card h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+  .card p { font-size: 11px; color: var(--text-gray); line-height: 1.6; }
   .card-full { grid-column: 1 / -1; }
 
-  .pain-item { background: #FFF5F5; border-radius: 12px; padding: 16px 20px; margin-bottom: 14px; border-left: 4px solid #E74C3C; }
-  .pain-item h4 { color: #C0392B; font-size: 14px; margin-bottom: 4px; }
-  .pain-item p { font-size: 12px; color: var(--text-gray); line-height: 1.7; }
+  .pain-item { background: #FFF5F5; border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; border-left: 3px solid #E74C3C; }
+  .pain-item h4 { color: #C0392B; font-size: 13px; margin-bottom: 4px; }
+  .pain-item p { font-size: 11px; color: var(--text-gray); line-height: 1.7; }
 
-  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
   thead { background: var(--primary); color: white; }
-  th { padding: 10px 14px; text-align: left; font-weight: 500; }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  th { padding: 8px 12px; text-align: left; font-weight: 500; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
   tbody tr:hover { background: var(--bg-light); }
 
-  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
-  .compare-box { border-radius: 12px; padding: 20px; text-align: center; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .compare-box { border-radius: 10px; padding: 16px; text-align: center; }
   .compare-before { background: #FFF5F5; border: 1px solid #FADBD8; }
   .compare-after { background: #E8F8F5; border: 1px solid #A9DFBF; }
-  .compare-label { font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .compare-label { font-size: 11px; font-weight: 600; margin-bottom: 10px; }
   .compare-before .compare-label { color: #C0392B; }
   .compare-after .compare-label { color: #1E8449; }
-  .compare-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .compare-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11px; border-bottom: 1px solid rgba(0,0,0,0.05); }
   .compare-row:last-child { border: none; }
 
-  .arch-box { background: var(--bg-light); border-radius: 12px; padding: 24px; margin: 20px 0; text-align: center; border: 1px solid var(--border); }
-  .arch-layer { border-radius: 8px; padding: 14px; margin: 6px 0; font-size: 12px; }
+  .arch-box { background: var(--bg-light); border-radius: 10px; padding: 20px; margin: 16px 0; text-align: center; border: 1px solid var(--border); }
+  .arch-layer { border-radius: 8px; padding: 12px; margin: 5px 0; font-size: 11px; }
   .arch-frontend { background: #E3F2FD; border: 1px solid #90CAF9; }
   .arch-admin { background: #FFF3E0; border: 1px solid #FFCC80; }
   .arch-backend { background: #E8F5E9; border: 1px solid #A5D6A7; }
-  .arch-tag { font-weight: 600; font-size: 11px; display: inline-block; padding: 2px 8px; border-radius: 12px; margin-bottom: 6px; }
+  .arch-tag { font-weight: 600; font-size: 10px; display: inline-block; padding: 2px 8px; border-radius: 10px; margin-bottom: 4px; }
   .arch-frontend .arch-tag { background: #1565C0; color: white; }
   .arch-admin .arch-tag { background: #E65100; color: white; }
   .arch-backend .arch-tag { background: #2E7D32; color: white; }
 
-  .timeline { position: relative; padding-left: 36px; margin: 20px 0; }
-  .timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: var(--primary); }
-  .timeline-item { position: relative; margin-bottom: 20px; }
-  .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px var(--primary); }
-  .timeline-time { font-size: 11px; color: var(--primary); font-weight: 600; }
-  .timeline-title { font-size: 14px; font-weight: 600; color: var(--text-dark); }
-  .timeline-desc { font-size: 12px; color: var(--text-gray); }
+  .timeline { position: relative; padding-left: 32px; margin: 16px 0; }
+  .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--primary); }
+  .timeline-item { position: relative; margin-bottom: 16px; }
+  .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px var(--primary); }
+  .timeline-time { font-size: 10px; color: var(--primary); font-weight: 600; }
+  .timeline-title { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .timeline-desc { font-size: 11px; color: var(--text-gray); }
 
-  .feature-list { list-style: none; margin: 14px 0; }
-  .feature-list li { padding: 5px 0; font-size: 13px; color: var(--text-gray); }
-  .feature-list li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 8px; }
+  .feature-list { list-style: none; margin: 12px 0; }
+  .feature-list li { padding: 4px 0; font-size: 12px; color: var(--text-gray); }
+  .feature-list li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 6px; }
 
-  .highlight-box { background: linear-gradient(135deg, #0052CC10, #00C6FF10); border: 1px solid var(--primary-light); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center; }
-  .highlight-box h3 { color: var(--primary); font-size: 16px; margin-bottom: 6px; }
-  .highlight-box p { color: var(--text-gray); font-size: 13px; }
+  .highlight-box { background: linear-gradient(135deg, #0052CC10, #00C6FF10); border: 1px solid var(--primary-light); border-radius: 10px; padding: 16px; margin: 16px 0; text-align: center; }
+  .highlight-box h3 { color: var(--primary); font-size: 15px; margin-bottom: 4px; }
+  .highlight-box p { color: var(--text-gray); font-size: 12px; }
 
-  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 20px 0; }
-  .pricing-card { border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); background: var(--bg-white); transition: transform 0.2s; }
-  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .pricing-card { border-radius: 10px; padding: 16px; text-align: center; border: 1px solid var(--border); background: var(--bg-white); transition: transform 0.2s; }
+  .pricing-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
   .pricing-card.featured { border: 2px solid var(--primary); background: linear-gradient(180deg, #F0F7FF 0%, white 100%); position: relative; }
-  .pricing-badge { background: var(--primary); color: white; font-size: 10px; padding: 2px 10px; border-radius: 12px; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); }
-  .pricing-name { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: var(--text-dark); }
-  .pricing-price { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
-  .pricing-period { font-size: 11px; color: var(--text-light); margin-bottom: 12px; }
-  .pricing-setup { font-size: 11px; color: var(--text-gray); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .pricing-badge { background: var(--primary); color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); }
+  .pricing-name { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-dark); }
+  .pricing-price { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+  .pricing-period { font-size: 10px; color: var(--text-light); margin-bottom: 8px; }
+  .pricing-setup { font-size: 10px; color: var(--text-gray); margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
   .pricing-features { list-style: none; text-align: left; }
-  .pricing-features li { font-size: 12px; padding: 3px 0; color: var(--text-gray); }
-  .pricing-features li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 6px; }
+  .pricing-features li { font-size: 11px; padding: 2px 0; color: var(--text-gray); }
+  .pricing-features li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 4px; }
   .pricing-features li.disabled { opacity: 0.4; }
   .pricing-features li.disabled::before { content: '—'; color: #ccc; }
 
-  .footer {
-    background: var(--text-dark);
-    color: white;
-    padding: 32px 56px;
-    text-align: center;
-    border-radius: 0 0 16px 16px;
-  }
-  .footer-logo { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .footer { background: var(--text-dark); color: white; padding: 24px 40px; text-align: center; }
+  .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
   .footer-logo span { color: #FFD700; }
-  .footer-info { font-size: 12px; opacity: 0.6; line-height: 1.8; }
-  .footer-copy { font-size: 10px; opacity: 0.4; margin-top: 16px; }
+  .footer-info { font-size: 11px; opacity: 0.6; line-height: 1.8; }
+  .footer-copy { font-size: 9px; opacity: 0.4; margin-top: 12px; }
 
-  .client-address { font-size: 13px; color: var(--text-gray); margin-bottom: 24px; text-align: center; font-style: italic; }
+  .client-address { font-size: 12px; color: var(--text-gray); margin-bottom: 20px; text-align: center; font-style: italic; }
 
-  /* Editable highlight */
+  /* TOC */
+  .toc { padding: 40px 52px; }
+  .toc-title { font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); }
+  .toc-list { list-style: none; }
+  .toc-list li {
+    display: flex; align-items: center; padding: 10px 0;
+    border-bottom: 1px solid var(--border); font-size: 14px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toc-list li:hover { padding-left: 8px; color: var(--primary); }
+  .toc-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--gradient);
+    color: white; font-size: 11px; font-weight: 600; margin-right: 12px; flex-shrink: 0;
+  }
+  .toc-label { flex: 1; color: var(--text-dark); font-weight: 500; }
+  .toc-page { color: var(--text-light); font-size: 12px; }
+
+  /* Editable */
   [contenteditable="true"]:focus {
-    outline: 2px dashed var(--accent);
-    outline-offset: 2px;
-    border-radius: 4px;
-    background: rgba(255,107,53,0.05);
+    outline: 2px dashed var(--accent); outline-offset: 2px;
+    border-radius: 4px; background: rgba(255,107,53,0.05);
   }
 
-  /* Toast */
   .toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: var(--success);
-    color: white;
-    padding: 10px 24px;
-    border-radius: 8px;
-    font-size: 13px;
-    z-index: 200;
-    transition: transform 0.3s;
-    font-family: inherit;
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--success); color: white;
+    padding: 8px 20px; border-radius: 8px; font-size: 12px;
+    z-index: 200; transition: transform 0.3s; font-family: inherit;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* Keyboard hint */
   .key-hint {
-    position: fixed;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
-    z-index: 100;
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,0.4); font-size: 10px; z-index: 100;
   }
 
   @media (max-width: 700px) {
-    .content { padding: 28px 20px; }
-    .cover { padding: 36px 20px; }
+    .content, .toc { padding: 24px 18px; }
+    .cover { padding: 24px 18px; }
     .cover h1 { font-size: 20px; }
     .card-grid, .compare-grid { grid-template-columns: 1fr; }
     .pricing-grid { grid-template-columns: 1fr; }
     .dots { display: none; }
-    .slide-inner { border-radius: 8px; }
-    .footer { padding: 20px; }
   }
 </style>
 </head>
 <body>
 
-<div class="key-hint">← → 화살표 또는 스와이프로 슬라이드 이동</div>
+<div class="key-hint">← → 화살표 / 스와이프로 이동</div>
 <div class="toast" id="toast">저장되었습니다 ✓</div>
 
 <div class="slide-container">
@@ -343,148 +307,59 @@
       </div>
     </div>
 
-    <!-- SLIDE 2: 당사 소개 -->
+    <!-- SLIDE 2: 목차 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="client-address" data-edit>〇〇旅行社 様<br>いつも大変お世話になっております。</div>
-          <div class="section">
-            <div class="section-title"><span class="section-num">1</span> <span data-edit>당사 소개</span></div>
-            <p class="text" data-edit><strong>Aerolink Co., Ltd.</strong>는 1987년 창립된 항공·여행 B2B 유통 전문 기업입니다. 항공사 GSA(여객·화물) 사업을 기반으로, 9개 글로벌 크루즈 선사 API를 연동하여 직접 크루즈 OTA를 운영하고 있습니다. 직접 비즈니스를 운영하며 축적한 실전 노하우를 바탕으로, 동종 여행사를 위한 웹서비스 구축을 제공합니다.</p>
-            <div class="card-grid">
-              <div class="card">
-                <div class="card-icon">🚢</div>
-                <h4 data-edit>크루즈 OTA 직접 운영</h4>
-                <p data-edit>MSC · RCI · Carnival · Princess · NCL · HAL · Celebrity · Costa · Disney Cruise — 9개 선사 연동 완료, 추가 선사 확장 가능. 21,000개+ 상품 실시간 제공</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">💻</div>
-                <h4 data-edit>크루즈 웹서비스 구축 실적</h4>
-                <p data-edit>직접 운영하는 플랫폼 기술을 바탕으로, 여행사 맞춤형 화이트라벨 서비스 제공</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">🤖</div>
-                <h4 data-edit>자체 기술력</h4>
-                <p data-edit>AI 챗봇, 자동 콘텐츠 생성, 인보이스, 백오피스 등 핵심 기능 모두 자체 개발</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">🌐</div>
-                <h4 data-edit>다국어 서비스 운영 중</h4>
-                <p data-edit><a href="https://www.cruiselink.co.kr/" style="color: var(--primary);">cruiselink.co.kr</a> — 한국어·영어·일본어 서비스 운영 중</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 3: 왜 지금인가 -->
-    <div class="slide">
-      <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">2</span> <span data-edit>왜 지금 웹서비스가 필요한가</span></div>
-            <p class="text" data-edit>일본 크루즈 시장은 연간 300만 명 이상이 탑승하는 아시아 최대 규모입니다. MSC·Royal Caribbean·Princess 등 주요 선사가 일본 발 항로를 지속 확대하고 있으며, 온라인 예약 수요가 급증하면서 <strong>웹서비스를 갖춘 여행사만이 경쟁력을 유지</strong>하는 시대가 되었습니다.</p>
-            <p class="text" data-edit>크루즈 상품을 하나하나 만들어 소개하려면 <strong>엄청난 시간과 비용</strong>이 듭니다. 일정이나 요금 등 정보가 바뀌면 빠르게 대응하기 어렵고, 다양한 선사의 수많은 상품을 <strong>모두 소개하는 것은 사실상 불가능</strong>하여 고객의 선택지가 좁아집니다. CruiseLink는 이 모든 문제를 해결합니다.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 4: 여행사의 과제 -->
-    <div class="slide">
-      <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">3</span> <span data-edit>귀사가 직면한 과제</span></div>
-            <div class="pain-item">
-              <h4 data-edit>❶ 크루즈 웹사이트 구축의 높은 장벽</h4>
-              <p data-edit>크루즈 웹은 일반 여행사이트와 완전히 다른 구조입니다. 선사별 상이한 API·예약 시스템을 통합하려면 <strong>초기 개발비로 막대한 비용이 발생</strong>하며, 개발 완료 후에도 <strong>월 유지보수 비용이 적지 않게 소요</strong>됩니다. 게다가 크루즈 도메인 지식이 있는 개발사를 찾기 어렵습니다.</p>
-            </div>
-            <div class="pain-item">
-              <h4 data-edit>❷ 끝없는 콘텐츠 제작</h4>
-              <p data-edit>9개 선사, 수백 개 크루즈 상품의 일정·요금·기항지 정보를 <strong>수동으로 수집·번역·등록</strong>해야 합니다. 상품 1개당 2~4시간 소요. 빠른 반영이 불가해 <strong>판매 기회나 시점을 놓칠 수 있습니다.</strong></p>
-            </div>
-            <div class="pain-item">
-              <h4 data-edit>❸ 야간·휴일의 리드 손실</h4>
-              <p data-edit>영업시간 외 문의에 응답하지 못해, 고객이 이미 온라인 서비스를 제공하는 경쟁사로 이탈합니다. 크루즈에 최적화된 AI를 이용해 24시간 고객 응대·상담으로 이탈을 방지하고, 온라인 예약 문의 또는 LINE으로 예약 문의를 자동 연결합니다.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 5: 제공하는 것 -->
-    <div class="slide">
-      <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">4</span> <span data-edit>CruiseLink가 귀사에 제공하는 것</span></div>
-            <div class="highlight-box">
-              <h3 data-edit>귀사의 브랜드로, 4주 만에 크루즈 예약 사이트 오픈</h3>
-              <p data-edit>SaaS 플랫폼 + AI 바이브 코딩으로 사이트 유지보수까지 완벽 지원</p>
-            </div>
-            <ul class="feature-list">
-              <li data-edit>귀사 <strong>자체 도메인·브랜드</strong>로 운영</li>
-              <li data-edit>9개 선사 <strong>21,000개+</strong> 크루즈 상품 실시간 자동 연동</li>
-              <li data-edit>상품 페이지 <strong>자동 생성</strong> — 수작업 불필요</li>
-              <li data-edit><strong>AI 바이브 코딩</strong>으로 사이트 수정·업데이트·콘텐츠 변경을 자유롭게 — 개발 지식 불필요</li>
-              <li data-edit><strong>커스텀 상품 등록</strong> — 자동 생성 외에도 귀사가 직접 큐레이션한 특별 일정·패키지 상품을 자유롭게 추가 등록하여 판매 가능</li>
-              <li data-edit>AI 챗봇으로 <strong>24시간 일본어 상담</strong> 자동 응대</li>
-              <li data-edit>영문 콘텐츠 → 일본어 <strong>자동 번역</strong> 지원</li>
+        <div class="slide-body">
+          <div class="toc">
+            <div class="toc-title" data-edit>📌 목차</div>
+            <ul class="toc-list">
+              <li onclick="goSlide(2)"><span class="toc-num">1</span><span class="toc-label" data-edit>당사 소개</span><span class="toc-page">3</span></li>
+              <li onclick="goSlide(3)"><span class="toc-num">2</span><span class="toc-label" data-edit>왜 지금 웹서비스가 필요한가</span><span class="toc-page">4</span></li>
+              <li onclick="goSlide(4)"><span class="toc-num">3</span><span class="toc-label" data-edit>귀사가 직면한 과제</span><span class="toc-page">5</span></li>
+              <li onclick="goSlide(5)"><span class="toc-num">4</span><span class="toc-label" data-edit>CruiseLink가 귀사에 제공하는 것</span><span class="toc-page">6</span></li>
+              <li onclick="goSlide(6)"><span class="toc-num">5</span><span class="toc-label" data-edit>서비스 구성</span><span class="toc-page">7</span></li>
+              <li onclick="goSlide(7)"><span class="toc-num">6</span><span class="toc-label" data-edit>제공되는 크루즈 데이터</span><span class="toc-page">8</span></li>
+              <li onclick="goSlide(8)"><span class="toc-num">7</span><span class="toc-label" data-edit>콘텐츠 자동 생성</span><span class="toc-page">9</span></li>
+              <li onclick="goSlide(9)"><span class="toc-num">8</span><span class="toc-label" data-edit>도입으로 얻을 수 있는 효과</span><span class="toc-page">10</span></li>
+              <li onclick="goSlide(10)"><span class="toc-num">9</span><span class="toc-label" data-edit>요금 안내</span><span class="toc-page">11</span></li>
+              <li onclick="goSlide(11)"><span class="toc-num">10</span><span class="toc-label" data-edit>도입 절차</span><span class="toc-page">12</span></li>
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 6: 서비스 구성 -->
+    <!-- SLIDE 3: 당사 소개 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">5</span> <span data-edit>서비스 구성</span></div>
-            <div class="arch-box">
-              <div class="arch-layer arch-frontend">
-                <span class="arch-tag">귀사의 웹사이트</span><br>
-                <span data-edit>크루즈 검색 → 상품 상세 → 견적 요청 → 예약 | AI 챗봇 (24h) | 기항지 가이드 | 프로모션</span>
-              </div>
-              <div style="font-size:20px; color:#ccc;">↕</div>
-              <div class="arch-layer arch-admin">
-                <span class="arch-tag">관리자 전용</span><br>
-                <span data-edit>예약 관리 | 고객 CRM | 매출 리포트 | 프로모션 등록 | 콘텐츠 편집</span>
-              </div>
-              <div style="font-size:20px; color:#ccc;">↕</div>
-              <div class="arch-layer arch-backend">
-                <span class="arch-tag">CruiseLink 엔진 (당사가 관리)</span><br>
-                <span data-edit>9개 선사 API | 자동 콘텐츠 생성 | 다국어 번역 | 인보이스 | 예약 엔진 | AI 챗봇 | 인프라</span>
-              </div>
-            </div>
-            <div class="card-grid">
-              <div class="card">
-                <div class="card-icon">🎨</div>
-                <h4 data-edit>귀사 브랜드 100% 적용</h4>
-                <p data-edit>자체 도메인, 로고, 컬러, 디자인. PC·모바일 반응형. SSL·SEO 포함</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">📄</div>
-                <h4 data-edit>상품 콘텐츠 자동 생성</h4>
-                <p data-edit>일정표, 기항지, 요금표, 선박 정보가 자동 생성. 프로모션도 실시간 반영</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">🤖</div>
-                <h4 data-edit>AI 챗봇 (크링AI)</h4>
-                <p data-edit>일본어 자연어 상담. "예산 50만엔 알래스카 크루즈" → 즉시 추천. 야간·휴일도 자동 응대</p>
-              </div>
-              <div class="card">
-                <div class="card-icon">📊</div>
-                <h4 data-edit>백오피스</h4>
-                <p data-edit>문의 현황 관리, 개별 상품 추가·업데이트, 배너 이미지 및 링크 추가. 필요한 기능은 추가로 무상 개발 (협의 필요)</p>
-              </div>
-              <div class="card card-full">
-                <div class="card-icon">✨</div>
-                <h4 data-edit>AI 바이브 코딩 유지보수</h4>
-                <p data-edit>사이트 수정, 디자인 변경, 콘텐츠 업데이트, 새로운 페이지 추가 등 모든 유지보수를 AI가 처리. <strong>개발 지식 없이도</strong> 원하는 변경을 자연어로 요청하면 즉시 반영</p>
+        <div class="slide-body">
+          <div class="content">
+            <div class="client-address" data-edit>〇〇旅行社 様<br>いつも大変お世話になっております。</div>
+            <div class="section">
+              <div class="section-title"><span class="section-num">1</span> <span data-edit>당사 소개</span></div>
+              <p class="text" data-edit><strong>Aerolink Co., Ltd.</strong>는 1987년 창립된 항공·여행 B2B 유통 전문 기업입니다. 항공사 GSA(여객·화물) 사업을 기반으로, 9개 글로벌 크루즈 선사 API를 연동하여 직접 크루즈 OTA를 운영하고 있습니다. 직접 비즈니스를 운영하며 축적한 실전 노하우를 바탕으로, 동종 여행사를 위한 웹서비스 구축을 제공합니다.</p>
+              <div class="card-grid">
+                <div class="card">
+                  <div class="card-icon">🚢</div>
+                  <h4 data-edit>크루즈 OTA 직접 운영</h4>
+                  <p data-edit>MSC · RCI · Carnival · Princess · NCL · HAL · Celebrity · Costa · Disney Cruise — 9개 선사 연동 완료. 21,000개+ 상품 실시간 제공</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">💻</div>
+                  <h4 data-edit>크루즈 웹서비스 구축 실적</h4>
+                  <p data-edit>직접 운영하는 플랫폼 기술을 바탕으로, 여행사 맞춤형 화이트라벨 서비스 제공</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">🤖</div>
+                  <h4 data-edit>자체 기술력</h4>
+                  <p data-edit>AI 챗봇, 자동 콘텐츠 생성, 인보이스, 백오피스 등 핵심 기능 모두 자체 개발</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">🌐</div>
+                  <h4 data-edit>다국어 서비스 운영 중</h4>
+                  <p data-edit><a href="https://www.cruiselink.co.kr/" style="color: var(--primary);">cruiselink.co.kr</a> — 한국어·영어·일본어 서비스 운영 중</p>
+                </div>
               </div>
             </div>
           </div>
@@ -492,77 +367,39 @@
       </div>
     </div>
 
-    <!-- SLIDE 7: 제공 데이터 -->
+    <!-- SLIDE 4: 왜 지금인가 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">6</span> <span data-edit>제공되는 크루즈 데이터</span></div>
-            <p class="text" data-edit>당사가 9개 글로벌 선사와의 API 연동을 일괄 처리하므로, 귀사가 개별 선사와 계약·연동할 필요가 없습니다.</p>
-            <table>
-              <thead>
-                <tr><th>항목</th><th>내용</th></tr>
-              </thead>
-              <tbody>
-                <tr><td data-edit>연동 선사</td><td data-edit>MSC, Royal Caribbean, Carnival, Princess, NCL, Holland America, Celebrity, Costa, Disney Cruise<br><em style="font-size:11px; color:var(--text-light);">※ 추가 선사 연동 요청 시 확장 가능</em></td></tr>
-                <tr><td data-edit>상품 수</td><td data-edit><strong>21,000+</strong>개 크루즈 일정</td></tr>
-                <tr><td data-edit>데이터</td><td data-edit>크루즈 일정·노선·선박정보·기항지·출항일·항차일수·요금(선사 제공 플랫요금, 실시간 요금은 아님)</td></tr>
-                <tr><td data-edit>갱신</td><td data-edit>일 1회 자동</td></tr>
-                <tr><td data-edit>언어</td><td data-edit>일본어 번역 제공</td></tr>
-              </tbody>
-            </table>
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">2</span> <span data-edit>왜 지금 웹서비스가 필요한가</span></div>
+              <p class="text" data-edit>일본 크루즈 시장은 연간 300만 명 이상이 탑승하는 아시아 최대 규모입니다. MSC·Royal Caribbean·Princess 등 주요 선사가 일본 발 항로를 지속 확대하고 있으며, 온라인 예약 수요가 급증하면서 <strong>웹서비스를 갖춘 여행사만이 경쟁력을 유지</strong>하는 시대가 되었습니다.</p>
+              <p class="text" data-edit>크루즈 상품을 하나하나 만들어 소개하려면 <strong>엄청난 시간과 비용</strong>이 듭니다. 일정이나 요금 등 정보가 바뀌면 빠르게 대응하기 어렵고, 다양한 선사의 수많은 상품을 <strong>모두 소개하는 것은 사실상 불가능</strong>하여 고객의 선택지가 좁아집니다. CruiseLink는 이 모든 문제를 해결합니다.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 8: 자동 콘텐츠 -->
+    <!-- SLIDE 5: 여행사의 과제 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">7</span> <span data-edit>콘텐츠 자동 생성 — 귀사의 리소스를 절약</span></div>
-            <p class="text" data-edit>현재 상품 페이지를 수작업으로 만들고 계십니까? CruiseLink가 모두 자동화합니다.</p>
-            <table>
-              <thead>
-                <tr><th>구분</th><th>현재 (수동)</th><th>CruiseLink 도입 후</th></tr>
-              </thead>
-              <tbody>
-                <tr><td data-edit>상품 1개당 작성</td><td data-edit>2~4시간</td><td data-edit><strong>자동 생성 (0분)</strong></td></tr>
-                <tr><td data-edit>연간 콘텐츠 인건비</td><td data-edit>상당한 비용 발생</td><td data-edit><strong>0엔</strong></td></tr>
-                <tr><td data-edit>요금 변경 반영</td><td data-edit>수동 (주 단위)</td><td data-edit><strong>일 단위 자동</strong></td></tr>
-                <tr><td data-edit>다국어 번역</td><td data-edit>수동 번역</td><td data-edit><strong>자동 번역 포함</strong></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 9: 도입 효과 -->
-    <div class="slide">
-      <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">8</span> <span data-edit>도입으로 얻을 수 있는 효과</span></div>
-            <div class="compare-grid">
-              <div class="compare-box compare-before">
-                <div class="compare-label" data-edit>❌ 현재</div>
-                <div class="compare-row"><span data-edit>견적 응답</span><span data-edit>2~3일</span></div>
-                <div class="compare-row"><span data-edit>웹사이트 구축비</span><span data-edit>막대한 초기 비용</span></div>
-                <div class="compare-row"><span data-edit>월 유지비</span><span data-edit>적지 않은 유지비</span></div>
-                <div class="compare-row"><span data-edit>콘텐츠 작성</span><span data-edit>수동 2~4시간/건</span></div>
-                <div class="compare-row"><span data-edit>야간·휴일 대응</span><span data-edit>불가</span></div>
-                <div class="compare-row"><span data-edit>다국어</span><span data-edit>인력 필요</span></div>
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">3</span> <span data-edit>귀사가 직면한 과제</span></div>
+              <div class="pain-item">
+                <h4 data-edit>❶ 크루즈 웹사이트 구축의 높은 장벽</h4>
+                <p data-edit>크루즈 웹은 일반 여행사이트와 완전히 다른 구조입니다. 선사별 상이한 API·예약 시스템을 통합하려면 <strong>초기 개발비로 막대한 비용이 발생</strong>하며, 개발 완료 후에도 <strong>월 유지보수 비용이 적지 않게 소요</strong>됩니다.</p>
               </div>
-              <div class="compare-box compare-after">
-                <div class="compare-label" data-edit>✅ CruiseLink 도입 후</div>
-                <div class="compare-row"><span data-edit>견적 응답</span><span data-edit><strong>실시간 (즉시)</strong></span></div>
-                <div class="compare-row"><span data-edit>구축비</span><span data-edit><strong>설치비만</strong></span></div>
-                <div class="compare-row"><span data-edit>월 유지비</span><span data-edit><strong>월 정액 요금제</strong></span></div>
-                <div class="compare-row"><span data-edit>콘텐츠</span><span data-edit><strong>전 자동 생성</strong></span></div>
-                <div class="compare-row"><span data-edit>야간·휴일</span><span data-edit><strong>AI 24h 자동 응대</strong></span></div>
-                <div class="compare-row"><span data-edit>다국어</span><span data-edit><strong>3개국어 자동</strong></span></div>
+              <div class="pain-item">
+                <h4 data-edit>❷ 끝없는 콘텐츠 제작</h4>
+                <p data-edit>9개 선사, 수백 개 크루즈 상품의 일정·요금·기항지 정보를 <strong>수동으로 수집·번역·등록</strong>해야 합니다. 상품 1개당 2~4시간 소요. 빠른 반영이 불가해 <strong>판매 기회를 놓칠 수 있습니다.</strong></p>
+              </div>
+              <div class="pain-item">
+                <h4 data-edit>❸ 야간·휴일의 리드 손실</h4>
+                <p data-edit>영업시간 외 문의에 응답하지 못해 고객이 경쟁사로 이탈합니다. AI로 24시간 고객 응대·상담으로 이탈을 방지하고, 온라인 예약 문의 또는 LINE을 자동 연결합니다.</p>
               </div>
             </div>
           </div>
@@ -570,59 +407,81 @@
       </div>
     </div>
 
-    <!-- SLIDE 10: 요금 -->
+    <!-- SLIDE 6: 제공하는 것 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">9</span> <span data-edit>요금 안내</span></div>
-            <p class="text" data-edit>초기 개발비 부담 없이, 월 정액 요금제로 이용하실 수 있습니다.</p>
-            <div class="pricing-grid">
-              <div class="pricing-card">
-                <div class="pricing-name" data-edit>스타터</div>
-                <div class="pricing-price" data-edit>¥150,000</div>
-                <div class="pricing-period" data-edit>/월</div>
-                <div class="pricing-setup" data-edit>초기 설치비 ¥300,000</div>
-                <ul class="pricing-features">
-                  <li data-edit>예약 건당 ¥3,000</li>
-                  <li data-edit>템플릿 디자인 선택</li>
-                  <li data-edit>관리자 계정 3개</li>
-                  <li class="disabled" data-edit>AI 챗봇</li>
-                  <li class="disabled" data-edit>API 직접 연동</li>
-                  <li class="disabled" data-edit>전담 매니저</li>
-                  <li data-edit>SLA 99.5%</li>
-                </ul>
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">4</span> <span data-edit>CruiseLink가 귀사에 제공하는 것</span></div>
+              <div class="highlight-box">
+                <h3 data-edit>귀사의 브랜드로, 4주 만에 크루즈 예약 사이트 오픈</h3>
+                <p data-edit>SaaS 플랫폼 + AI 바이브 코딩으로 사이트 유지보수까지 완벽 지원</p>
               </div>
-              <div class="pricing-card featured">
-                <div class="pricing-badge">추천</div>
-                <div class="pricing-name" data-edit>프로</div>
-                <div class="pricing-price" data-edit>¥350,000</div>
-                <div class="pricing-period" data-edit>/월</div>
-                <div class="pricing-setup" data-edit>초기 설치비 ¥500,000</div>
-                <ul class="pricing-features">
-                  <li data-edit>예약 건당 ¥1,500</li>
-                  <li data-edit>디자인 커스텀</li>
-                  <li data-edit>관리자 계정 10개</li>
-                  <li data-edit>AI 챗봇 포함</li>
-                  <li data-edit>API 직접 연동</li>
-                  <li class="disabled" data-edit>전담 매니저</li>
-                  <li data-edit>SLA 99.9%</li>
-                </ul>
+              <ul class="feature-list">
+                <li data-edit>귀사 <strong>자체 도메인·브랜드</strong>로 운영</li>
+                <li data-edit>9개 선사 <strong>21,000개+</strong> 크루즈 상품 실시간 자동 연동</li>
+                <li data-edit>상품 페이지 <strong>자동 생성</strong> — 수작업 불필요</li>
+                <li data-edit><strong>AI 바이브 코딩</strong>으로 사이트 수정·업데이트 자유롭게 — 개발 지식 불필요</li>
+                <li data-edit><strong>커스텀 상품 등록</strong> — 귀사 큐레이션 특별 일정·패키지 자유롭게 추가</li>
+                <li data-edit>AI 챗봇으로 <strong>24시간 일본어 상담</strong> 자동 응대</li>
+                <li data-edit>영문 콘텐츠 → 일본어 <strong>자동 번역</strong> 지원</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: 서비스 구성 -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">5</span> <span data-edit>서비스 구성</span></div>
+              <div class="arch-box">
+                <div class="arch-layer arch-frontend">
+                  <span class="arch-tag">귀사의 웹사이트</span><br>
+                  <span data-edit>크루즈 검색 → 상품 상세 → 견적 요청 → 예약 | AI 챗봇 (24h) | 기항지 가이드 | 프로모션</span>
+                </div>
+                <div style="font-size:18px; color:#ccc;">↕</div>
+                <div class="arch-layer arch-admin">
+                  <span class="arch-tag">관리자 전용</span><br>
+                  <span data-edit>예약 관리 | 고객 CRM | 매출 리포트 | 프로모션 등록 | 콘텐츠 편집</span>
+                </div>
+                <div style="font-size:18px; color:#ccc;">↕</div>
+                <div class="arch-layer arch-backend">
+                  <span class="arch-tag">CruiseLink 엔진 (당사가 관리)</span><br>
+                  <span data-edit>9개 선사 API | 자동 콘텐츠 생성 | 다국어 번역 | 인보이스 | 예약 엔진 | AI 챗봇 | 인프라</span>
+                </div>
               </div>
-              <div class="pricing-card">
-                <div class="pricing-name" data-edit>엔터프라이즈</div>
-                <div class="pricing-price" data-edit>별도 협의</div>
-                <div class="pricing-period" data-edit> </div>
-                <div class="pricing-setup" data-edit>초기 설치비 별도 협의</div>
-                <ul class="pricing-features">
-                  <li data-edit>예약 수수료 면제</li>
-                  <li data-edit>풀 커스텀 디자인</li>
-                  <li data-edit>관리자 무제한</li>
-                  <li data-edit>AI 챗봇 포함</li>
-                  <li data-edit>API 직접 연동</li>
-                  <li data-edit>전담 매니저 배정</li>
-                  <li data-edit>SLA 99.9%</li>
-                </ul>
+              <div class="card-grid">
+                <div class="card">
+                  <div class="card-icon">🎨</div>
+                  <h4 data-edit>귀사 브랜드 100% 적용</h4>
+                  <p data-edit>자체 도메인, 로고, 컬러, 디자인. PC·모바일 반응형. SSL·SEO 포함</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">📄</div>
+                  <h4 data-edit>상품 콘텐츠 자동 생성</h4>
+                  <p data-edit>일정표, 기항지, 요금표, 선박 정보가 자동 생성. 프로모션도 실시간 반영</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">🤖</div>
+                  <h4 data-edit>AI 챗봇 (크링AI)</h4>
+                  <p data-edit>일본어 자연어 상담. "예산 50만엔 알래스카 크루즈" → 즉시 추천</p>
+                </div>
+                <div class="card">
+                  <div class="card-icon">📊</div>
+                  <h4 data-edit>백오피스</h4>
+                  <p data-edit>문의 관리, 상품 추가·업데이트, 배너 관리. 필요 기능 무상 개발 (협의)</p>
+                </div>
+                <div class="card card-full">
+                  <div class="card-icon">✨</div>
+                  <h4 data-edit>AI 바이브 코딩 유지보수</h4>
+                  <p data-edit>사이트 수정, 디자인 변경, 콘텐츠 업데이트 등 모든 유지보수를 AI가 처리. <strong>개발 지식 없이도</strong> 자연어로 요청하면 즉시 반영</p>
+                </div>
               </div>
             </div>
           </div>
@@ -630,43 +489,187 @@
       </div>
     </div>
 
-    <!-- SLIDE 11: 도입 절차 + Footer -->
+    <!-- SLIDE 8: 제공 데이터 -->
     <div class="slide">
       <div class="slide-inner">
-        <div class="content">
-          <div class="section">
-            <div class="section-title"><span class="section-num">10</span> <span data-edit>도입 절차</span></div>
-            <div class="highlight-box">
-              <h3 data-edit>계약 후 최단 4주 만에 귀사의 크루즈 사이트 오픈</h3>
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">6</span> <span data-edit>제공되는 크루즈 데이터</span></div>
+              <p class="text" data-edit>당사가 9개 글로벌 선사와의 API 연동을 일괄 처리하므로, 귀사가 개별 선사와 계약·연동할 필요가 없습니다.</p>
+              <table>
+                <thead><tr><th>항목</th><th>내용</th></tr></thead>
+                <tbody>
+                  <tr><td data-edit>연동 선사</td><td data-edit>MSC, Royal Caribbean, Carnival, Princess, NCL, Holland America, Celebrity, Costa, Disney Cruise<br><em style="font-size:10px; color:var(--text-light);">※ 추가 선사 연동 요청 시 확장 가능</em></td></tr>
+                  <tr><td data-edit>상품 수</td><td data-edit><strong>21,000+</strong>개 크루즈 일정</td></tr>
+                  <tr><td data-edit>데이터</td><td data-edit>크루즈 일정·노선·선박정보·기항지·출항일·항차일수·요금(선사 제공 플랫요금)</td></tr>
+                  <tr><td data-edit>갱신</td><td data-edit>일 1회 자동</td></tr>
+                  <tr><td data-edit>언어</td><td data-edit>일본어 번역 제공</td></tr>
+                </tbody>
+              </table>
             </div>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-time" data-edit>1~2주차</div>
-                <div class="timeline-title" data-edit>요구사항 정의</div>
-                <div class="timeline-desc" data-edit>귀사의 업무 흐름 청취, 디자인 방향, 필요 기능 확정</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-time" data-edit> </div>
-                <div class="timeline-title" data-edit>계약 체결</div>
-                <div class="timeline-desc" data-edit>서비스 수준, 요금, 일정 확정</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-time" data-edit>3~6주차</div>
-                <div class="timeline-title" data-edit>사이트 구축</div>
-                <div class="timeline-desc" data-edit>도메인 설정 · 브랜드 디자인 적용 · 크루즈 데이터 연동 · 일본어 로컬라이제이션</div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-time" data-edit>7~8주차</div>
-                <div class="timeline-title" data-edit>테스트 · 검수 · 오픈</div>
-                <div class="timeline-desc" data-edit>귀사에서 기능 테스트·디자인 검수 후 정식 오픈</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: 자동 콘텐츠 -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">7</span> <span data-edit>콘텐츠 자동 생성 — 귀사의 리소스를 절약</span></div>
+              <p class="text" data-edit>현재 상품 페이지를 수작업으로 만들고 계십니까? CruiseLink가 모두 자동화합니다.</p>
+              <table>
+                <thead><tr><th>구분</th><th>현재 (수동)</th><th>CruiseLink 도입 후</th></tr></thead>
+                <tbody>
+                  <tr><td data-edit>상품 1개당 작성</td><td data-edit>2~4시간</td><td data-edit><strong>자동 생성 (0분)</strong></td></tr>
+                  <tr><td data-edit>연간 콘텐츠 인건비</td><td data-edit>상당한 비용 발생</td><td data-edit><strong>0엔</strong></td></tr>
+                  <tr><td data-edit>요금 변경 반영</td><td data-edit>수동 (주 단위)</td><td data-edit><strong>일 단위 자동</strong></td></tr>
+                  <tr><td data-edit>다국어 번역</td><td data-edit>수동 번역</td><td data-edit><strong>자동 번역 포함</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: 도입 효과 -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">8</span> <span data-edit>도입으로 얻을 수 있는 효과</span></div>
+              <div class="compare-grid">
+                <div class="compare-box compare-before">
+                  <div class="compare-label" data-edit>❌ 현재</div>
+                  <div class="compare-row"><span data-edit>견적 응답</span><span data-edit>2~3일</span></div>
+                  <div class="compare-row"><span data-edit>웹사이트 구축비</span><span data-edit>막대한 초기 비용</span></div>
+                  <div class="compare-row"><span data-edit>월 유지비</span><span data-edit>적지 않은 유지비</span></div>
+                  <div class="compare-row"><span data-edit>콘텐츠 작성</span><span data-edit>수동 2~4시간/건</span></div>
+                  <div class="compare-row"><span data-edit>야간·휴일 대응</span><span data-edit>불가</span></div>
+                  <div class="compare-row"><span data-edit>다국어</span><span data-edit>인력 필요</span></div>
+                </div>
+                <div class="compare-box compare-after">
+                  <div class="compare-label" data-edit>✅ CruiseLink 도입 후</div>
+                  <div class="compare-row"><span data-edit>견적 응답</span><span data-edit><strong>실시간 (즉시)</strong></span></div>
+                  <div class="compare-row"><span data-edit>구축비</span><span data-edit><strong>설치비만</strong></span></div>
+                  <div class="compare-row"><span data-edit>월 유지비</span><span data-edit><strong>월 정액 요금제</strong></span></div>
+                  <div class="compare-row"><span data-edit>콘텐츠</span><span data-edit><strong>전 자동 생성</strong></span></div>
+                  <div class="compare-row"><span data-edit>야간·휴일</span><span data-edit><strong>AI 24h 자동 응대</strong></span></div>
+                  <div class="compare-row"><span data-edit>다국어</span><span data-edit><strong>3개국어 자동</strong></span></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer">
-          <div class="footer-logo" data-edit>Cruise<span>Link</span></div>
-          <div class="footer-info" data-edit>Aerolink Co., Ltd.<br><a href="https://aerolink.co.kr" style="color: #88aaff;">aerolink.co.kr</a><br><br>서울 강서구 마곡서로 152, 두산 더 랜드타워 5층</div>
-          <div class="footer-copy" data-edit>© 2026 Aerolink Co., Ltd. All rights reserved. 본 제안서의 내용은 양자 간 협의에 따라 변경될 수 있습니다.</div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: 요금 -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">9</span> <span data-edit>요금 안내</span></div>
+              <p class="text" data-edit>초기 개발비 부담 없이, 월 정액 요금제로 이용하실 수 있습니다.</p>
+              <div class="pricing-grid">
+                <div class="pricing-card">
+                  <div class="pricing-name" data-edit>스타터</div>
+                  <div class="pricing-price" data-edit>¥150,000</div>
+                  <div class="pricing-period" data-edit>/월</div>
+                  <div class="pricing-setup" data-edit>초기 설치비 ¥300,000</div>
+                  <ul class="pricing-features">
+                    <li data-edit>예약 건당 ¥3,000</li>
+                    <li data-edit>템플릿 디자인 선택</li>
+                    <li data-edit>관리자 계정 3개</li>
+                    <li class="disabled" data-edit>AI 챗봇</li>
+                    <li class="disabled" data-edit>API 직접 연동</li>
+                    <li class="disabled" data-edit>전담 매니저</li>
+                    <li data-edit>SLA 99.5%</li>
+                  </ul>
+                </div>
+                <div class="pricing-card featured">
+                  <div class="pricing-badge">추천</div>
+                  <div class="pricing-name" data-edit>프로</div>
+                  <div class="pricing-price" data-edit>¥350,000</div>
+                  <div class="pricing-period" data-edit>/월</div>
+                  <div class="pricing-setup" data-edit>초기 설치비 ¥500,000</div>
+                  <ul class="pricing-features">
+                    <li data-edit>예약 건당 ¥1,500</li>
+                    <li data-edit>디자인 커스텀</li>
+                    <li data-edit>관리자 계정 10개</li>
+                    <li data-edit>AI 챗봇 포함</li>
+                    <li data-edit>API 직접 연동</li>
+                    <li class="disabled" data-edit>전담 매니저</li>
+                    <li data-edit>SLA 99.9%</li>
+                  </ul>
+                </div>
+                <div class="pricing-card">
+                  <div class="pricing-name" data-edit>엔터프라이즈</div>
+                  <div class="pricing-price" data-edit>별도 협의</div>
+                  <div class="pricing-period" data-edit> </div>
+                  <div class="pricing-setup" data-edit>초기 설치비 별도 협의</div>
+                  <ul class="pricing-features">
+                    <li data-edit>예약 수수료 면제</li>
+                    <li data-edit>풀 커스텀 디자인</li>
+                    <li data-edit>관리자 무제한</li>
+                    <li data-edit>AI 챗봇 포함</li>
+                    <li data-edit>API 직접 연동</li>
+                    <li data-edit>전담 매니저 배정</li>
+                    <li data-edit>SLA 99.9%</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: 도입 절차 + Footer -->
+    <div class="slide">
+      <div class="slide-inner">
+        <div class="slide-body">
+          <div class="content">
+            <div class="section">
+              <div class="section-title"><span class="section-num">10</span> <span data-edit>도입 절차</span></div>
+              <div class="highlight-box">
+                <h3 data-edit>계약 후 최단 4주 만에 귀사의 크루즈 사이트 오픈</h3>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-time" data-edit>1~2주차</div>
+                  <div class="timeline-title" data-edit>요구사항 정의</div>
+                  <div class="timeline-desc" data-edit>귀사의 업무 흐름 청취, 디자인 방향, 필요 기능 확정</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-time" data-edit> </div>
+                  <div class="timeline-title" data-edit>계약 체결</div>
+                  <div class="timeline-desc" data-edit>서비스 수준, 요금, 일정 확정</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-time" data-edit>3~6주차</div>
+                  <div class="timeline-title" data-edit>사이트 구축</div>
+                  <div class="timeline-desc" data-edit>도메인 설정 · 브랜드 디자인 적용 · 크루즈 데이터 연동 · 일본어 로컬라이제이션</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-time" data-edit>7~8주차</div>
+                  <div class="timeline-title" data-edit>테스트 · 검수 · 오픈</div>
+                  <div class="timeline-desc" data-edit>귀사에서 기능 테스트·디자인 검수 후 정식 오픈</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="footer-logo" data-edit>Cruise<span>Link</span></div>
+            <div class="footer-info" data-edit>Aerolink Co., Ltd.<br><a href="https://aerolink.co.kr" style="color: #88aaff;">aerolink.co.kr</a><br>서울 강서구 마곡서로 152, 두산 더 랜드타워 5층</div>
+            <div class="footer-copy" data-edit>© 2026 Aerolink Co., Ltd. All rights reserved.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -674,13 +677,13 @@
   </div>
 </div>
 
-<!-- Dot indicators -->
+<!-- Dots -->
 <div class="dots" id="dots"></div>
 
-<!-- Navigation bar -->
+<!-- Nav -->
 <div class="nav-bar">
   <button class="nav-btn" id="prevBtn" onclick="goSlide(current-1)">◀ 이전</button>
-  <span class="slide-counter" id="slideCounter">1 / 11</span>
+  <span class="slide-counter" id="slideCounter">1 / 12</span>
   <button class="nav-btn" id="nextBtn" onclick="goSlide(current+1)">다음 ▶</button>
   <button class="nav-btn edit-mode-btn" id="editBtn" onclick="toggleEdit()">✏️ 편집</button>
   <button class="nav-btn save-btn" id="saveBtn" onclick="saveHTML()">💾 저장</button>
@@ -693,7 +696,6 @@ const slides = wrapper.querySelectorAll('.slide');
 const total = slides.length;
 let editMode = false;
 
-// Build dots
 const dotsContainer = document.getElementById('dots');
 for (let i = 0; i < total; i++) {
   const dot = document.createElement('button');
@@ -713,14 +715,12 @@ function goSlide(n) {
 }
 goSlide(0);
 
-// Keyboard
 document.addEventListener('keydown', e => {
   if (editMode && document.activeElement.hasAttribute('contenteditable')) return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goSlide(current + 1);
   if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goSlide(current - 1);
 });
 
-// Touch swipe
 let touchStartX = 0;
 document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
 document.addEventListener('touchend', e => {
@@ -728,7 +728,6 @@ document.addEventListener('touchend', e => {
   if (Math.abs(dx) > 60) goSlide(current + (dx < 0 ? 1 : -1));
 });
 
-// Edit mode
 function toggleEdit() {
   editMode = !editMode;
   document.querySelectorAll('[data-edit]').forEach(el => {
@@ -740,19 +739,13 @@ function toggleEdit() {
 }
 
 function saveHTML() {
-  // Get current slide-inner HTML and rebuild full page
-  const allSlides = wrapper.querySelectorAll('.slide');
-  
-  // Build the original format
-  let html = document.documentElement.outerHTML;
-  
-  const blob = new Blob([ '<!DOCTYPE html>\n' + html], { type: 'text/html' });
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'proposal-japan-saas-kr-v2.html';
   a.click();
   URL.revokeObjectURL(a.href);
-  
   showToast('저장되었습니다 ✓');
 }
 
