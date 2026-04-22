@@ -151,6 +151,19 @@
   .footer-info { font-size: 13px; opacity: 0.6; line-height: 1.8; }
   .footer-copy { font-size: 11px; opacity: 0.4; margin-top: 24px; }
 
+  /* EDIT BAR */
+  .edit-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15,23,42,.9); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 8px 16px; gap: 10px; z-index: 100; }
+  .edit-btn { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font: 12px/1 inherit; transition: .2s; }
+  .edit-btn:hover { background: rgba(255,255,255,.2); }
+  .edit-btn.active { background: #f59e0b; border-color: #f59e0b; color: #000; }
+  .save-btn { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.3); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font: 12px/1 inherit; display: none; }
+  .save-btn.show { display: inline-block; }
+  .save-btn:hover { background: #10b981; }
+  [contenteditable="true"]:focus { outline: 2px dashed #f59e0b; outline-offset: 2px; border-radius: 4px; background: rgba(245,158,11,.04); }
+  .toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px); background: #10b981; color: #fff; padding: 6px 16px; border-radius: 6px; font-size: 12px; z-index: 200; transition: transform .3s; font-family: inherit; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  body { padding-bottom: 48px; }
+
   .client-address { font-size: 14px; color: var(--text-gray); margin-bottom: 32px; text-align: center; font-style: italic; }
 
   @media print {
@@ -488,5 +501,39 @@
 </div>
 
 </div><!-- /page -->
+
+<div class="edit-bar">
+  <button class="edit-btn" id="editBtn" onclick="toggleEdit()">✏️ 편집 모드</button>
+  <button class="save-btn" id="saveBtn" onclick="saveFile()">💾 HTML 저장</button>
+</div>
+<div class="toast" id="toast">저장 완료 ✓</div>
+
+<script>
+let editing = false;
+function toggleEdit() {
+  editing = !editing;
+  document.querySelectorAll('h1,h2,h3,h4,p,td,th,li,span').forEach(el => {
+    if (el.children.length === 0 || el.tagName === 'LI' || el.tagName === 'TD' || el.tagName === 'TH') {
+      el.contentEditable = editing ? 'true' : 'false';
+    }
+  });
+  const btn = document.getElementById('editBtn');
+  btn.classList.toggle('active', editing);
+  btn.textContent = editing ? '✏️ 편집 중 (클릭시 종료)' : '✏️ 편집 모드';
+  document.getElementById('saveBtn').classList.toggle('show', editing);
+}
+function saveFile() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'proposal-japan-saas-kr-v2.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
 </body>
 </html>
