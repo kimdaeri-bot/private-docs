@@ -5,401 +5,488 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CruiseLink SaaS — 크루즈 웹서비스 구축 제안서</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
-  :root{
-    --pri:#1a56db;--pri-l:#3b82f6;--pri-d:#1e3a5f;
-    --acc:#f59e0b;--bg:#f8fafc;--w:#fff;
-    --t1:#0f172a;--t2:#475569;--t3:#94a3b8;
-    --bd:#e2e8f0;--ok:#10b981;--ng:#ef4444;
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --primary: #0052CC;
+    --primary-light: #4C9AFF;
+    --primary-dark: #003884;
+    --accent: #FF6B35;
+    --bg-light: #F4F6FA;
+    --bg-white: #FFFFFF;
+    --text-dark: #1A1A2E;
+    --text-gray: #555770;
+    --text-light: #8888A0;
+    --border: #E0E3EB;
+    --success: #36B37E;
+    --gradient: linear-gradient(135deg, #0052CC 0%, #00C6FF 100%);
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Noto Sans KR','Inter',sans-serif;background:#0f172a;overflow:hidden;height:100vh;color:var(--t1);line-height:1.6}
 
-  /* 세로 슬라이드 */
-  .sw{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);height:100vh}
-  .s{min-width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:8px 8px 52px}
-  .si{width:100%;max-width:480px;height:100%;max-height:calc(100vh - 64px);background:var(--w);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden}
-  .sb{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-  .sb::-webkit-scrollbar{width:2px}
-  .sb::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Noto Sans KR', 'Inter', -apple-system, sans-serif;
+    color: var(--text-dark);
+    background: var(--bg-light);
+    line-height: 1.7;
+  }
 
-  .ct{padding:20px 24px 14px}
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--bg-white);
+    box-shadow: 0 0 40px rgba(0,0,0,0.08);
+  }
 
-  /* NAV */
-  .nb{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,.94);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:6px 10px;gap:6px;z-index:100}
-  .nb button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;padding:5px 12px;border-radius:5px;cursor:pointer;font:11px/1 inherit;transition:.2s}
-  .nb button:hover{background:rgba(255,255,255,.15)}
-  .nb button:disabled{opacity:.2;cursor:default}
-  .cnt{color:rgba(255,255,255,.45);font-size:10px;min-width:30px;text-align:center}
-  .eb{background:rgba(245,158,11,.15)!important;border-color:rgba(245,158,11,.3)!important}
-  .eb.on{background:var(--acc)!important;border-color:var(--acc)!important;color:#000!important}
-  .sv{display:none;background:rgba(16,185,129,.15)!important;border-color:rgba(16,185,129,.3)!important}
-  .sv.sh{display:inline-block}
-  .sv:hover{background:var(--ok)!important;color:#fff!important}
+  .cover {
+    background: var(--gradient);
+    color: white;
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '🚢';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.07;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .cover-logo { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+  .cover-logo span { color: #FFD700; }
+  .cover-subtitle { font-size: 14px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; opacity: 0.8; margin-bottom: 48px; }
+  .cover h1 { font-size: 32px; font-weight: 700; line-height: 1.4; margin-bottom: 16px; }
+  .cover h2 { font-size: 18px; font-weight: 300; opacity: 0.9; margin-bottom: 48px; }
+  .cover-meta { font-size: 13px; opacity: 0.7; font-weight: 300; }
+  .cover-divider { width: 60px; height: 2px; background: rgba(255,255,255,0.5); margin: 32px auto; }
 
-  .dots{position:fixed;right:5px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;z-index:100}
-  .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;transition:.3s;border:none}
-  .dot.on{background:var(--pri-l);transform:scale(1.8)}
+  .content { padding: 60px; }
+  .section { margin-bottom: 56px; }
+  .section-num {
+    display: inline-block; background: var(--gradient); color: white;
+    width: 28px; height: 28px; border-radius: 50%; text-align: center;
+    line-height: 28px; font-size: 13px; font-weight: 600; margin-right: 10px; vertical-align: middle;
+  }
+  .section-title {
+    font-size: 22px; font-weight: 700; color: var(--primary-dark);
+    margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid var(--primary);
+    display: flex; align-items: center;
+  }
+  .text { font-size: 15px; color: var(--text-gray); line-height: 1.8; margin-bottom: 16px; }
 
-  /* ===== COVER ===== */
-  .cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 45%,#1a56db 100%);color:#fff;padding:24px 28px;text-align:center;position:relative;overflow:hidden}
-  .cover::after{content:'';position:absolute;top:-40%;right:-20%;width:70%;height:180%;background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 65%);pointer-events:none}
-  .cv-top{font-size:9px;letter-spacing:5px;text-transform:uppercase;opacity:.45;margin-bottom:18px;position:relative}
-  .cv-logo{font-size:28px;font-weight:900;letter-spacing:-1px;position:relative}
-  .cv-logo span{color:var(--acc)}
-  .cv-line{width:28px;height:2px;background:var(--acc);margin:14px auto;border-radius:1px;position:relative}
-  .cover h1{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:6px;position:relative}
-  .cover h2{font-size:11px;font-weight:300;opacity:.6;margin-bottom:18px;position:relative}
-  .cv-meta{font-size:9px;opacity:.35;position:relative}
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .card { background: var(--bg-light); border-radius: 12px; padding: 24px; border-left: 4px solid var(--primary); }
+  .card-icon { font-size: 28px; margin-bottom: 12px; }
+  .card h4 { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; }
+  .card p { font-size: 13px; color: var(--text-gray); line-height: 1.6; }
+  .card-full { grid-column: 1 / -1; }
 
-  /* ===== TOC ===== */
-  .toc{padding:20px 24px 14px}
-  .toc-h{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--pri)}
-  .toc ul{list-style:none}
-  .toc li{display:flex;align-items:center;padding:7px 8px;border-radius:5px;font-size:11px;cursor:pointer;transition:.12s;margin-bottom:1px}
-  .toc li:hover{background:var(--bg);color:var(--pri)}
-  .toc .tn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;background:var(--pri);color:#fff;font-size:8px;font-weight:700;margin-right:8px;flex-shrink:0}
-  .toc .tl{flex:1;font-weight:500}
-  .toc .tp{color:var(--t3);font-size:8px}
+  .pain-item { background: #FFF5F5; border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; border-left: 4px solid #E74C3C; }
+  .pain-item h4 { color: #C0392B; font-size: 15px; margin-bottom: 6px; }
+  .pain-item p { font-size: 13px; color: var(--text-gray); line-height: 1.7; }
 
-  /* ===== SECTION ===== */
-  .sec{margin-bottom:14px}
-  .st{display:flex;align-items:center;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--pri)}
-  .sn{display:inline-flex;align-items:center;justify-content:center;background:var(--pri);color:#fff;width:20px;height:20px;border-radius:4px;font-size:9px;font-weight:700;margin-right:6px;flex-shrink:0}
-  .st span:last-child{font-size:13px;font-weight:700;color:var(--pri-d)}
-  .tx{font-size:10px;color:var(--t2);line-height:1.7;margin-bottom:5px}
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+  thead { background: var(--primary); color: white; }
+  th { padding: 12px 16px; text-align: left; font-weight: 500; }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: var(--bg-light); }
 
-  /* CARDS */
-  .cg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:6px 0}
-  .cd{background:var(--bg);border-radius:5px;padding:8px;border:1px solid var(--bd)}
-  .cd .ci{font-size:14px;margin-bottom:2px}
-  .cd h4{font-size:9px;font-weight:600;margin-bottom:1px}
-  .cd p{font-size:8px;color:var(--t2);line-height:1.45}
-  .c-full{grid-column:1/-1}
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .compare-box { border-radius: 12px; padding: 24px; text-align: center; }
+  .compare-before { background: #FFF5F5; border: 1px solid #FADBD8; }
+  .compare-after { background: #E8F8F5; border: 1px solid #A9DFBF; }
+  .compare-label { font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+  .compare-before .compare-label { color: #C0392B; }
+  .compare-after .compare-label { color: #1E8449; }
+  .compare-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+  .compare-row:last-child { border: none; }
 
-  /* PAIN */
-  .pi{background:#fef2f2;border-radius:5px;padding:7px 9px;margin-bottom:4px;border-left:3px solid var(--ng)}
-  .pi h4{color:#dc2626;font-size:9px;margin-bottom:1px}
-  .pi p{font-size:8px;color:var(--t2);line-height:1.5}
+  .arch-box { background: var(--bg-light); border-radius: 12px; padding: 32px; margin: 24px 0; text-align: center; border: 1px solid var(--border); }
+  .arch-layer { border-radius: 8px; padding: 16px; margin: 8px 0; font-size: 13px; }
+  .arch-frontend { background: #E3F2FD; border: 1px solid #90CAF9; }
+  .arch-admin { background: #FFF3E0; border: 1px solid #FFCC80; }
+  .arch-backend { background: #E8F5E9; border: 1px solid #A5D6A7; }
+  .arch-tag { font-weight: 600; font-size: 12px; display: inline-block; padding: 2px 10px; border-radius: 12px; margin-bottom: 8px; }
+  .arch-frontend .arch-tag { background: #1565C0; color: white; }
+  .arch-admin .arch-tag { background: #E65100; color: white; }
+  .arch-backend .arch-tag { background: #2E7D32; color: white; }
 
-  /* TABLE */
-  table{width:100%;border-collapse:collapse;margin:4px 0;font-size:9px}
-  thead{background:var(--pri);color:#fff}
-  th{padding:4px 6px;text-align:left;font-size:8px;font-weight:600}
-  td{padding:4px 6px;border-bottom:1px solid var(--bd)}
+  .timeline { position: relative; padding-left: 40px; margin: 24px 0; }
+  .timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--primary); }
+  .timeline-item { position: relative; margin-bottom: 24px; }
+  .timeline-item::before { content: ''; position: absolute; left: -32px; top: 6px; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px var(--primary); }
+  .timeline-time { font-size: 12px; color: var(--primary); font-weight: 600; }
+  .timeline-title { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+  .timeline-desc { font-size: 13px; color: var(--text-gray); }
 
-  /* COMPARE */
-  .cmg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:5px 0}
-  .cmb{border-radius:5px;padding:7px;text-align:center}
-  .cm-b{background:#fef2f2;border:1px solid #fecaca}
-  .cm-a{background:#ecfdf5;border:1px solid #a7f3d0}
-  .cml{font-size:8px;font-weight:700;margin-bottom:4px}
-  .cm-b .cml{color:#dc2626}
-  .cm-a .cml{color:#059669}
-  .cmr{display:flex;justify-content:space-between;padding:2px 0;font-size:8px;border-bottom:1px solid rgba(0,0,0,.03)}
-  .cmr:last-child{border:none}
+  .feature-list { list-style: none; margin: 16px 0; }
+  .feature-list li { padding: 6px 0; font-size: 14px; color: var(--text-gray); }
+  .feature-list li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 8px; }
 
-  /* ARCH */
-  .ab{background:var(--bg);border-radius:5px;padding:8px;margin:4px 0;text-align:center;border:1px solid var(--bd)}
-  .al{border-radius:4px;padding:5px;margin:2px 0;font-size:8px;border:1px solid}
-  .af{background:#eff6ff;border-color:#bfdbfe}
-  .aa{background:#fffbeb;border-color:#fde68a}
-  .ak{background:#ecfdf5;border-color:#a7f3d0}
-  .atg{font-weight:700;font-size:7px;display:inline-block;padding:1px 5px;border-radius:3px;margin-bottom:1px;color:#fff}
-  .af .atg{background:#1d4ed8}
-  .aa .atg{background:#b45309}
-  .ak .atg{background:#047857}
+  .highlight-box { background: linear-gradient(135deg, #0052CC10, #00C6FF10); border: 1px solid var(--primary-light); border-radius: 12px; padding: 24px; margin: 24px 0; text-align: center; }
+  .highlight-box h3 { color: var(--primary); font-size: 18px; margin-bottom: 8px; }
+  .highlight-box p { color: var(--text-gray); font-size: 14px; }
 
-  /* TIMELINE */
-  .tl{position:relative;padding-left:18px;margin:4px 0}
-  .tl::before{content:'';position:absolute;left:5px;top:2px;bottom:2px;width:2px;background:var(--pri);border-radius:1px}
-  .ti{position:relative;margin-bottom:5px}
-  .ti::before{content:'';position:absolute;left:-15px;top:3px;width:5px;height:5px;background:var(--pri);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--pri)}
-  .tt{font-size:7px;color:var(--pri);font-weight:700;letter-spacing:.5px}
-  .tm{font-size:10px;font-weight:600;color:var(--t1)}
-  .td{font-size:8px;color:var(--t2)}
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .pricing-card { border-radius: 12px; padding: 24px; text-align: center; border: 1px solid var(--border); background: var(--bg-white); transition: transform 0.2s; }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .pricing-card.featured { border: 2px solid var(--primary); background: linear-gradient(180deg, #F0F7FF 0%, white 100%); position: relative; }
+  .pricing-badge { background: var(--primary); color: white; font-size: 11px; padding: 3px 12px; border-radius: 12px; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); }
+  .pricing-name { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text-dark); }
+  .pricing-price { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+  .pricing-period { font-size: 12px; color: var(--text-light); margin-bottom: 16px; }
+  .pricing-setup { font-size: 12px; color: var(--text-gray); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .pricing-features { list-style: none; text-align: left; }
+  .pricing-features li { font-size: 13px; padding: 4px 0; color: var(--text-gray); }
+  .pricing-features li::before { content: '✓'; color: var(--success); font-weight: 700; margin-right: 6px; }
+  .pricing-features li.disabled { opacity: 0.4; }
+  .pricing-features li.disabled::before { content: '—'; color: #ccc; }
 
-  .fl{list-style:none;margin:4px 0}
-  .fl li{padding:1px 0;font-size:9px;color:var(--t2)}
-  .fl li::before{content:'✓';color:var(--ok);font-weight:700;margin-right:3px}
+  .footer { background: var(--text-dark); color: white; padding: 40px 60px; text-align: center; }
+  .footer-logo { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+  .footer-logo span { color: #FFD700; }
+  .footer-info { font-size: 13px; opacity: 0.6; line-height: 1.8; }
+  .footer-copy { font-size: 11px; opacity: 0.4; margin-top: 24px; }
 
-  .hb{background:linear-gradient(135deg,rgba(26,86,219,.05),rgba(59,130,246,.05));border:1px solid rgba(26,86,219,.12);border-radius:5px;padding:7px;margin:4px 0;text-align:center}
-  .hb h3{color:var(--pri);font-size:10px;margin-bottom:1px;font-weight:700}
-  .hb p{color:var(--t2);font-size:8px}
+  .client-address { font-size: 14px; color: var(--text-gray); margin-bottom: 32px; text-align: center; font-style: italic; }
 
-  /* PRICING */
-  .pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:4px 0}
-  .pc{border-radius:5px;padding:6px;text-align:center;border:1px solid var(--bd);background:#fff;display:flex;flex-direction:column}
-  .pc.feat{border:2px solid var(--pri);background:linear-gradient(180deg,#eff6ff,#fff);position:relative}
-  .pc .bdg{background:var(--pri);color:#fff;font-size:7px;padding:1px 5px;border-radius:3px;position:absolute;top:-5px;left:50%;transform:translateX(-50%);font-weight:600}
-  .pn{font-size:8px;font-weight:700;margin-bottom:1px}
-  .pp{font-size:13px;font-weight:900;color:var(--pri)}
-  .pr{font-size:7px;color:var(--t3);margin-bottom:1px}
-  .ps{font-size:7px;color:var(--t2);margin-bottom:3px;padding-bottom:2px;border-bottom:1px solid var(--bd)}
-  .pc ul{list-style:none;text-align:left;flex:1}
-  .pc li{font-size:7px;padding:1px 0;color:var(--t2)}
-  .pc li::before{content:'✓';color:var(--ok);font-weight:700;margin-right:2px}
-  .pc li.dis{opacity:.25}
-  .pc li.dis::before{content:'—';color:#cbd5e1}
-
-  /* FOOTER */
-  .ft{background:var(--pri-d);color:#fff;padding:8px 20px;text-align:center;flex-shrink:0}
-  .ft .fl2{font-size:11px;font-weight:900;margin-bottom:1px}
-  .ft .fl2 span{color:var(--acc)}
-  .ft .fi{font-size:7px;opacity:.45;line-height:1.5}
-  .ft .fc{font-size:6px;opacity:.3;margin-top:2px}
-
-  .ca{font-size:9px;color:var(--t3);margin-bottom:5px;text-align:center;font-style:italic}
-
-  [contenteditable="true"]:focus{outline:2px dashed var(--acc);outline-offset:1px;border-radius:3px;background:rgba(245,158,11,.03)}
-  .toast{position:fixed;top:6px;left:50%;transform:translateX(-50%) translateY(-36px);background:var(--ok);color:#fff;padding:3px 10px;border-radius:4px;font-size:9px;z-index:200;transition:transform .3s;font-family:inherit}
-  .toast.show{transform:translateX(-50%) translateY(0)}
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; }
+    .pricing-card:hover { transform: none; box-shadow: none; }
+  }
+  @media (max-width: 700px) {
+    .content { padding: 32px 20px; }
+    .cover { padding: 48px 24px; }
+    .cover h1 { font-size: 24px; }
+    .card-grid, .compare-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-<div class="toast" id="toast">저장 완료 ✓</div>
-<div style="height:100vh;display:flex;align-items:center">
-<div class="sw" id="sw">
+<div class="page">
 
-<!-- 1. COVER -->
-<div class="s"><div class="si">
-  <div class="cover">
-    <div class="cv-top" data-edit>PROPOSAL</div>
-    <div class="cv-logo" data-edit>Cruise<span>Link</span></div>
-    <div class="cv-line"></div>
-    <h1 data-edit>귀사의 크루즈 비즈니스를<br>한 단계 앞으로</h1>
-    <h2 data-edit>크루즈 전문 API 웹서비스 구축 제안서</h2>
-    <div class="cv-meta" data-edit>2026년 4월 | Aerolink Co., Ltd.</div>
-  </div>
-</div></div>
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-logo">Cruise<span>Link</span></div>
+  <div class="cover-subtitle">Cruise B2B SaaS Platform</div>
+  <div class="cover-divider"></div>
+  <h1>귀사의 크루즈 비즈니스를<br>한 단계 앞으로</h1>
+  <h2>크루즈 전문 API 웹서비스 구축 제안서</h2>
+  <div class="cover-meta">2026년 4월 | Aerolink Co., Ltd.</div>
+</div>
 
-<!-- 2. TOC -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="toc">
-    <div class="toc-h" data-edit>Contents</div>
-    <ul>
-      <li onclick="go(2)"><span class="tn">1</span><span class="tl" data-edit>당사 소개 + 왜 지금</span><span class="tp">3</span></li>
-      <li onclick="go(3)"><span class="tn">2</span><span class="tl" data-edit>과제 + 제공하는 것</span><span class="tp">4</span></li>
-      <li onclick="go(4)"><span class="tn">3</span><span class="tl" data-edit>서비스 구성</span><span class="tp">5</span></li>
-      <li onclick="go(5)"><span class="tn">4</span><span class="tl" data-edit>데이터 + 자동 콘텐츠</span><span class="tp">6</span></li>
-      <li onclick="go(6)"><span class="tn">5</span><span class="tl" data-edit>도입 효과 + 요금</span><span class="tp">7</span></li>
-      <li onclick="go(7)"><span class="tn">6</span><span class="tl" data-edit>도입 절차</span><span class="tp">8</span></li>
-    </ul>
-  </div>
-</div></div></div>
+<div class="content">
 
-<!-- 3. 당사 소개 + 왜 지금 -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="ct">
-    <div class="ca" data-edit>〇〇旅行社 様 — いつも大変お世話になっております。</div>
-    <div class="sec">
-      <div class="st"><span class="sn">1</span><span data-edit>당사 소개</span></div>
-      <p class="tx" data-edit><strong>Aerolink Co., Ltd.</strong>는 1987년 창립된 항공·여행 B2B 유통 전문 기업입니다. 항공사 GSA 사업을 기반으로 9개 글로벌 크루즈 선사 API를 연동, 직접 크루즈 OTA를 운영하며 축적한 노하우로 동종 여행사를 위한 웹서비스를 제공합니다.</p>
-      <div class="cg">
-        <div class="cd"><div class="ci">🚢</div><h4 data-edit>크루즈 OTA 직접 운영</h4><p data-edit>MSC·RCI·Carnival·Princess·NCL 등 9개 선사, 21,000개+</p></div>
-        <div class="cd"><div class="ci">💻</div><h4 data-edit>웹서비스 구축 실적</h4><p data-edit>직접 운영 플랫폼 기술로 화이트라벨 제공</p></div>
-        <div class="cd"><div class="ci">🤖</div><h4 data-edit>자체 기술력</h4><p data-edit>AI 챗봇, 자동 콘텐츠, 인보이스 자체 개발</p></div>
-        <div class="cd"><div class="ci">🌐</div><h4 data-edit>다국어 운영</h4><p data-edit>cruiselink.co.kr — 한국어·영어·일본어</p></div>
-      </div>
+<!-- TO -->
+<div class="client-address">
+  〇〇旅行社 様<br>
+  いつも大変お世話になっております。
+</div>
+
+<!-- 01. 당사 소개 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">1</span> 당사 소개</div>
+  <p class="text">
+    <strong>Aerolink Co., Ltd.</strong>는 1987년 창립된 항공·여행 B2B 유통 전문 기업입니다.
+    항공사 GSA(여객·화물) 사업을 기반으로, 9개 글로벌 크루즈 선사 API를 연동하여 직접 크루즈 OTA를 운영하고 있습니다.
+    직접 비즈니스를 운영하며 축적한 실전 노하우를 바탕으로, 동종 여행사를 위한 웹서비스 구축을 제공합니다.
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🚢</div>
+      <h4>크루즈 OTA 직접 운영</h4>
+      <p>MSC · RCI · Carnival · Princess · NCL · HAL · Celebrity · Costa · Disney Cruise — 9개 선사 연동 완료, 추가 선사 확장 가능. 21,000개+ 상품 실시간 제공</p>
     </div>
-    <div class="sec">
-      <div class="st"><span class="sn">2</span><span data-edit>왜 지금인가</span></div>
-      <p class="tx" data-edit>일본 크루즈 시장 연간 300만 명+, 아시아 최대. 온라인 예약 급증으로 <strong>웹서비스 갖춘 여행사만 생존</strong>. 크루즈 상품 수동 제작은 <strong>시간·비용 폭탄</strong>. <strong style="color:var(--pri)">CruiseLink가 해결합니다.</strong></p>
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <h4>크루즈 웹서비스 구축 실적</h4>
+      <p>직접 운영하는 플랫폼 기술을 바탕으로, 여행사 맞춤형 화이트라벨 서비스 제공</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h4>자체 기술력</h4>
+      <p>AI 챗봇, 자동 콘텐츠 생성, 인보이스, 백오피스 등 핵심 기능 모두 자체 개발</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌐</div>
+      <h4>다국어 서비스 운영 중</h4>
+      <p><a href="https://www.cruiselink.co.kr/" style="color: var(--primary);">cruiselink.co.kr</a> — 한국어·영어·일본어 서비스 운영 중</p>
     </div>
   </div>
-</div></div></div>
+</div>
 
-<!-- 4. 과제 + 제공 -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="ct">
-    <div class="sec">
-      <div class="st"><span class="sn">3</span><span data-edit>직면한 과제</span></div>
-      <div class="pi"><h4 data-edit>❶ 구축 장벽</h4><p data-edit>선사별 API 통합에 막대한 초기비+유지비. 전문 개발사 부재.</p></div>
-      <div class="pi"><h4 data-edit>❷ 콘텐츠 지옥</h4><p data-edit>수백 개 상품 수동 등록. 1개당 2~4시간. 판매 기회 상실.</p></div>
-      <div class="pi"><h4 data-edit>❸ 야간 리드 손실</h4><p data-edit>영업시간 외 응답 불가 → 경쟁사 이탈.</p></div>
+<!-- 02. 왜 지금인가 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">2</span> 왜 지금 웹서비스가 필요한가</div>
+  <p class="text">
+    일본 크루즈 시장은 연간 300만 명 이상이 탑승하는 아시아 최대 규모입니다.
+    MSC·Royal Caribbean·Princess 등 주요 선사가 일본 발 항로를 지속 확대하고 있으며,
+    온라인 예약 수요가 급증하면서 <strong>웹서비스를 갖춘 여행사만이 경쟁력을 유지</strong>하는 시대가 되었습니다.
+  </p>
+  <p class="text">
+    크루즈 상품을 하나하나 만들어 소개하려면 <strong>엄청난 시간과 비용</strong>이 듭니다.
+    일정이나 요금 등 정보가 바뀌면 빠르게 대응하기 어렵고, 다양한 선사의 수많은 상품을
+    <strong>모두 소개하는 것은 사실상 불가능</strong>하여 고객의 선택지가 좁아집니다.
+
+    CruiseLink는 이 모든 문제를 해결합니다.
+  </p>
+</div>
+
+<!-- 03. 여행사의 과제 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">3</span> 귀사가 직면한 과제</div>
+  
+  <div class="pain-item">
+    <h4>❶ 크루즈 웹사이트 구축의 높은 장벽</h4>
+    <p>크루즈 웹은 일반 여행사이트와 완전히 다른 구조입니다. 선사별 상이한 API·예약 시스템을 통합하려면 <strong>초기 개발비로 막대한 비용이 발생</strong>하며, 개발 완료 후에도 <strong>월 유지보수 비용이 적지 않게 소요</strong>됩니다. 게다가 크루즈 도메인 지식이 있는 개발사를 찾기 어렵습니다.</p>
+  </div>
+  
+  <div class="pain-item">
+    <h4>❷ 끝없는 콘텐츠 제작</h4>
+    <p>9개 선사, 수백 개 크루즈 상품의 일정·요금·기항지 정보를 <strong>수동으로 수집·번역·등록</strong>해야 합니다. 상품 1개당 2~4시간 소요. 빠른 반영이 불가해 <strong>판매 기회나 시점을 놓칠 수 있습니다.</strong></p>
+  </div>
+  
+  <div class="pain-item">
+    <h4>❸ 야간·휴일의 리드 손실</h4>
+    <p>영업시간 외 문의에 응답하지 못해, 고객이 이미 온라인 서비스를 제공하는 경쟁사로 이탈합니다. 크루즈에 최적화된 AI를 이용해 24시간 고객 응대·상담으로 이탈을 방지하고, 온라인 예약 문의 또는 LINE으로 예약 문의를 자동 연결합니다.</p>
+  </div>
+  
+
+</div>
+
+<!-- 04. CruiseLink가 제공하는 것 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">4</span> CruiseLink가 귀사에 제공하는 것</div>
+  
+  <div class="highlight-box">
+    <h3>귀사의 브랜드로, 4주 만에 크루즈 예약 사이트 오픈</h3>
+    <p>SaaS 플랫폼 + AI 바이브 코딩으로 사이트 유지보수까지 완벽 지원</p>
+  </div>
+
+  <ul class="feature-list">
+    <li>귀사 <strong>자체 도메인·브랜드</strong>로 운영</li>
+    <li>9개 선사 <strong>21,000개+</strong> 크루즈 상품 실시간 자동 연동</li>
+    <li>상품 페이지 <strong>자동 생성</strong> — 수작업 불필요</li>
+    <li><strong>AI 바이브 코딩</strong>으로 사이트 수정·업데이트·콘텐츠 변경을 자유롭게 — 개발 지식 불필요</li>
+    <li><strong>커스텀 상품 등록</strong> — 자동 생성 외에도 귀사가 직접 큐레이션한 특별 일정·패키지 상품을 자유롭게 추가 등록하여 판매 가능</li>
+    <li>AI 챗봇으로 <strong>24시간 일본어 상담</strong> 자동 응대</li>
+    <li>영문 콘텐츠 → 일본어 <strong>자동 번역</strong> 지원</li>
+
+  </ul>
+</div>
+
+<!-- 05. 서비스 구성 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">5</span> 서비스 구성</div>
+  
+  <div class="arch-box">
+    <div class="arch-layer arch-frontend">
+      <span class="arch-tag">귀사의 웹사이트</span><br>
+      크루즈 검색 → 상품 상세 → 견적 요청 → 예약 | AI 챗봇 (24h) | 기항지 가이드 | 프로모션
     </div>
-    <div class="sec">
-      <div class="st"><span class="sn">4</span><span data-edit>제공하는 것</span></div>
-      <div class="hb"><h3 data-edit>귀사 브랜드로, 4주 만에 오픈</h3></div>
-      <ul class="fl">
-        <li data-edit><strong>자체 도메인·브랜드</strong> 운영</li>
-        <li data-edit>9개 선사 <strong>21,000개+</strong> 자동 연동</li>
-        <li data-edit>상품 페이지 <strong>자동 생성</strong></li>
-        <li data-edit><strong>AI 바이브 코딩</strong> — 개발 지식 없이 수정</li>
-        <li data-edit>AI 챗봇 <strong>24h 일본어</strong></li>
-        <li data-edit>영문→일본어 <strong>자동 번역</strong></li>
+    <div style="font-size:20px; color:#ccc;">↕</div>
+    <div class="arch-layer arch-admin">
+      <span class="arch-tag">관리자 전용</span><br>
+      예약 관리 | 고객 CRM | 매출 리포트 | 프로모션 등록 | 콘텐츠 편집
+    </div>
+    <div style="font-size:20px; color:#ccc;">↕</div>
+    <div class="arch-layer arch-backend">
+      <span class="arch-tag">CruiseLink 엔진 (당사가 관리)</span><br>
+      9개 선사 API | 자동 콘텐츠 생성 | 다국어 번역 | 인보이스 | 예약 엔진 | AI 챗봇 | 인프라
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🎨</div>
+      <h4>귀사 브랜드 100% 적용</h4>
+      <p>자체 도메인, 로고, 컬러, 디자인. PC·모바일 반응형. SSL·SEO 포함</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h4>상품 콘텐츠 자동 생성</h4>
+      <p>일정표, 기항지, 요금표, 선박 정보가 자동 생성. 프로모션도 실시간 반영</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h4>AI 챗봇 (크링AI)</h4>
+      <p>일본어 자연어 상담. "예산 50만엔 알래스카 크루즈" → 즉시 추천. 야간·휴일도 자동 응대</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h4>백오피스</h4>
+      <p>문의 현황 관리, 개별 상품 추가·업데이트, 배너 이미지 및 링크 추가. 필요한 기능은 추가로 무상 개발 (협의 필요)</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">✨</div>
+      <h4>AI 바이브 코딩 유지보수</h4>
+      <p>사이트 수정, 디자인 변경, 콘텐츠 업데이트, 새로운 페이지 추가 등 모든 유지보수를 AI가 처리. <strong>개발 지식 없이도</strong> 원하는 변경을 자연어로 요청하면 즉시 반영</p>
+    </div>
+  </div>
+</div>
+
+<!-- 06. 제공 데이터 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">6</span> 제공되는 크루즈 데이터</div>
+  <p class="text">당사가 9개 글로벌 선사와의 API 연동을 일괄 처리하므로, 귀사가 개별 선사와 계약·연동할 필요가 없습니다.</p>
+  <table>
+    <thead>
+      <tr><th>항목</th><th>내용</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>연동 선사</td><td>MSC, Royal Caribbean, Carnival, Princess, NCL, Holland America, Celebrity, Costa, Disney Cruise<br><em style="font-size:12px; color:var(--text-light);">※ 추가 선사 연동 요청 시 확장 가능</em></td></tr>
+      <tr><td>상품 수</td><td><strong>21,000+</strong>개 크루즈 일정</td></tr>
+      <tr><td>데이터</td><td>크루즈 일정·노선·선박정보·기항지·출항일·항차일수·요금(선사 제공 플랫요금, 실시간 요금은 아님)</td></tr>
+      <tr><td>갱신</td><td>일 1회 자동</td></tr>
+      <tr><td>언어</td><td>일본어 번역 제공</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 07. 자동 콘텐츠 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">7</span> 콘텐츠 자동 생성 — 귀사의 리소스를 절약</div>
+  <p class="text">현재 상품 페이지를 수작업으로 만들고 계십니까? CruiseLink가 모두 자동화합니다.</p>
+  <table>
+    <thead>
+      <tr><th>구분</th><th>현재 (수동)</th><th>CruiseLink 도입 후</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>상품 1개당 작성</td><td>2~4시간</td><td><strong>자동 생성 (0분)</strong></td></tr>
+      <tr><td>연간 콘텐츠 인건비</td><td>상당한 비용 발생</td><td><strong>0엔</strong></td></tr>
+      <tr><td>요금 변경 반영</td><td>수동 (주 단위)</td><td><strong>일 단위 자동</strong></td></tr>
+      <tr><td>다국어 번역</td><td>수동 번역</td><td><strong>자동 번역 포함</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 08. 도입 효과 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">8</span> 도입으로 얻을 수 있는 효과</div>
+  <div class="compare-grid">
+    <div class="compare-box compare-before">
+      <div class="compare-label">❌ 현재</div>
+      <div class="compare-row"><span>견적 응답</span><span>2~3일</span></div>
+      <div class="compare-row"><span>웹사이트 구축비</span><span>막대한 초기 비용</span></div>
+      <div class="compare-row"><span>월 유지비</span><span>적지 않은 유지비</span></div>
+      <div class="compare-row"><span>콘텐츠 작성</span><span>수동 2~4시간/건</span></div>
+      <div class="compare-row"><span>야간·휴일 대응</span><span>불가</span></div>
+      <div class="compare-row"><span>다국어</span><span>인력 필요</span></div>
+    </div>
+    <div class="compare-box compare-after">
+      <div class="compare-label">✅ CruiseLink 도입 후</div>
+      <div class="compare-row"><span>견적 응답</span><span><strong>실시간 (즉시)</strong></span></div>
+      <div class="compare-row"><span>구축비</span><span><strong>설치비만</strong></span></div>
+      <div class="compare-row"><span>월 유지비</span><span><strong>월 정액 요금제</strong></span></div>
+      <div class="compare-row"><span>콘텐츠</span><span><strong>전 자동 생성</strong></span></div>
+      <div class="compare-row"><span>야간·휴일</span><span><strong>AI 24h 자동 응대</strong></span></div>
+      <div class="compare-row"><span>다국어</span><span><strong>3개국어 자동</strong></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 09. 요금 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">9</span> 요금 안내</div>
+  <p class="text">초기 개발비 부담 없이, 월 정액 요금제로 이용하실 수 있습니다.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">스타터</div>
+      <div class="pricing-price">¥150,000</div>
+      <div class="pricing-period">/월</div>
+      <div class="pricing-setup">초기 설치비 ¥300,000</div>
+      <ul class="pricing-features">
+        <li>예약 건당 ¥3,000</li>
+        <li>템플릿 디자인 선택</li>
+        <li>관리자 계정 3개</li>
+        <li class="disabled">AI 챗봇</li>
+        <li class="disabled">API 직접 연동</li>
+        <li class="disabled">전담 매니저</li>
+        <li>SLA 99.5%</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge">추천</div>
+      <div class="pricing-name">프로</div>
+      <div class="pricing-price">¥350,000</div>
+      <div class="pricing-period">/월</div>
+      <div class="pricing-setup">초기 설치비 ¥500,000</div>
+      <ul class="pricing-features">
+        <li>예약 건당 ¥1,500</li>
+        <li>디자인 커스텀</li>
+        <li>관리자 계정 10개</li>
+        <li>AI 챗봇 포함</li>
+        <li>API 직접 연동</li>
+        <li class="disabled">전담 매니저</li>
+        <li>SLA 99.9%</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-name">엔터프라이즈</div>
+      <div class="pricing-price">별도 협의</div>
+      <div class="pricing-period"> </div>
+      <div class="pricing-setup">초기 설치비 별도 협의</div>
+      <ul class="pricing-features">
+        <li>예약 수수료 면제</li>
+        <li>풀 커스텀 디자인</li>
+        <li>관리자 무제한</li>
+        <li>AI 챗봇 포함</li>
+        <li>API 직접 연동</li>
+        <li>전담 매니저 배정</li>
+        <li>SLA 99.9%</li>
       </ul>
     </div>
   </div>
-</div></div></div>
-
-<!-- 5. 서비스 구성 -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="ct">
-    <div class="sec">
-      <div class="st"><span class="sn">5</span><span data-edit>서비스 구성</span></div>
-      <div class="ab">
-        <div class="al af"><span class="atg">귀사 웹사이트</span><br><span data-edit>검색 → 상세 → 견적 → 예약 | AI 챗봇 | 프로모션</span></div>
-        <div style="font-size:10px;color:#94a3b8">↕</div>
-        <div class="al aa"><span class="atg">관리자</span><br><span data-edit>예약 관리 | CRM | 리포트 | 콘텐츠 편집</span></div>
-        <div style="font-size:10px;color:#94a3b8">↕</div>
-        <div class="al ak"><span class="atg">CruiseLink 엔진</span><br><span data-edit>9개 선사 API | 자동 콘텐츠 | 번역 | AI | 인프라</span></div>
-      </div>
-      <div class="cg">
-        <div class="cd"><div class="ci">🎨</div><h4 data-edit>브랜드 100%</h4><p data-edit>도메인·로고·컬러. 반응형. SSL·SEO</p></div>
-        <div class="cd"><div class="ci">📄</div><h4 data-edit>자동 생성</h4><p data-edit>일정·요금·선박 정보 자동</p></div>
-        <div class="cd"><div class="ci">🤖</div><h4 data-edit>AI 챗봇</h4><p data-edit>자연어 상담, 즉시 추천</p></div>
-        <div class="cd"><div class="ci">📊</div><h4 data-edit>백오피스</h4><p data-edit>문의·상품·배너 관리</p></div>
-        <div class="cd c-full"><div class="ci">✨</div><h4 data-edit>AI 바이브 코딩</h4><p data-edit>수정·디자인 변경 모두 AI 처리. 자연어로 즉시 반영</p></div>
-      </div>
-    </div>
-  </div>
-</div></div></div>
-
-<!-- 6. 데이터 + 콘텐츠 -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="ct">
-    <div class="sec">
-      <div class="st"><span class="sn">6</span><span data-edit>제공 데이터</span></div>
-      <p class="tx" data-edit>9개 선사 API 연동 당사가 일괄 처리. 개별 계약 불필요.</p>
-      <table>
-        <thead><tr><th>항목</th><th>내용</th></tr></thead>
-        <tbody>
-          <tr><td data-edit>선사</td><td data-edit>MSC, RCI, Carnival, Princess, NCL, HAL, Celebrity, Costa, Disney</td></tr>
-          <tr><td data-edit>상품</td><td data-edit><strong>21,000+</strong>개</td></tr>
-          <tr><td data-edit>데이터</td><td data-edit>일정·노선·선박·기항지·출항일·요금</td></tr>
-          <tr><td data-edit>갱신</td><td data-edit>일 1회 자동</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="sec">
-      <div class="st"><span class="sn">7</span><span data-edit>자동 생성 효과</span></div>
-      <table>
-        <thead><tr><th>구분</th><th>현재</th><th>도입 후</th></tr></thead>
-        <tbody>
-          <tr><td data-edit>1개당</td><td data-edit>2~4시간</td><td data-edit style="color:var(--ok);font-weight:600">자동(0분)</td></tr>
-          <tr><td data-edit>인건비</td><td data-edit">상당</td><td data-edit style="color:var(--ok);font-weight:600">0엔</td></tr>
-          <tr><td data-edit>요금변경</td><td data-edit>수동(주)</td><td data-edit style="color:var(--ok);font-weight:600">일단위 자동</td></tr>
-          <tr><td data-edit>번역</td><td data-edit>수동</td><td data-edit style="color:var(--ok);font-weight:600">자동</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div></div></div>
-
-<!-- 7. 효과 + 요금 -->
-<div class="s"><div class="si"><div class="sb">
-  <div class="ct">
-    <div class="sec">
-      <div class="st"><span class="sn">8</span><span data-edit>도입 효과</span></div>
-      <div class="cmg">
-        <div class="cmb cm-b">
-          <div class="cml" data-edit>현재</div>
-          <div class="cmr"><span data-edit>견적</span><span data-edit>2~3일</span></div>
-          <div class="cmr"><span data-edit>구축비</span><span data-edit">막대</span></div>
-          <div class="cmr"><span data-edit>유지비</span><span data-edit">막대</span></div>
-          <div class="cmr"><span data-edit">콘텐츠</span><span data-edit>수동</span></div>
-          <div class="cmr"><span data-edit>야간</span><span data-edit">X</span></div>
-        </div>
-        <div class="cmb cm-a">
-          <div class="cml" data-edit>도입 후</div>
-          <div class="cmr"><span data-edit>견적</span><span data-edit><strong>실시간</strong></span></div>
-          <div class="cmr"><span data-edit>구축</span><span data-edit><strong>설치비만</strong></span></div>
-          <div class="cmr"><span data-edit>유지비</span><span data-edit"><strong>정액제</strong></span></div>
-          <div class="cmr"><span data-edit>콘텐츠</span><span data-edit><strong>자동</strong></span></div>
-          <div class="cmr"><span data-edit>야간</span><span data-edit"><strong>AI 24h</strong></span></div>
-        </div>
-      </div>
-    </div>
-    <div class="sec">
-      <div class="st"><span class="sn">9</span><span data-edit>요금</span></div>
-      <div class="pg">
-        <div class="pc">
-          <div class="pn" data-edit>스타터</div>
-          <div class="pp" data-edit>¥150K</div>
-          <div class="pr" data-edit>/월</div>
-          <div class="ps" data-edit>설치 ¥300K</div>
-          <ul>
-            <li data-edit>건당 ¥3,000</li>
-            <li data-edit>템플릿</li>
-            <li class="dis" data-edit>챗봇</li>
-            <li data-edit>99.5%</li>
-          </ul>
-        </div>
-        <div class="pc feat">
-          <div class="bdg">추천</div>
-          <div class="pn" data-edit>프로</div>
-          <div class="pp" data-edit>¥350K</div>
-          <div class="pr" data-edit>/월</div>
-          <div class="ps" data-edit>설치 ¥500K</div>
-          <ul>
-            <li data-edit>건당 ¥1,500</li>
-            <li data-edit>커스텀</li>
-            <li data-edit>챗봇 O</li>
-            <li data-edit>99.9%</li>
-          </ul>
-        </div>
-        <div class="pc">
-          <div class="pn" data-edit>ENT</div>
-          <div class="pp" data-edit>별도</div>
-          <div class="pr" data-edit> </div>
-          <div class="ps" data-edit>설치 별도</div>
-          <ul>
-            <li data-edit>면제</li>
-            <li data-edit>풀커스텀</li>
-            <li data-edit>전담</li>
-            <li data-edit>99.9%</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div></div></div>
-
-<!-- 8. 절차 + 푸터 -->
-<div class="s"><div class="si">
-  <div class="sb">
-  <div class="ct">
-    <div class="sec">
-      <div class="st"><span class="sn">10</span><span data-edit>도입 절차</span></div>
-      <div class="hb"><h3 data-edit>계약 후 최단 4주 만에 오픈</h3></div>
-      <div class="tl">
-        <div class="ti"><div class="tt" data-edit>1~2주</div><div class="tm" data-edit>요구사항 정의</div><div class="td" data-edit>업무 흐름, 디자인, 기능 확정</div></div>
-        <div class="ti"><div class="tt" data-edit> </div><div class="tm" data-edit>계약 체결</div><div class="td" data-edit>수준, 요금, 일정 확정</div></div>
-        <div class="ti"><div class="tt" data-edit>3~6주</div><div class="tm" data-edit>사이트 구축</div><div class="td" data-edit>도메인 · 브랜드 · 데이터 · 일본어</div></div>
-        <div class="ti"><div class="tt" data-edit>7~8주</div><div class="tm" data-edit>테스트 · 오픈</div><div class="td" data-edit>검수 후 정식 오픈</div></div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <div class="ft">
-    <div class="fl2" data-edit>Cruise<span>Link</span></div>
-    <div class="fi" data-edit>Aerolink Co., Ltd. | <a href="https://aerolink.co.kr" style="color:#93c5fd">aerolink.co.kr</a><br>서울 강서구 마곡서로 152, 두산 더 랜드타워 5층</div>
-    <div class="fc" data-edit>© 2026 Aerolink Co., Ltd.</div>
-  </div>
-</div></div>
-
-</div></div>
-
-<div class="dots" id="dots"></div>
-<div class="nb">
-  <button id="prev" onclick="go(c-1)">◀</button>
-  <span class="cnt" id="cnt">1/8</span>
-  <button id="next" onclick="go(c+1)">▶</button>
-  <button class="eb" id="eb" onclick="tog()">✏️</button>
-  <button class="sv" id="svb" onclick="sav()">💾</button>
 </div>
 
-<script>
-let c=0;const w=document.getElementById('sw'),ss=w.querySelectorAll('.s'),T=ss.length;let em=false;
-const dc=document.getElementById('dots');
-for(let i=0;i<T;i++){const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>go(i);dc.appendChild(d)}
-function go(n){if(n<0||n>=T)return;c=n;w.style.transform=`translateX(-${c*100}vw)`;document.getElementById('cnt').textContent=`${c+1}/${T}`;document.getElementById('prev').disabled=c===0;document.getElementById('next').disabled=c===T-1;dc.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===c))}
-go(0);
-document.addEventListener('keydown',e=>{if(em&&document.activeElement.hasAttribute('contenteditable'))return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(c+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(c-1)}});
-let sx=0;document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX});document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(c+(dx<0?1:-1))});
-function tog(){em=!em;document.querySelectorAll('[data-edit]').forEach(e=>{e.contentEditable=em?'true':'false'});const b=document.getElementById('eb');b.classList.toggle('on',em);b.textContent=em?'✏️ ON':'✏️';document.getElementById('svb').classList.toggle('sh',em)}
-function sav(){const h=document.documentElement.outerHTML;const b=new Blob(['<!DOCTYPE html>\n'+h],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='proposal-japan-saas-kr-v2.html';a.click();URL.revokeObjectURL(a.href);const tt=document.getElementById('toast');tt.classList.add('show');setTimeout(()=>tt.classList.remove('show'),2000)}
-</script>
+<!-- 10. 도입 절차 -->
+<div class="section">
+  <div class="section-title"><span class="section-num">10</span> 도입 절차</div>
+  <div class="highlight-box">
+    <h3>계약 후 최단 4주 만에 귀사의 크루즈 사이트 오픈</h3>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">1~2주차</div>
+      <div class="timeline-title">요구사항 정의</div>
+      <div class="timeline-desc">귀사의 업무 흐름 청취, 디자인 방향, 필요 기능 확정</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time"> </div>
+      <div class="timeline-title">계약 체결</div>
+      <div class="timeline-desc">서비스 수준, 요금, 일정 확정</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">3~6주차</div>
+      <div class="timeline-title">사이트 구축</div>
+      <div class="timeline-desc">도메인 설정 · 브랜드 디자인 적용 · 크루즈 데이터 연동 · 일본어 로컬라이제이션</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">7~8주차</div>
+      <div class="timeline-title">테스트 · 검수 · 오픈</div>
+      <div class="timeline-desc">귀사에서 기능 테스트·디자인 검수 후 정식 오픈</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">Cruise<span>Link</span></div>
+  <div class="footer-info">
+    Aerolink Co., Ltd.<br>
+    <a href="https://aerolink.co.kr" style="color: #88aaff;">aerolink.co.kr</a><br><br>
+    서울 강서구 마곡서로 152, 두산 더 랜드타워 5층
+  </div>
+  <div class="footer-copy">© 2026 Aerolink Co., Ltd. All rights reserved. 본 제안서의 내용은 양자 간 협의에 따라 변경될 수 있습니다.</div>
+</div>
+
+</div><!-- /page -->
 </body>
 </html>
