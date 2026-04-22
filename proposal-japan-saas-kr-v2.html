@@ -6,144 +6,153 @@
 <title>CruiseLink SaaS — 크루즈 웹서비스 구축 제안서</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
-  :root {
+  :root{
     --pri:#1a56db;--pri-l:#3b82f6;--pri-d:#1e3a5f;
     --acc:#f59e0b;--bg:#f8fafc;--w:#fff;
     --t1:#0f172a;--t2:#475569;--t3:#94a3b8;
     --bd:#e2e8f0;--ok:#10b981;--ng:#ef4444;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Noto Sans KR','Inter',sans-serif;background:#0f172a;overflow:hidden;height:100vh;color:var(--t1);line-height:1.5}
+  body{font-family:'Noto Sans KR','Inter',sans-serif;background:#0f172a;overflow:hidden;height:100vh;color:var(--t1);line-height:1.6}
 
+  /* 세로 슬라이드 */
   .sw{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);height:100vh}
-  .s{min-width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:10px 10px 54px}
-  .si{width:100%;max-width:520px;height:100%;max-height:calc(100vh - 68px);background:var(--w);border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden}
-  .sb{flex:1;overflow-y:auto;overflow-x:hidden}
-  .sb::-webkit-scrollbar{width:3px}
-  .sb::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
+  .s{min-width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;padding:8px 8px 52px}
+  .si{width:100%;max-width:480px;height:100%;max-height:calc(100vh - 64px);background:var(--w);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,.4);display:flex;flex-direction:column;overflow:hidden}
+  .sb{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+  .sb::-webkit-scrollbar{width:2px}
+  .sb::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
 
-  .ct{padding:24px 28px 16px}
-  .sec{margin-bottom:16px}
+  .ct{padding:20px 24px 14px}
 
   /* NAV */
-  .nb{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:6px 12px;gap:6px;z-index:100}
-  .nb button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;padding:4px 10px;border-radius:5px;cursor:pointer;font:10px/1 inherit;transition:.2s}
+  .nb{position:fixed;bottom:0;left:0;right:0;background:rgba(15,23,42,.94);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:6px 10px;gap:6px;z-index:100}
+  .nb button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e2e8f0;padding:5px 12px;border-radius:5px;cursor:pointer;font:11px/1 inherit;transition:.2s}
   .nb button:hover{background:rgba(255,255,255,.15)}
-  .nb button:disabled{opacity:.25;cursor:default}
-  .cnt{color:rgba(255,255,255,.5);font-size:10px;min-width:32px;text-align:center}
+  .nb button:disabled{opacity:.2;cursor:default}
+  .cnt{color:rgba(255,255,255,.45);font-size:10px;min-width:30px;text-align:center}
   .eb{background:rgba(245,158,11,.15)!important;border-color:rgba(245,158,11,.3)!important}
   .eb.on{background:var(--acc)!important;border-color:var(--acc)!important;color:#000!important}
   .sv{display:none;background:rgba(16,185,129,.15)!important;border-color:rgba(16,185,129,.3)!important}
   .sv.sh{display:inline-block}
   .sv:hover{background:var(--ok)!important;color:#fff!important}
 
-  .dots{position:fixed;right:6px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;z-index:100}
-  .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:.3s;border:none}
-  .dot.on{background:var(--pri-l);transform:scale(1.6)}
+  .dots{position:fixed;right:5px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:3px;z-index:100}
+  .dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.12);cursor:pointer;transition:.3s;border:none}
+  .dot.on{background:var(--pri-l);transform:scale(1.8)}
 
-  /* COVER */
-  .cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#1a56db 100%);color:#fff;padding:28px 32px;text-align:center;position:relative;overflow:hidden}
-  .cover::after{content:'';position:absolute;top:-50%;right:-30%;width:80%;height:200%;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%)}
-  .cv-top{font-size:9px;letter-spacing:5px;text-transform:uppercase;opacity:.5;margin-bottom:20px;position:relative}
-  .cv-logo{font-size:32px;font-weight:900;letter-spacing:-2px;margin-bottom:2px;position:relative}
+  /* ===== COVER ===== */
+  .cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 45%,#1a56db 100%);color:#fff;padding:24px 28px;text-align:center;position:relative;overflow:hidden}
+  .cover::after{content:'';position:absolute;top:-40%;right:-20%;width:70%;height:180%;background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 65%);pointer-events:none}
+  .cv-top{font-size:9px;letter-spacing:5px;text-transform:uppercase;opacity:.45;margin-bottom:18px;position:relative}
+  .cv-logo{font-size:28px;font-weight:900;letter-spacing:-1px;position:relative}
   .cv-logo span{color:var(--acc)}
-  .cv-line{width:32px;height:3px;background:var(--acc);margin:14px auto;border-radius:2px;position:relative}
-  .cover h1{font-size:18px;font-weight:700;line-height:1.35;margin-bottom:6px;position:relative}
-  .cover h2{font-size:11px;font-weight:300;opacity:.7;margin-bottom:20px;position:relative}
-  .cv-meta{font-size:9px;opacity:.4;position:relative}
+  .cv-line{width:28px;height:2px;background:var(--acc);margin:14px auto;border-radius:1px;position:relative}
+  .cover h1{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:6px;position:relative}
+  .cover h2{font-size:11px;font-weight:300;opacity:.6;margin-bottom:18px;position:relative}
+  .cv-meta{font-size:9px;opacity:.35;position:relative}
 
-  /* TOC */
-  .toc{padding:20px 28px}
-  .toc-h{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-bottom:5px;border-bottom:2px solid var(--pri)}
+  /* ===== TOC ===== */
+  .toc{padding:20px 24px 14px}
+  .toc-h{font-size:9px;font-weight:700;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid var(--pri)}
   .toc ul{list-style:none}
-  .toc li{display:flex;align-items:center;padding:6px 8px;border-radius:5px;font-size:11px;cursor:pointer;transition:.15s;margin-bottom:1px}
+  .toc li{display:flex;align-items:center;padding:7px 8px;border-radius:5px;font-size:11px;cursor:pointer;transition:.12s;margin-bottom:1px}
   .toc li:hover{background:var(--bg);color:var(--pri)}
   .toc .tn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;background:var(--pri);color:#fff;font-size:8px;font-weight:700;margin-right:8px;flex-shrink:0}
   .toc .tl{flex:1;font-weight:500}
   .toc .tp{color:var(--t3);font-size:8px}
 
-  /* SECTION */
-  .st{display:flex;align-items:center;margin-bottom:10px;padding-bottom:5px;border-bottom:2px solid var(--pri)}
+  /* ===== SECTION ===== */
+  .sec{margin-bottom:14px}
+  .st{display:flex;align-items:center;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--pri)}
   .sn{display:inline-flex;align-items:center;justify-content:center;background:var(--pri);color:#fff;width:20px;height:20px;border-radius:4px;font-size:9px;font-weight:700;margin-right:6px;flex-shrink:0}
   .st span:last-child{font-size:13px;font-weight:700;color:var(--pri-d)}
   .tx{font-size:10px;color:var(--t2);line-height:1.7;margin-bottom:5px}
 
+  /* CARDS */
   .cg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:6px 0}
-  .cd{background:var(--bg);border-radius:6px;padding:8px;border:1px solid var(--bd)}
+  .cd{background:var(--bg);border-radius:5px;padding:8px;border:1px solid var(--bd)}
   .cd .ci{font-size:14px;margin-bottom:2px}
-  .cd h4{font-size:10px;font-weight:600;margin-bottom:1px}
-  .cd p{font-size:8px;color:var(--t2);line-height:1.4}
+  .cd h4{font-size:9px;font-weight:600;margin-bottom:1px}
+  .cd p{font-size:8px;color:var(--t2);line-height:1.45}
   .c-full{grid-column:1/-1}
 
-  .pi{background:#fef2f2;border-radius:6px;padding:8px 10px;margin-bottom:5px;border-left:3px solid var(--ng)}
-  .pi h4{color:#dc2626;font-size:10px;margin-bottom:1px}
+  /* PAIN */
+  .pi{background:#fef2f2;border-radius:5px;padding:7px 9px;margin-bottom:4px;border-left:3px solid var(--ng)}
+  .pi h4{color:#dc2626;font-size:9px;margin-bottom:1px}
   .pi p{font-size:8px;color:var(--t2);line-height:1.5}
 
-  table{width:100%;border-collapse:collapse;margin:5px 0;font-size:9px}
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;margin:4px 0;font-size:9px}
   thead{background:var(--pri);color:#fff}
-  th{padding:4px 7px;text-align:left;font-size:8px;font-weight:600}
-  td{padding:4px 7px;border-bottom:1px solid var(--bd)}
+  th{padding:4px 6px;text-align:left;font-size:8px;font-weight:600}
+  td{padding:4px 6px;border-bottom:1px solid var(--bd)}
 
-  .cmg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:6px 0}
-  .cmb{border-radius:6px;padding:8px;text-align:center}
+  /* COMPARE */
+  .cmg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:5px 0}
+  .cmb{border-radius:5px;padding:7px;text-align:center}
   .cm-b{background:#fef2f2;border:1px solid #fecaca}
   .cm-a{background:#ecfdf5;border:1px solid #a7f3d0}
-  .cml{font-size:9px;font-weight:700;margin-bottom:4px}
+  .cml{font-size:8px;font-weight:700;margin-bottom:4px}
   .cm-b .cml{color:#dc2626}
   .cm-a .cml{color:#059669}
-  .cmr{display:flex;justify-content:space-between;padding:2px 0;font-size:9px;border-bottom:1px solid rgba(0,0,0,.04)}
+  .cmr{display:flex;justify-content:space-between;padding:2px 0;font-size:8px;border-bottom:1px solid rgba(0,0,0,.03)}
   .cmr:last-child{border:none}
 
-  .ab{background:var(--bg);border-radius:6px;padding:10px;margin:5px 0;text-align:center;border:1px solid var(--bd)}
-  .al{border-radius:4px;padding:6px;margin:2px 0;font-size:8px;border:1px solid}
+  /* ARCH */
+  .ab{background:var(--bg);border-radius:5px;padding:8px;margin:4px 0;text-align:center;border:1px solid var(--bd)}
+  .al{border-radius:4px;padding:5px;margin:2px 0;font-size:8px;border:1px solid}
   .af{background:#eff6ff;border-color:#bfdbfe}
   .aa{background:#fffbeb;border-color:#fde68a}
   .ak{background:#ecfdf5;border-color:#a7f3d0}
-  .atg{font-weight:700;font-size:7px;display:inline-block;padding:1px 5px;border-radius:3px;margin-bottom:2px;color:#fff}
+  .atg{font-weight:700;font-size:7px;display:inline-block;padding:1px 5px;border-radius:3px;margin-bottom:1px;color:#fff}
   .af .atg{background:#1d4ed8}
   .aa .atg{background:#b45309}
   .ak .atg{background:#047857}
 
-  .tl{position:relative;padding-left:22px;margin:5px 0}
-  .tl::before{content:'';position:absolute;left:6px;top:2px;bottom:2px;width:2px;background:var(--pri);border-radius:1px}
-  .ti{position:relative;margin-bottom:6px}
-  .ti::before{content:'';position:absolute;left:-18px;top:3px;width:6px;height:6px;background:var(--pri);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--pri)}
-  .tt{font-size:7px;color:var(--pri);font-weight:700;letter-spacing:1px}
+  /* TIMELINE */
+  .tl{position:relative;padding-left:18px;margin:4px 0}
+  .tl::before{content:'';position:absolute;left:5px;top:2px;bottom:2px;width:2px;background:var(--pri);border-radius:1px}
+  .ti{position:relative;margin-bottom:5px}
+  .ti::before{content:'';position:absolute;left:-15px;top:3px;width:5px;height:5px;background:var(--pri);border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--pri)}
+  .tt{font-size:7px;color:var(--pri);font-weight:700;letter-spacing:.5px}
   .tm{font-size:10px;font-weight:600;color:var(--t1)}
   .td{font-size:8px;color:var(--t2)}
 
-  .fl{list-style:none;margin:5px 0}
-  .fl li{padding:2px 0;font-size:9px;color:var(--t2)}
-  .fl li::before{content:'✓';color:var(--ok);font-weight:700;margin-right:4px}
+  .fl{list-style:none;margin:4px 0}
+  .fl li{padding:1px 0;font-size:9px;color:var(--t2)}
+  .fl li::before{content:'✓';color:var(--ok);font-weight:700;margin-right:3px}
 
-  .hb{background:linear-gradient(135deg,rgba(26,86,219,.06),rgba(59,130,246,.06));border:1px solid rgba(26,86,219,.15);border-radius:6px;padding:8px;margin:5px 0;text-align:center}
-  .hb h3{color:var(--pri);font-size:11px;margin-bottom:1px;font-weight:700}
-  .hb p{color:var(--t2);font-size:9px}
+  .hb{background:linear-gradient(135deg,rgba(26,86,219,.05),rgba(59,130,246,.05));border:1px solid rgba(26,86,219,.12);border-radius:5px;padding:7px;margin:4px 0;text-align:center}
+  .hb h3{color:var(--pri);font-size:10px;margin-bottom:1px;font-weight:700}
+  .hb p{color:var(--t2);font-size:8px}
 
-  .pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:5px 0}
-  .pc{border-radius:6px;padding:8px;text-align:center;border:1px solid var(--bd);background:#fff;display:flex;flex-direction:column}
+  /* PRICING */
+  .pg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:4px 0}
+  .pc{border-radius:5px;padding:6px;text-align:center;border:1px solid var(--bd);background:#fff;display:flex;flex-direction:column}
   .pc.feat{border:2px solid var(--pri);background:linear-gradient(180deg,#eff6ff,#fff);position:relative}
   .pc .bdg{background:var(--pri);color:#fff;font-size:7px;padding:1px 5px;border-radius:3px;position:absolute;top:-5px;left:50%;transform:translateX(-50%);font-weight:600}
-  .pn{font-size:9px;font-weight:700;margin-bottom:2px}
-  .pp{font-size:14px;font-weight:900;color:var(--pri)}
-  .pr{font-size:7px;color:var(--t3);margin-bottom:2px}
-  .ps{font-size:7px;color:var(--t2);margin-bottom:3px;padding-bottom:3px;border-bottom:1px solid var(--bd)}
+  .pn{font-size:8px;font-weight:700;margin-bottom:1px}
+  .pp{font-size:13px;font-weight:900;color:var(--pri)}
+  .pr{font-size:7px;color:var(--t3);margin-bottom:1px}
+  .ps{font-size:7px;color:var(--t2);margin-bottom:3px;padding-bottom:2px;border-bottom:1px solid var(--bd)}
   .pc ul{list-style:none;text-align:left;flex:1}
-  .pc li{font-size:8px;padding:1px 0;color:var(--t2)}
+  .pc li{font-size:7px;padding:1px 0;color:var(--t2)}
   .pc li::before{content:'✓';color:var(--ok);font-weight:700;margin-right:2px}
-  .pc li.dis{opacity:.3}
+  .pc li.dis{opacity:.25}
   .pc li.dis::before{content:'—';color:#cbd5e1}
 
-  .ft{background:var(--pri-d);color:#fff;padding:10px 24px;text-align:center}
-  .ft .fl2{font-size:12px;font-weight:900;margin-bottom:2px}
+  /* FOOTER */
+  .ft{background:var(--pri-d);color:#fff;padding:8px 20px;text-align:center;flex-shrink:0}
+  .ft .fl2{font-size:11px;font-weight:900;margin-bottom:1px}
   .ft .fl2 span{color:var(--acc)}
-  .ft .fi{font-size:8px;opacity:.5;line-height:1.5}
-  .ft .fc{font-size:6px;opacity:.3;margin-top:3px}
+  .ft .fi{font-size:7px;opacity:.45;line-height:1.5}
+  .ft .fc{font-size:6px;opacity:.3;margin-top:2px}
 
-  .ca{font-size:9px;color:var(--t3);margin-bottom:6px;text-align:center;font-style:italic}
+  .ca{font-size:9px;color:var(--t3);margin-bottom:5px;text-align:center;font-style:italic}
 
-  [contenteditable="true"]:focus{outline:2px dashed var(--acc);outline-offset:1px;border-radius:3px;background:rgba(245,158,11,.04)}
-  .toast{position:fixed;top:8px;left:50%;transform:translateX(-50%) translateY(-40px);background:var(--ok);color:#fff;padding:4px 12px;border-radius:5px;font-size:9px;z-index:200;transition:transform .3s;font-family:inherit}
+  [contenteditable="true"]:focus{outline:2px dashed var(--acc);outline-offset:1px;border-radius:3px;background:rgba(245,158,11,.03)}
+  .toast{position:fixed;top:6px;left:50%;transform:translateX(-50%) translateY(-36px);background:var(--ok);color:#fff;padding:3px 10px;border-radius:4px;font-size:9px;z-index:200;transition:transform .3s;font-family:inherit}
   .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -169,16 +178,12 @@
   <div class="toc">
     <div class="toc-h" data-edit>Contents</div>
     <ul>
-      <li onclick="go(2)"><span class="tn">1</span><span class="tl" data-edit>당사 소개</span><span class="tp">3</span></li>
-      <li onclick="go(2)"><span class="tn">2</span><span class="tl" data-edit>왜 지금 웹서비스가 필요한가</span><span class="tp">3</span></li>
-      <li onclick="go(3)"><span class="tn">3</span><span class="tl" data-edit>귀사가 직면한 과제</span><span class="tp">4</span></li>
-      <li onclick="go(4)"><span class="tn">4</span><span class="tl" data-edit>CruiseLink가 제공하는 것</span><span class="tp">5</span></li>
-      <li onclick="go(5)"><span class="tn">5</span><span class="tl" data-edit>서비스 구성</span><span class="tp">6</span></li>
-      <li onclick="go(6)"><span class="tn">6</span><span class="tl" data-edit>제공되는 크루즈 데이터</span><span class="tp">7</span></li>
-      <li onclick="go(7)"><span class="tn">7</span><span class="tl" data-edit>콘텐츠 자동 생성</span><span class="tp">8</span></li>
-      <li onclick="go(8)"><span class="tn">8</span><span class="tl" data-edit>도입 효과</span><span class="tp">9</span></li>
-      <li onclick="go(9)"><span class="tn">9</span><span class="tl" data-edit>요금 안내</span><span class="tp">10</span></li>
-      <li onclick="go(10)"><span class="tn">10</span><span class="tl" data-edit>도입 절차</span><span class="tp">11</span></li>
+      <li onclick="go(2)"><span class="tn">1</span><span class="tl" data-edit>당사 소개 + 왜 지금</span><span class="tp">3</span></li>
+      <li onclick="go(3)"><span class="tn">2</span><span class="tl" data-edit>과제 + 제공하는 것</span><span class="tp">4</span></li>
+      <li onclick="go(4)"><span class="tn">3</span><span class="tl" data-edit>서비스 구성</span><span class="tp">5</span></li>
+      <li onclick="go(5)"><span class="tn">4</span><span class="tl" data-edit>데이터 + 자동 콘텐츠</span><span class="tp">6</span></li>
+      <li onclick="go(6)"><span class="tn">5</span><span class="tl" data-edit>도입 효과 + 요금</span><span class="tp">7</span></li>
+      <li onclick="go(7)"><span class="tn">6</span><span class="tl" data-edit>도입 절차</span><span class="tp">8</span></li>
     </ul>
   </div>
 </div></div></div>
@@ -191,15 +196,15 @@
       <div class="st"><span class="sn">1</span><span data-edit>당사 소개</span></div>
       <p class="tx" data-edit><strong>Aerolink Co., Ltd.</strong>는 1987년 창립된 항공·여행 B2B 유통 전문 기업입니다. 항공사 GSA 사업을 기반으로 9개 글로벌 크루즈 선사 API를 연동, 직접 크루즈 OTA를 운영하며 축적한 노하우로 동종 여행사를 위한 웹서비스를 제공합니다.</p>
       <div class="cg">
-        <div class="cd"><div class="ci">🚢</div><h4 data-edit>크루즈 OTA 직접 운영</h4><p data-edit>MSC·RCI·Carnival·Princess·NCL·HAL·Celebrity·Costa·Disney — 21,000개+</p></div>
+        <div class="cd"><div class="ci">🚢</div><h4 data-edit>크루즈 OTA 직접 운영</h4><p data-edit>MSC·RCI·Carnival·Princess·NCL 등 9개 선사, 21,000개+</p></div>
         <div class="cd"><div class="ci">💻</div><h4 data-edit>웹서비스 구축 실적</h4><p data-edit>직접 운영 플랫폼 기술로 화이트라벨 제공</p></div>
-        <div class="cd"><div class="ci">🤖</div><h4 data-edit>자체 기술력</h4><p data-edit>AI 챗봇, 자동 콘텐츠, 인보이스, 백오피스 자체 개발</p></div>
+        <div class="cd"><div class="ci">🤖</div><h4 data-edit>자체 기술력</h4><p data-edit>AI 챗봇, 자동 콘텐츠, 인보이스 자체 개발</p></div>
         <div class="cd"><div class="ci">🌐</div><h4 data-edit>다국어 운영</h4><p data-edit>cruiselink.co.kr — 한국어·영어·일본어</p></div>
       </div>
     </div>
     <div class="sec">
-      <div class="st"><span class="sn">2</span><span data-edit>왜 지금 웹서비스가 필요한가</span></div>
-      <p class="tx" data-edit>일본 크루즈 시장은 연간 300만 명 이상, 아시아 최대 규모. 온라인 예약 수요 급증으로 <strong>웹서비스를 갖춘 여행사만이 경쟁력</strong>을 유지합니다. 크루즈 상품을 수동으로 만들면 <strong>엄청난 시간과 비용</strong>이 들고, 모든 상품을 소개하는 건 사실상 불가능합니다. <strong style="color:var(--pri)">CruiseLink가 해결합니다.</strong></p>
+      <div class="st"><span class="sn">2</span><span data-edit>왜 지금인가</span></div>
+      <p class="tx" data-edit>일본 크루즈 시장 연간 300만 명+, 아시아 최대. 온라인 예약 급증으로 <strong>웹서비스 갖춘 여행사만 생존</strong>. 크루즈 상품 수동 제작은 <strong>시간·비용 폭탄</strong>. <strong style="color:var(--pri)">CruiseLink가 해결합니다.</strong></p>
     </div>
   </div>
 </div></div></div>
@@ -208,20 +213,20 @@
 <div class="s"><div class="si"><div class="sb">
   <div class="ct">
     <div class="sec">
-      <div class="st"><span class="sn">3</span><span data-edit>귀사가 직면한 과제</span></div>
-      <div class="pi"><h4 data-edit>❶ 웹사이트 구축의 높은 장벽</h4><p data-edit>선사별 API 통합에 막대한 초기비+유지비. 도메인 지식 보유 개발사 거의 없음.</p></div>
-      <div class="pi"><h4 data-edit>❷ 끝없는 콘텐츠 제작</h4><p data-edit>수백 개 상품 수동 수집·번역·등록. 1개당 2~4시간. 판매 기회 놓침.</p></div>
-      <div class="pi"><h4 data-edit>❸ 야간·휴일 리드 손실</h4><p data-edit>영업시간 외 응답 불가 → 경쟁사 이탈.</p></div>
+      <div class="st"><span class="sn">3</span><span data-edit>직면한 과제</span></div>
+      <div class="pi"><h4 data-edit>❶ 구축 장벽</h4><p data-edit>선사별 API 통합에 막대한 초기비+유지비. 전문 개발사 부재.</p></div>
+      <div class="pi"><h4 data-edit>❷ 콘텐츠 지옥</h4><p data-edit>수백 개 상품 수동 등록. 1개당 2~4시간. 판매 기회 상실.</p></div>
+      <div class="pi"><h4 data-edit>❸ 야간 리드 손실</h4><p data-edit>영업시간 외 응답 불가 → 경쟁사 이탈.</p></div>
     </div>
     <div class="sec">
-      <div class="st"><span class="sn">4</span><span data-edit>CruiseLink가 제공하는 것</span></div>
-      <div class="hb"><h3 data-edit>귀사의 브랜드로, 4주 만에 크루즈 사이트 오픈</h3></div>
+      <div class="st"><span class="sn">4</span><span data-edit>제공하는 것</span></div>
+      <div class="hb"><h3 data-edit>귀사 브랜드로, 4주 만에 오픈</h3></div>
       <ul class="fl">
-        <li data-edit><strong>자체 도메인·브랜드</strong>로 운영</li>
+        <li data-edit><strong>자체 도메인·브랜드</strong> 운영</li>
         <li data-edit>9개 선사 <strong>21,000개+</strong> 자동 연동</li>
         <li data-edit>상품 페이지 <strong>자동 생성</strong></li>
-        <li data-edit><strong>AI 바이브 코딩</strong> — 개발 지식 없이 수정 가능</li>
-        <li data-edit>AI 챗봇 <strong>24h 일본어 상담</strong></li>
+        <li data-edit><strong>AI 바이브 코딩</strong> — 개발 지식 없이 수정</li>
+        <li data-edit>AI 챗봇 <strong>24h 일본어</strong></li>
         <li data-edit>영문→일본어 <strong>자동 번역</strong></li>
       </ul>
     </div>
@@ -234,56 +239,55 @@
     <div class="sec">
       <div class="st"><span class="sn">5</span><span data-edit>서비스 구성</span></div>
       <div class="ab">
-        <div class="al af"><span class="atg">귀사의 웹사이트</span><br><span data-edit>크루즈 검색 → 상품 상세 → 견적 → 예약 | AI 챗봇 | 프로모션</span></div>
-        <div style="font-size:12px;color:#94a3b8">↕</div>
-        <div class="al aa"><span class="atg">관리자</span><br><span data-edit>예약 관리 | CRM | 매출 리포트 | 콘텐츠 편집</span></div>
-        <div style="font-size:12px;color:#94a3b8">↕</div>
-        <div class="al ak"><span class="atg">CruiseLink 엔진</span><br><span data-edit>9개 선사 API | 자동 콘텐츠 | 번역 | 인보이스 | AI | 인프라</span></div>
+        <div class="al af"><span class="atg">귀사 웹사이트</span><br><span data-edit>검색 → 상세 → 견적 → 예약 | AI 챗봇 | 프로모션</span></div>
+        <div style="font-size:10px;color:#94a3b8">↕</div>
+        <div class="al aa"><span class="atg">관리자</span><br><span data-edit>예약 관리 | CRM | 리포트 | 콘텐츠 편집</span></div>
+        <div style="font-size:10px;color:#94a3b8">↕</div>
+        <div class="al ak"><span class="atg">CruiseLink 엔진</span><br><span data-edit>9개 선사 API | 자동 콘텐츠 | 번역 | AI | 인프라</span></div>
       </div>
       <div class="cg">
         <div class="cd"><div class="ci">🎨</div><h4 data-edit>브랜드 100%</h4><p data-edit>도메인·로고·컬러. 반응형. SSL·SEO</p></div>
-        <div class="cd"><div class="ci">📄</div><h4 data-edit>콘텐츠 자동 생성</h4><p data-edit>일정표·요금표·선박 정보 자동</p></div>
-        <div class="cd"><div class="ci">🤖</div><h4 data-edit>AI 챗봇</h4><p data-edit>"50만엔 알래스카" → 즉시 추천</p></div>
+        <div class="cd"><div class="ci">📄</div><h4 data-edit>자동 생성</h4><p data-edit>일정·요금·선박 정보 자동</p></div>
+        <div class="cd"><div class="ci">🤖</div><h4 data-edit>AI 챗봇</h4><p data-edit>자연어 상담, 즉시 추천</p></div>
         <div class="cd"><div class="ci">📊</div><h4 data-edit>백오피스</h4><p data-edit>문의·상품·배너 관리</p></div>
-        <div class="cd c-full"><div class="ci">✨</div><h4 data-edit>AI 바이브 코딩 유지보수</h4><p data-edit>수정·디자인 변경 모두 AI가 처리. 자연어 요청만으로 즉시 반영</p></div>
+        <div class="cd c-full"><div class="ci">✨</div><h4 data-edit>AI 바이브 코딩</h4><p data-edit>수정·디자인 변경 모두 AI 처리. 자연어로 즉시 반영</p></div>
       </div>
     </div>
   </div>
 </div></div></div>
 
-<!-- 6. 데이터 + 자동 콘텐츠 -->
+<!-- 6. 데이터 + 콘텐츠 -->
 <div class="s"><div class="si"><div class="sb">
   <div class="ct">
     <div class="sec">
-      <div class="st"><span class="sn">6</span><span data-edit>제공되는 크루즈 데이터</span></div>
-      <p class="tx" data-edit>9개 선사 API 연동을 당사가 일괄 처리. 개별 계약 불필요.</p>
+      <div class="st"><span class="sn">6</span><span data-edit>제공 데이터</span></div>
+      <p class="tx" data-edit>9개 선사 API 연동 당사가 일괄 처리. 개별 계약 불필요.</p>
       <table>
         <thead><tr><th>항목</th><th>내용</th></tr></thead>
         <tbody>
-          <tr><td data-edit>연동 선사</td><td data-edit>MSC, RCI, Carnival, Princess, NCL, HAL, Celebrity, Costa, Disney</td></tr>
-          <tr><td data-edit>상품 수</td><td data-edit><strong>21,000+</strong>개</td></tr>
+          <tr><td data-edit>선사</td><td data-edit>MSC, RCI, Carnival, Princess, NCL, HAL, Celebrity, Costa, Disney</td></tr>
+          <tr><td data-edit>상품</td><td data-edit><strong>21,000+</strong>개</td></tr>
           <tr><td data-edit>데이터</td><td data-edit>일정·노선·선박·기항지·출항일·요금</td></tr>
           <tr><td data-edit>갱신</td><td data-edit>일 1회 자동</td></tr>
-          <tr><td data-edit>언어</td><td data-edit>일본어 번역 제공</td></tr>
         </tbody>
       </table>
     </div>
     <div class="sec">
-      <div class="st"><span class="sn">7</span><span data-edit>콘텐츠 자동 생성</span></div>
+      <div class="st"><span class="sn">7</span><span data-edit>자동 생성 효과</span></div>
       <table>
         <thead><tr><th>구분</th><th>현재</th><th>도입 후</th></tr></thead>
         <tbody>
-          <tr><td data-edit>상품 1개당</td><td data-edit>2~4시간</td><td data-edit style="color:var(--ok);font-weight:600">자동 (0분)</td></tr>
-          <tr><td data-edit>연간 인건비</td><td data-edit>상당한 비용</td><td data-edit style="color:var(--ok);font-weight:600">0엔</td></tr>
-          <tr><td data-edit>요금 변경</td><td data-edit>수동 (주 단위)</td><td data-edit style="color:var(--ok);font-weight:600">일 단위 자동</td></tr>
-          <tr><td data-edit>다국어</td><td data-edit>수동 번역</td><td data-edit style="color:var(--ok);font-weight:600">자동 번역</td></tr>
+          <tr><td data-edit>1개당</td><td data-edit>2~4시간</td><td data-edit style="color:var(--ok);font-weight:600">자동(0분)</td></tr>
+          <tr><td data-edit>인건비</td><td data-edit">상당</td><td data-edit style="color:var(--ok);font-weight:600">0엔</td></tr>
+          <tr><td data-edit>요금변경</td><td data-edit>수동(주)</td><td data-edit style="color:var(--ok);font-weight:600">일단위 자동</td></tr>
+          <tr><td data-edit>번역</td><td data-edit>수동</td><td data-edit style="color:var(--ok);font-weight:600">자동</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div></div></div>
 
-<!-- 7. 도입 효과 -->
+<!-- 7. 효과 + 요금 -->
 <div class="s"><div class="si"><div class="sb">
   <div class="ct">
     <div class="sec">
@@ -291,62 +295,60 @@
       <div class="cmg">
         <div class="cmb cm-b">
           <div class="cml" data-edit>현재</div>
-          <div class="cmr"><span data-edit>견적 응답</span><span data-edit>2~3일</span></div>
-          <div class="cmr"><span data-edit>구축비</span><span data-edit>막대한 비용</span></div>
-          <div class="cmr"><span data-edit>월 유지비</span><span data-edit>적지 않은 비용</span></div>
-          <div class="cmr"><span data-edit>콘텐츠</span><span data-edit>수동 2~4h/건</span></div>
-          <div class="cmr"><span data-edit>야간·휴일</span><span data-edit>불가</span></div>
-          <div class="cmr"><span data-edit>다국어</span><span data-edit>인력 필요</span></div>
+          <div class="cmr"><span data-edit>견적</span><span data-edit>2~3일</span></div>
+          <div class="cmr"><span data-edit>구축비</span><span data-edit">막대</span></div>
+          <div class="cmr"><span data-edit>유지비</span><span data-edit">막대</span></div>
+          <div class="cmr"><span data-edit">콘텐츠</span><span data-edit>수동</span></div>
+          <div class="cmr"><span data-edit>야간</span><span data-edit">X</span></div>
         </div>
         <div class="cmb cm-a">
           <div class="cml" data-edit>도입 후</div>
           <div class="cmr"><span data-edit>견적</span><span data-edit><strong>실시간</strong></span></div>
-          <div class="cmr"><span data-edit>구축비</span><span data-edit><strong>설치비만</strong></span></div>
-          <div class="cmr"><span data-edit>월 유지비</span><span data-edit><strong>정액제</strong></span></div>
-          <div class="cmr"><span data-edit>콘텐츠</span><span data-edit><strong>전 자동</strong></span></div>
-          <div class="cmr"><span data-edit>야간·휴일</span><span data-edit><strong>AI 24h</strong></span></div>
-          <div class="cmr"><span data-edit>다국어</span><span data-edit><strong>3개국어 자동</strong></span></div>
+          <div class="cmr"><span data-edit>구축</span><span data-edit><strong>설치비만</strong></span></div>
+          <div class="cmr"><span data-edit>유지비</span><span data-edit"><strong>정액제</strong></span></div>
+          <div class="cmr"><span data-edit>콘텐츠</span><span data-edit><strong>자동</strong></span></div>
+          <div class="cmr"><span data-edit>야간</span><span data-edit"><strong>AI 24h</strong></span></div>
         </div>
       </div>
     </div>
     <div class="sec">
-      <div class="st"><span class="sn">9</span><span data-edit>요금 안내</span></div>
+      <div class="st"><span class="sn">9</span><span data-edit>요금</span></div>
       <div class="pg">
         <div class="pc">
           <div class="pn" data-edit>스타터</div>
-          <div class="pp" data-edit>¥150,000</div>
+          <div class="pp" data-edit>¥150K</div>
           <div class="pr" data-edit>/월</div>
-          <div class="ps" data-edit>설치비 ¥300,000</div>
+          <div class="ps" data-edit>설치 ¥300K</div>
           <ul>
-            <li data-edit>예약당 ¥3,000</li>
-            <li data-edit>템플릿 디자인</li>
-            <li class="dis" data-edit>AI 챗봇</li>
-            <li data-edit>SLA 99.5%</li>
+            <li data-edit>건당 ¥3,000</li>
+            <li data-edit>템플릿</li>
+            <li class="dis" data-edit>챗봇</li>
+            <li data-edit>99.5%</li>
           </ul>
         </div>
         <div class="pc feat">
           <div class="bdg">추천</div>
           <div class="pn" data-edit>프로</div>
-          <div class="pp" data-edit>¥350,000</div>
+          <div class="pp" data-edit>¥350K</div>
           <div class="pr" data-edit>/월</div>
-          <div class="ps" data-edit>설치비 ¥500,000</div>
+          <div class="ps" data-edit>설치 ¥500K</div>
           <ul>
-            <li data-edit>예약당 ¥1,500</li>
-            <li data-edit>디자인 커스텀</li>
-            <li data-edit>AI 챗봇 포함</li>
-            <li data-edit>SLA 99.9%</li>
+            <li data-edit>건당 ¥1,500</li>
+            <li data-edit>커스텀</li>
+            <li data-edit>챗봇 O</li>
+            <li data-edit>99.9%</li>
           </ul>
         </div>
         <div class="pc">
-          <div class="pn" data-edit>엔터프라이즈</div>
-          <div class="pp" data-edit>별도 협의</div>
+          <div class="pn" data-edit>ENT</div>
+          <div class="pp" data-edit>별도</div>
           <div class="pr" data-edit> </div>
-          <div class="ps" data-edit>설치비 별도</div>
+          <div class="ps" data-edit>설치 별도</div>
           <ul>
-            <li data-edit>수수료 면제</li>
-            <li data-edit>풀 커스텀</li>
-            <li data-edit>전담 매니저</li>
-            <li data-edit>SLA 99.9%</li>
+            <li data-edit>면제</li>
+            <li data-edit>풀커스텀</li>
+            <li data-edit>전담</li>
+            <li data-edit>99.9%</li>
           </ul>
         </div>
       </div>
@@ -354,7 +356,7 @@
   </div>
 </div></div></div>
 
-<!-- 8. 도입 절차 -->
+<!-- 8. 절차 + 푸터 -->
 <div class="s"><div class="si">
   <div class="sb">
   <div class="ct">
@@ -362,10 +364,10 @@
       <div class="st"><span class="sn">10</span><span data-edit>도입 절차</span></div>
       <div class="hb"><h3 data-edit>계약 후 최단 4주 만에 오픈</h3></div>
       <div class="tl">
-        <div class="ti"><div class="tt" data-edit>1~2주</div><div class="tm" data-edit>요구사항 정의</div><div class="td" data-edit>업무 흐름 청취, 디자인 방향, 기능 확정</div></div>
-        <div class="ti"><div class="tt" data-edit> </div><div class="tm" data-edit>계약 체결</div><div class="td" data-edit>서비스 수준, 요금, 일정 확정</div></div>
-        <div class="ti"><div class="tt" data-edit>3~6주</div><div class="tm" data-edit>사이트 구축</div><div class="td" data-edit>도메인 · 브랜드 · 데이터 연동 · 일본어</div></div>
-        <div class="ti"><div class="tt" data-edit>7~8주</div><div class="tm" data-edit>테스트 · 오픈</div><div class="td" data-edit>기능 테스트·검수 후 정식 오픈</div></div>
+        <div class="ti"><div class="tt" data-edit>1~2주</div><div class="tm" data-edit>요구사항 정의</div><div class="td" data-edit>업무 흐름, 디자인, 기능 확정</div></div>
+        <div class="ti"><div class="tt" data-edit> </div><div class="tm" data-edit>계약 체결</div><div class="td" data-edit>수준, 요금, 일정 확정</div></div>
+        <div class="ti"><div class="tt" data-edit>3~6주</div><div class="tm" data-edit>사이트 구축</div><div class="td" data-edit>도메인 · 브랜드 · 데이터 · 일본어</div></div>
+        <div class="ti"><div class="tt" data-edit>7~8주</div><div class="tm" data-edit>테스트 · 오픈</div><div class="td" data-edit>검수 후 정식 오픈</div></div>
       </div>
     </div>
   </div>
@@ -373,7 +375,7 @@
   <div class="ft">
     <div class="fl2" data-edit>Cruise<span>Link</span></div>
     <div class="fi" data-edit>Aerolink Co., Ltd. | <a href="https://aerolink.co.kr" style="color:#93c5fd">aerolink.co.kr</a><br>서울 강서구 마곡서로 152, 두산 더 랜드타워 5층</div>
-    <div class="fc" data-edit>© 2026 Aerolink Co., Ltd. All rights reserved.</div>
+    <div class="fc" data-edit>© 2026 Aerolink Co., Ltd.</div>
   </div>
 </div></div>
 
@@ -384,8 +386,8 @@
   <button id="prev" onclick="go(c-1)">◀</button>
   <span class="cnt" id="cnt">1/8</span>
   <button id="next" onclick="go(c+1)">▶</button>
-  <button class="eb" id="eb" onclick="tog()">✏️ 편집</button>
-  <button class="sv" id="svb" onclick="sav()">💾 저장</button>
+  <button class="eb" id="eb" onclick="tog()">✏️</button>
+  <button class="sv" id="svb" onclick="sav()">💾</button>
 </div>
 
 <script>
@@ -396,7 +398,7 @@ function go(n){if(n<0||n>=T)return;c=n;w.style.transform=`translateX(-${c*100}vw
 go(0);
 document.addEventListener('keydown',e=>{if(em&&document.activeElement.hasAttribute('contenteditable'))return;if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();go(c+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(c-1)}});
 let sx=0;document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX});document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(c+(dx<0?1:-1))});
-function tog(){em=!em;document.querySelectorAll('[data-edit]').forEach(e=>{e.contentEditable=em?'true':'false'});const b=document.getElementById('eb');b.classList.toggle('on',em);b.textContent=em?'✏️ 편집중':'✏️ 편집';document.getElementById('svb').classList.toggle('sh',em)}
+function tog(){em=!em;document.querySelectorAll('[data-edit]').forEach(e=>{e.contentEditable=em?'true':'false'});const b=document.getElementById('eb');b.classList.toggle('on',em);b.textContent=em?'✏️ ON':'✏️';document.getElementById('svb').classList.toggle('sh',em)}
 function sav(){const h=document.documentElement.outerHTML;const b=new Blob(['<!DOCTYPE html>\n'+h],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='proposal-japan-saas-kr-v2.html';a.click();URL.revokeObjectURL(a.href);const tt=document.getElementById('toast');tt.classList.add('show');setTimeout(()=>tt.classList.remove('show'),2000)}
 </script>
 </body>
