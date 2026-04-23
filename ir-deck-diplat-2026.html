@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIPLAT KOREA — IR Deck 2026</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif; background:#0a0a0a; color:#fff; }
+.slide { min-height:100vh; padding:60px 80px; display:flex; flex-direction:column; justify-content:center; border-bottom:1px solid #1a1a1a; }
+.slide-num { font-size:12px; color:#666; margin-bottom:20px; letter-spacing:2px; }
+h1 { font-size:56px; font-weight:900; line-height:1.2; margin-bottom:24px; }
+h2 { font-size:40px; font-weight:800; margin-bottom:32px; }
+h3 { font-size:24px; font-weight:700; margin-bottom:16px; }
+.subtitle { font-size:22px; color:#888; margin-bottom:40px; }
+.highlight { color:#4F9DFF; }
+.accent { color:#00D4AA; }
+.tag { display:inline-block; padding:6px 16px; border-radius:20px; font-size:14px; font-weight:600; margin:4px; }
+.tag-blue { background:rgba(79,157,255,0.15); color:#4F9DFF; }
+.tag-green { background:rgba(0,212,170,0.15); color:#00D4AA; }
+.tag-orange { background:rgba(255,165,0,0.15); color:#FFA500; }
+.tag-purple { background:rgba(168,85,247,0.15); color:#A855F7; }
+.grid { display:grid; gap:24px; }
+.grid-2 { grid-template-columns:1fr 1fr; }
+.grid-3 { grid-template-columns:1fr 1fr 1fr; }
+.card { background:#141414; border:1px solid #222; border-radius:16px; padding:32px; }
+.card h3 { margin-bottom:12px; }
+.big-num { font-size:48px; font-weight:900; color:#4F9DFF; }
+.big-num small { font-size:20px; color:#888; font-weight:400; }
+.metric { text-align:center; }
+.metric .num { font-size:36px; font-weight:800; }
+.metric .label { font-size:14px; color:#888; margin-top:8px; }
+table { width:100%; border-collapse:collapse; margin:16px 0; }
+th { text-align:left; padding:12px 16px; background:#141414; font-size:14px; color:#888; border-bottom:1px solid #222; }
+td { padding:12px 16px; border-bottom:1px solid #1a1a1a; font-size:15px; }
+.chart-bar { height:32px; background:linear-gradient(90deg,#4F9DFF,#00D4AA); border-radius:6px; margin:8px 0; display:flex; align-items:center; padding-left:12px; font-size:13px; font-weight:600; color:#fff; }
+.flow { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:20px 0; }
+.flow-item { background:#141414; border:1px solid #333; border-radius:12px; padding:16px 24px; text-align:center; }
+.flow-arrow { color:#4F9DFF; font-size:24px; }
+.logo-text { font-size:32px; font-weight:900; letter-spacing:-1px; }
+.contact-box { background:#141414; border-radius:16px; padding:40px; margin-top:40px; }
+ul { list-style:none; padding:0; }
+li { padding:8px 0; font-size:16px; line-height:1.6; }
+li::before { content:"→ "; color:#4F9DFF; }
+.check::before { content:"✅ "; color:#00D4AA; }
+.warning::before { content:"⚠️ "; color:#FFA500; }
+.nav { position:fixed; bottom:20px; right:20px; display:flex; gap:8px; z-index:999; }
+.nav button { width:40px; height:40px; border-radius:50%; border:1px solid #333; background:#141414; color:#fff; cursor:pointer; font-size:16px; }
+.nav button:hover { background:#4F9DFF; }
+.api-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.api-item { background:#141414; border:1px solid #222; border-radius:10px; padding:12px; text-align:center; font-size:13px; }
+.api-item.done { border-color:#00D4AA; }
+.api-item.progress { border-color:#FFA500; }
+.api-item.planned { border-color:#666; }
+.comp-table td:first-child { font-weight:700; }
+.comp-table td, .comp-table th { text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- Slide 1 -->
+<div class="slide" id="s1">
+<div class="slide-num">01 / 15</div>
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:40px;">
+<div class="logo-text">DIPLAT<span class="highlight">.</span></div>
+</div>
+<h1>Travel Tech<br>API Aggregator</h1>
+<p class="subtitle">여행의 모든 API를 하나로</p>
+<div style="margin-top:40px;">
+<p style="font-size:18px;color:#888;">2026 시드 투자 Investor Relations</p>
+<p style="font-size:16px;color:#666;margin-top:12px;">대표: 정경준 | 서울 강서구 마곡서로 152</p>
+</div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide" id="s2">
+<div class="slide-num">02 / 15 — Executive Summary</div>
+<h2>디플랫코리아는 <span class="highlight">여행 산업 API 통합 플랫폼</span>입니다</h2>
+<p style="font-size:18px;color:#aaa;margin-bottom:40px;">3개의 수직 서비스를 운영하며, 이를 하나의 API Aggregator로 통합합니다</p>
+<div class="grid grid-3">
+<div class="card" style="border-color:#4F9DFF;">
+<div style="font-size:32px;margin-bottom:12px;">🎫</div>
+<h3>Enttix</h3>
+<p style="color:#888;font-size:14px;">글로벌 티켓 마켓플레이스</p>
+<p style="color:#888;font-size:13px;margin-top:8px;">런던 웨스트엔드, 스포츠, 콘서트</p>
+</div>
+<div class="card" style="border-color:#00D4AA;">
+<div style="font-size:32px;margin-bottom:12px;">🚢</div>
+<h3>CruiseLink SaaS</h3>
+<p style="color:#888;font-size:14px;">크루즈 B2B SaaS 플랫폼</p>
+<p style="color:#888;font-size:13px;margin-top:8px;">다중 선사 비교, 화이트라벨</p>
+</div>
+<div class="card" style="border-color:#A855F7;">
+<div style="font-size:32px;margin-bottom:12px;">♨️</div>
+<h3>Ryokaneer</h3>
+<p style="color:#888;font-size:14px;">일본 료칸 전문 예약</p>
+<p style="color:#888;font-size:13px;margin-top:8px;">6,600개 료칸, 온천 데이터 통합</p>
+</div>
+</div>
+<div style="margin-top:40px;text-align:center;">
+<p style="font-size:20px;font-weight:700;">→ 이 3개에서 축적한 기술로 <span class="highlight">Travel API Aggregator</span>로 진화</p>
+</div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="s3">
+<div class="slide-num">03 / 15 — Problem</div>
+<h2>여행 산업의 <span style="color:#FF6B6B;">API 파편화</span></h2>
+<p style="font-size:18px;color:#aaa;margin-bottom:32px;">수백 개의 API가 난립 — 각각 다른 인증, 포맷, 정산</p>
+<div class="grid grid-2">
+<div class="card">
+<h3>각 API마다 필요한 것</h3>
+<ul>
+<li>별도 법적 계약 협상</li>
+<li>3~6개월 개발 기간</li>
+<li>다른 데이터 포맷 정규화</li>
+<li>각각의 정산 시스템 구축</li>
+<li>지속적인 유지보수</li>
+</ul>
+</div>
+<div class="card">
+<h3>파편화된 API 예시</h3>
+<table>
+<tr><th>분야</th><th>API 수</th></tr>
+<tr><td>항공</td><td>Amadeus, Sabre, 직접 50+</td></tr>
+<tr><td>호텔</td><td>Booking, Expedia, ETG 등</td></tr>
+<tr><td>크루즈</td><td>Widgety, 각 선사 직접</td></tr>
+<tr><td>철도</td><td>Railclick, SBB, JR, 12go</td></tr>
+<tr><td>티켓</td><td>Tixstock, Tiqets, LTD</td></tr>
+<tr><td>료칸</td><td>Rakuten RTX (6,600개)</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide" id="s4">
+<div class="slide-num">04 / 15 — Solution</div>
+<h2>하나의 API로 <span class="highlight">모든 여행 상품</span>에 접근</h2>
+<div class="card" style="margin:32px 0;padding:40px;text-align:center;">
+<div style="background:#1a1a1a;border-radius:16px;padding:32px;margin-bottom:24px;">
+<p style="font-size:24px;font-weight:700;margin-bottom:24px;">DIPLAT API Aggregator</p>
+<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
+<span class="tag tag-blue">항공</span>
+<span class="tag tag-green">호텔</span>
+<span class="tag tag-orange">크루즈</span>
+<span class="tag tag-purple">철도</span>
+<span class="tag tag-blue">티켓</span>
+<span class="tag tag-green">료칸</span>
+</div>
+<div style="font-size:20px;margin:16px 0;">↓</div>
+<p style="font-size:18px;color:#4F9DFF;font-weight:600;">통합 API · 단일 엔드포인트 · 표준 JSON · 단일 정산</p>
+</div>
+<div style="font-size:20px;margin:8px 0;">↓</div>
+<p style="font-size:18px;color:#00D4AA;">고객사 (여행사, OTA, 앱) — 하나의 API Key로 모든 상품 판매</p>
+</div>
+<div class="grid grid-3">
+<div class="metric"><div class="num accent">2주</div><div class="label">연동 기간 (기존 6개월 →)</div></div>
+<div class="metric"><div class="num highlight">1개</div><div class="label">계약·정산 (통합)</div></div>
+<div class="metric"><div class="num accent">표준</div><div class="label">JSON 응답 포맷</div></div>
+</div>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide" id="s5">
+<div class="slide-num">05 / 15 — Market</div>
+<h2>Market Opportunity</h2>
+<div class="grid grid-2" style="margin-bottom:32px;">
+<div class="card">
+<table>
+<tr><th>시장</th><th>규모</th><th>CAGR</th></tr>
+<tr><td>글로벌 OTA</td><td class="highlight">$1.2T</td><td>5.8%</td></tr>
+<tr><td>Travel Tech SaaS</td><td>$25B</td><td>12.3%</td></tr>
+<tr><td>API-as-a-Service</td><td>$8.5B</td><td>18.7%</td></tr>
+<tr><td>일본 료칸</td><td>$12B</td><td>6.2%</td></tr>
+<tr><td>글로벌 크루즈</td><td>$85B</td><td>7.1%</td></tr>
+<tr><td>엔터테인먼트 티켓</td><td>$68B</td><td>5.4%</td></tr>
+</table>
+</div>
+<div class="card" style="display:flex;flex-direction:column;justify-content:center;">
+<p style="font-size:16px;color:#888;margin-bottom:12px;">TAM → SAM → SOM</p>
+<div style="margin-bottom:16px;">
+<p style="font-size:14px;color:#666;">TAM (전체 시장)</p>
+<div class="chart-bar" style="width:100%;">$1.2T+</div>
+</div>
+<div style="margin-bottom:16px;">
+<p style="font-size:14px;color:#666;">SAM (API 연동 시장)</p>
+<div class="chart-bar" style="width:42%;">$25B</div>
+</div>
+<div>
+<p style="font-size:14px;color:#666;">SOM (아시아 진입, 5년)</p>
+<div class="chart-bar" style="width:18%;">$500M</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 6 -->
+<div class="slide" id="s6">
+<div class="slide-num">06 / 15 — Product 1</div>
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+<span style="font-size:48px;">🎫</span>
+<div>
+<h2 style="margin-bottom:4px;">ENTTIX</h2>
+<p style="color:#888;font-size:16px;">AI 기반 글로벌 티켓 마켓플레이스</p>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="card">
+<h3>기술 스택</h3>
+<ul>
+<li>다중 API 통합: Tixstock, Tiqets, LTD</li>
+<li>실시간 Interactive Seat Map</li>
+<li>AI 가격 비교 및 추천</li>
+<li>다국어 (한국어, 영어, 일본어)</li>
+<li>Next.js 16 + Supabase</li>
+<li>Vercel 배포 운영중</li>
+</ul>
+</div>
+<div class="card">
+<h3>현황 & 수익</h3>
+<p style="color:#aaa;font-size:15px;line-height:2;">
+런던 웨스트엔드 <span class="highlight">100+ 공연</span> 연동<br>
+성장관광벤처 공모 제출 완료<br>
+프로덕션 운영중<br>
+</p>
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #222;">
+<p style="font-size:14px;color:#888;">수익 모델</p>
+<p style="font-size:20px;font-weight:700;color:#00D4AA;">티켓 마진 8~15%</p>
+<p style="font-size:14px;color:#888;margin-top:4px;">+ B2B API 수수료</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 7 -->
+<div class="slide" id="s7">
+<div class="slide-num">07 / 15 — Product 2</div>
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+<span style="font-size:48px;">🚢</span>
+<div>
+<h2 style="margin-bottom:4px;">CRUISELINK SaaS</h2>
+<p style="color:#888;font-size:16px;">크루즈 B2B SaaS 플랫폼</p>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="card">
+<h3>기능</h3>
+<ul>
+<li>Widgety 라이브 API (실시간 재고)</li>
+<li>다중 선사 비교 (MSC, NCL, RCI 등)</li>
+<li>한국어 현지화 완료</li>
+<li>호텔 연동 (ETG/RateHawk)</li>
+<li>PWA + 네이티브 앱 (Capacitor)</li>
+<li>화이트라벨 SaaS 템플릿</li>
+</ul>
+</div>
+<div class="card">
+<h3>수익 모델</h3>
+<div style="margin-bottom:16px;">
+<p style="font-size:14px;color:#888;">SaaS 구독료</p>
+<p style="font-size:24px;font-weight:700;color:#4F9DFF;">$300 ~ $2,000<span style="font-size:14px;color:#888;font-weight:400;">/월/고객</span></p>
+</div>
+<ul>
+<li>크루즈 예약 커미션 (건당)</li>
+<li>화이트라벨 셋업 fee</li>
+<li>Pro 요금제: $900/월</li>
+</ul>
+<div style="margin-top:16px;padding:12px;background:#1a1a1a;border-radius:8px;">
+<p style="font-size:13px;color:#888;">운영 현황</p>
+<p style="font-size:15px;">V1 + V2 프로덕션 운영중</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 8 -->
+<div class="slide" id="s8">
+<div class="slide-num">08 / 15 — Product 3</div>
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+<span style="font-size:48px;">♨️</span>
+<div>
+<h2 style="margin-bottom:4px;">RYOKANEER <span style="font-size:20px;color:#888;">(료칸이어)</span></h2>
+<p style="color:#888;font-size:16px;">일본 료칸 전문 예약 플랫폼</p>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="card">
+<h3>차별화</h3>
+<ul>
+<li><span class="highlight">료칸 ONLY</span> (기존: 호텔 혼합)</li>
+<li>온천 수질 데이터 통합 <span class="tag tag-orange" style="font-size:11px;">특허 가능</span></li>
+<li>AI 큐레이션 콘텐츠</li>
+<li>Rakuten RTX: <span class="highlight">6,600개</span> 직계약</li>
+<li>이롬넷 페이버스 결제</li>
+<li>한국 → 글로벌 확장</li>
+</ul>
+</div>
+<div class="card">
+<h3>온천 데이터 통합 (특허)</h3>
+<div style="background:#1a1a1a;border-radius:10px;padding:16px;margin:12px 0;">
+<p style="font-size:13px;color:#888;margin-bottom:8px;">3단 조합 엔진</p>
+<p style="font-size:14px;">① OTA API → 가격/재고</p>
+<p style="font-size:14px;">② 관광데이터 → 온천 정보</p>
+<p style="font-size:14px;">③ 자체 DB → 표준화</p>
+</div>
+<p style="font-size:14px;color:#FFA500;margin-top:12px;">⚠️ "료칸+온천 통합 API"는 글로벌에 존재하지 않음</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 9 -->
+<div class="slide" id="s9">
+<div class="slide-num">09 / 15 — Technology</div>
+<h2>API 통합 엔진</h2>
+<p style="color:#888;margin-bottom:32px;">3개 서비스 구축하며 축적한 핵심 기술 자산</p>
+<h3 style="margin-bottom:20px;">연동 현황</h3>
+<div class="api-grid">
+<div class="api-item done">✅ Tixstock<br><small>티켓</small></div>
+<div class="api-item done">✅ Tiqets<br><small>티켓</small></div>
+<div class="api-item done">✅ LTD<br><small>런던극장</small></div>
+<div class="api-item done">✅ Widgety<br><small>크루즈</small></div>
+<div class="api-item progress">🔧 ETG/RateHawk<br><small>호텔</small></div>
+<div class="api-item progress">🔧 Rakuten RTX<br><small>료칸 6,600</small></div>
+<div class="api-item planned">📋 Railclick<br><small>유럽철도</small></div>
+<div class="api-item done">✅ APG IATA<br><small>항공빌링</small></div>
+</div>
+<div style="margin-top:40px;" class="grid grid-3">
+<div class="card" style="text-align:center;">
+<p style="font-size:14px;color:#888;">Adapter Pattern</p>
+<p style="font-size:16px;font-weight:600;margin-top:4px;">다양한 API → 표준 인터페이스</p>
+</div>
+<div class="card" style="text-align:center;">
+<p style="font-size:14px;color:#888;">Normalizer</p>
+<p style="font-size:16px;font-weight:600;margin-top:4px;">데이터 포맷 통일</p>
+</div>
+<div class="card" style="text-align:center;">
+<p style="font-size:14px;color:#888;">Settlement Engine</p>
+<p style="font-size:16px;font-weight:600;margin-top:4px;">다중 통화 정산</p>
+</div>
+</div>
+</div>
+
+<!-- Slide 10 -->
+<div class="slide" id="s10">
+<div class="slide-num">10 / 15 — Business Model</div>
+<h2>3단계 수익 구조</h2>
+<div class="grid grid-3" style="margin-bottom:40px;">
+<div class="card" style="border-color:#00D4AA;">
+<p style="font-size:14px;color:#00D4AA;font-weight:700;">Phase 1 — 현재</p>
+<h3 style="margin-top:12px;">수직 서비스</h3>
+<p style="font-size:14px;color:#888;margin-top:8px;">Enttix: 티켓 마진 8~15%</p>
+<p style="font-size:14px;color:#888;">CruiseLink: SaaS + 커미션</p>
+<p style="font-size:14px;color:#888;">Ryokaneer: 예약 마진</p>
+</div>
+<div class="card" style="border-color:#4F9DFF;">
+<p style="font-size:14px;color:#4F9DFF;font-weight:700;">Phase 2 — 12~18개월</p>
+<h3 style="margin-top:12px;">API Aggregator</h3>
+<p style="font-size:14px;color:#888;margin-top:8px;">API 호출당 과금</p>
+<p style="font-size:14px;color:#888;">월 구독 (Tier별)</p>
+<p style="font-size:14px;color:#888;">거래 수수료 0.5~2%</p>
+</div>
+<div class="card" style="border-color:#A855F7;">
+<p style="font-size:14px;color:#A855F7;font-weight:700;">Phase 3 — 24~36개월</p>
+<h3 style="margin-top:12px;">플랫폼</h3>
+<p style="font-size:14px;color:#888;margin-top:8px;">마켓플레이스 수수료</p>
+<p style="font-size:14px;color:#888;">데이터 인사이트 판매</p>
+<p style="font-size:14px;color:#888;">화이트라벨 솔루션</p>
+</div>
+</div>
+<h3 style="margin-bottom:16px;">예상 매출</h3>
+<table>
+<tr><th>연도</th><th>매출</th><th>주요 수익원</th></tr>
+<tr><td>2026 (시드)</td><td class="highlight">₩5억</td><td>Enttix + CruiseLink</td></tr>
+<tr><td>2027</td><td class="highlight">₩30억</td><td>+ Ryokaneer + API</td></tr>
+<tr><td>2028</td><td class="highlight">₩100억</td><td>API Aggregator 본격</td></tr>
+<tr><td>2029</td><td class="highlight">₩300억</td><td>글로벌 확장</td></tr>
+<tr><td>2030</td><td class="highlight">₩800억</td><td>플랫폼 완성</td></tr>
+</table>
+</div>
+
+<!-- Slide 11 -->
+<div class="slide" id="s11">
+<div class="slide-num">11 / 15 — Competition</div>
+<h2>경쟁사 포지셔닝</h2>
+<table class="comp-table" style="margin-top:32px;">
+<tr><th></th><th>항공</th><th>호텔</th><th>크루즈</th><th>철도</th><th>티켓</th><th>료칸</th></tr>
+<tr><td style="text-align:left;font-weight:700;">Amadeus</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+<tr><td style="text-align:left;font-weight:700;">Booking.com</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td></tr>
+<tr><td style="text-align:left;font-weight:700;">Klook</td><td>❌</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td><td>❌</td></tr>
+<tr><td style="text-align:left;font-weight:700;">Rakuten</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td><td>❌</td><td>✅</td></tr>
+<tr style="background:#141414;"><td style="text-align:left;font-weight:900;color:#4F9DFF;font-size:16px;">DIPLAT</td><td style="color:#00D4AA;font-weight:700;">✅</td><td style="color:#00D4AA;font-weight:700;">✅</td><td style="color:#00D4AA;font-weight:700;">✅</td><td style="color:#00D4AA;font-weight:700;">✅</td><td style="color:#00D4AA;font-weight:700;">✅</td><td style="color:#00D4AA;font-weight:700;">✅</td></tr>
+</table>
+<div class="card" style="margin-top:32px;">
+<h3>우리의 독보적 포지션</h3>
+<ul>
+<li>크루즈 + 료칸 + 티켓 API를 통합하는 플랫폼은 <span class="highlight">글로벌에 없음</span></li>
+<li>아시아 시장 특화 (한국 → 일본 → 동남아)</li>
+<li>실제 B2B 운영 경험 기반 (아남항공, APG Korea, 레일클릭)</li>
+</ul>
+</div>
+</div>
+
+<!-- Slide 12 -->
+<div class="slide" id="s12">
+<div class="slide-num">12 / 15 — Team</div>
+<h2>Team</h2>
+<div class="grid grid-2">
+<div class="card">
+<h3>핵심 팀</h3>
+<table>
+<tr><td style="font-weight:700;">정경준</td><td>CEO / Founder</td><td>여행업 13년+</td></tr>
+<tr><td>최윤심</td><td>실장</td><td>운영</td></tr>
+<tr><td>정근아</td><td>차장</td><td>세일즈</td></tr>
+<tr><td>권은미</td><td>APG 부장</td><td>Sales 25년+</td></tr>
+<tr><td>이정훈</td><td>APG 차장</td><td>영업</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>파트너십 네트워크</h3>
+<ul>
+<li>APG Network — 글로벌 항공 대리점</li>
+<li>Railclick — 유럽 철도 한국 대표</li>
+<li>Rakuten RTX — 일본 료칸 6,600개</li>
+<li>Widgety — 크루즈 실시간 API</li>
+<li>EL AL — GSSA 비딩 진행중</li>
+<li>이롬넷 페이버스 — 결제 PG</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Slide 13 -->
+<div class="slide" id="s13">
+<div class="slide-num">13 / 15 — Traction</div>
+<h2>Traction & Milestones</h2>
+<div class="grid grid-2">
+<div class="card">
+<p class="check" style="font-size:16px;font-weight:600;">Enttix — 프로덕션 운영중</p>
+<p style="color:#888;font-size:14px;margin-left:24px;">런던 웨스트엔드 100+ 공연 · 실시간 좌석 · 다국어</p>
+</div>
+<div class="card">
+<p class="check" style="font-size:16px;font-weight:600;">CruiseLink — 운영 + SaaS화</p>
+<p style="color:#888;font-size:14px;margin-left:24px;">실시간 크루즈 API · 한국어 현지화 · B2B 요금제 완료</p>
+</div>
+<div class="card">
+<p class="check" style="font-size:16px;font-weight:600;">Ryokaneer — 개발 진행중</p>
+<p style="color:#888;font-size:14px;margin-left:24px;">RTX 계약 체결 예정 · 프로토타입 빌드 완료</p>
+</div>
+<div class="card">
+<p class="check" style="font-size:16px;font-weight:600;">APG Korea — 빌링 시스템</p>
+<p style="color:#888;font-size:14px;margin-left:24px;">IATA 빌링 관리 · 팀 대시보드 운영중</p>
+</div>
+</div>
+<div class="card" style="margin-top:24px;">
+<p class="check" style="font-size:16px;font-weight:600;">Railclick — 한국 파트너</p>
+<p style="color:#888;font-size:14px;margin-left:24px;">유럽 철도 B2B/B2C · Google 캠페인 · 바르셀로나 팀 월간 미팅</p>
+</div>
+</div>
+
+<!-- Slide 14 -->
+<div class="slide" id="s14">
+<div class="slide-num">14 / 15 — Financial Ask</div>
+<h2>시드 투자: <span class="highlight">₩30억</span> <small style="font-size:20px;color:#888;">(약 $2.2M)</small></h2>
+<div class="grid grid-2" style="margin:32px 0;">
+<div class="card">
+<h3>자금 용도</h3>
+<table>
+<tr><td>개발팀 확충 (3명)</td><td class="highlight">12억</td><td style="color:#888">40%</td></tr>
+<tr><td>API 계약/보증금</td><td class="highlight">6억</td><td style="color:#888">20%</td></tr>
+<tr><td>마케팅 (한국+글로벌)</td><td class="highlight">5억</td><td style="color:#888">17%</td></tr>
+<tr><td>서버/인프라</td><td class="highlight">3억</td><td style="color:#888">10%</td></tr>
+<tr><td>운영자금</td><td class="highlight">4억</td><td style="color:#888">13%</td></tr>
+</table>
+</div>
+<div class="card">
+<h3>Milestone</h3>
+<ul>
+<li><span class="highlight">+6개월:</span> Ryokaneer 런칭, Enttix 글로벌</li>
+<li><span class="highlight">+12개월:</span> API Aggregator Beta, SaaS 10+</li>
+<li><span class="highlight">+18개월:</span> Series A 준비, 아시아 3개국</li>
+<li><span class="highlight">+24개월:</span> 월 거래액 100억 돌파</li>
+</ul>
+<div style="margin-top:24px;padding-top:16px;border-top:1px solid #222;">
+<p style="font-size:14px;color:#888;">Exit 전략</p>
+<p style="font-size:15px;">Series B까지 독자 성장 → 전략적 파트너십 → M&A / IPO</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Slide 15 -->
+<div class="slide" id="s15">
+<div class="slide-num">15 / 15 — Vision</div>
+<h1>"여행의 모든 API를<br><span class="highlight">하나로</span>"</h1>
+<div class="grid grid-3" style="margin:48px 0;">
+<div class="card" style="text-align:center;">
+<p style="font-size:48px;margin-bottom:12px;">1️⃣</p>
+<h3>지금</h3>
+<p style="color:#888;font-size:15px;margin-top:8px;">3개 수직 서비스로<br>시장 검증</p>
+</div>
+<div class="card" style="text-align:center;">
+<p style="font-size:48px;margin-bottom:12px;">2️⃣</p>
+<h3>다음</h3>
+<p style="color:#888;font-size:15px;margin-top:8px;">API 통합 기술로<br>Aggregator 진화</p>
+</div>
+<div class="card" style="text-align:center;">
+<p style="font-size:48px;margin-bottom:12px;">3️⃣</p>
+<h3>궁극</h3>
+<p style="color:#888;font-size:15px;margin-top:8px;">아시아 No.1<br>Travel Tech 인프라</p>
+</div>
+</div>
+<div class="contact-box">
+<h3 style="margin-bottom:16px;">Contact</h3>
+<p style="font-size:20px;font-weight:700;margin-bottom:8px;">정경준 (June Jeong) <span style="color:#888;font-weight:400;">CEO, DIPLAT KOREA</span></p>
+<p style="color:#888;font-size:15px;">📧 june.jeong@diplat.co.kr · 🌐 www.diplat.co.kr · 📱 +82-2-3788-9137</p>
+<p style="color:#888;font-size:14px;margin-top:4px;">📍 서울 강서구 마곡서로 152 두산 더 랜드타워 5층</p>
+</div>
+<p style="text-align:center;color:#444;font-size:12px;margin-top:40px;">Confidential — For Investor Use Only</p>
+</div>
+
+<nav class="nav">
+<button onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↑</button>
+<button onclick="document.getElementById('s15').scrollIntoView({behavior:'smooth'})">↓</button>
+</nav>
+
+</body>
+</html>
