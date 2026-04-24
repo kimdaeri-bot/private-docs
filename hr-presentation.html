@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스타트업 인사조직실무 — 중간고사 발표</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#fff;overflow:hidden;height:100vh;width:100vw}
+.slide{display:none;width:100vw;height:100vh;padding:60px 80px;position:relative;overflow:hidden}
+.slide.active{display:flex;flex-direction:column;justify-content:center}
+.slide-number{position:absolute;bottom:30px;right:40px;font-size:14px;color:rgba(255,255,255,.4);font-weight:500}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:12px;padding:20px;z-index:100;background:linear-gradient(transparent,rgba(15,23,42,.9))}
+.nav button{border:none;padding:12px 28px;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}
+.btn-prev{background:rgba(255,255,255,.1);color:#fff}
+.btn-prev:hover{background:rgba(255,255,255,.2)}
+.btn-next{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff}
+.btn-next:hover{transform:scale(1.05)}
+.dots{display:flex;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.dot.active{background:#3b82f6;width:30px;border-radius:5px}
+
+h1{font-size:48px;font-weight:900;line-height:1.2;margin-bottom:16px}
+h2{font-size:36px;font-weight:800;margin-bottom:24px;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h3{font-size:22px;font-weight:700;margin-bottom:12px;color:#60a5fa}
+p{font-size:18px;line-height:1.8;color:rgba(255,255,255,.85)}
+.subtitle{font-size:20px;color:rgba(255,255,255,.6);margin-bottom:8px;font-weight:400}
+.highlight{color:#fbbf24;font-weight:700}
+.tag{display:inline-block;background:rgba(59,130,246,.15);color:#60a5fa;padding:4px 14px;border-radius:20px;font-size:14px;font-weight:600;margin-right:8px}
+.red-tag{background:rgba(239,68,68,.15);color:#f87171}
+.green-tag{background:rgba(34,197,94,.15);color:#4ade80}
+.yellow-tag{background:rgba(251,191,36,.15);color:#fbbf24}
+.badge{display:inline-block;padding:6px 16px;border-radius:8px;font-size:14px;font-weight:700;margin-right:8px}
+
+.timeline{position:relative;padding-left:32px;margin-top:20px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,#3b82f6,#8b5cf6);border-radius:3px}
+.timeline-item{position:relative;margin-bottom:20px;padding-left:20px}
+.timeline-item::before{content:'';position:absolute;left:-28px;top:8px;width:14px;height:14px;border-radius:50%;background:#3b82f6;border:3px solid #1e3a5f}
+.timeline-item.danger::before{background:#ef4444;border-color:#7f1d1d}
+.timeline-item p{font-size:16px;margin:0}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px}
+.card h3{margin-bottom:16px}
+.card ul{list-style:none;padding:0}
+.card li{padding:8px 0;font-size:16px;line-height:1.6;color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.05)}
+.card li:last-child{border-bottom:none}
+.card li::before{content:"→ ";color:#60a5fa;font-weight:700}
+
+.number{font-size:72px;font-weight:900;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;line-height:1}
+
+.quote{font-size:22px;font-style:italic;color:rgba(255,255,255,.7);border-left:4px solid #3b82f6;padding-left:20px;margin:20px 0}
+.quote-author{font-size:14px;color:rgba(255,255,255,.4);margin-top:8px;font-style:normal}
+
+.table-wrap{width:100%;overflow:hidden;border-radius:12px;border:1px solid rgba(255,255,255,.1);margin-top:16px}
+.table-wrap table{width:100%;border-collapse:collapse}
+.table-wrap th{background:rgba(59,130,246,.15);padding:12px 16px;text-align:left;font-size:14px;font-weight:700;color:#60a5fa}
+.table-wrap td{padding:12px 16px;font-size:15px;color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.05)}
+
+.glow-box{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(139,92,246,.1));border:1px solid rgba(59,130,246,.3);border-radius:16px;padding:28px;margin-top:20px}
+.warn-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:16px;padding:28px;margin-top:20px}
+.success-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:16px;padding:28px;margin-top:20px}
+
+.bg-deco{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide active" id="s1">
+  <div class="bg-deco" style="width:500px;height:500px;background:#3b82f6;top:-100px;right:-100px"></div>
+  <div class="bg-deco" style="width:300px;height:300px;background:#8b5cf6;bottom:-50px;left:-50px"></div>
+  <div style="max-width:900px">
+    <div class="subtitle">스타트업 인사조직 실무 — 8주차 중간고사</div>
+    <h1 style="font-size:56px">무능한 리더가 만든<br><span class="highlight">직장 내 괴롭힘</span></h1>
+    <p style="font-size:22px;margin-top:20px;color:rgba(255,255,255,.7)">150인 스타트업 마케팅 팀에서 발생한 온보딩 실패와 조직 붕괴 사례</p>
+    <div style="margin-top:40px">
+      <span class="badge" style="background:rgba(59,130,246,.2);color:#60a5fa">5주차 — 채용과 온보딩</span>
+      <span class="badge" style="background:rgba(139,92,246,.2);color:#a78bfa">6주차 — 보상의 심리적 측면</span>
+      <span class="badge" style="background:rgba(251,191,36,.2);color:#fbbf24">7주차 — Lencioni 5단계</span>
+    </div>
+  </div>
+  <div class="slide-number">1 / 10</div>
+</div>
+
+<!-- Slide 2: Case Introduction -->
+<div class="slide" id="s2">
+  <div class="bg-deco" style="width:400px;height:400px;background:#ef4444;top:-80px;left:-80px"></div>
+  <h2>📋 케이스 소개</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div>
+      <div class="card" style="margin-bottom:20px">
+        <h3>🏢 회사 배경</h3>
+        <p style="font-size:16px">알트코인 상장사 + 여행 관련 산업 혼재 스타트업<br>약 <span class="highlight">150명</span> 규모</p>
+      </div>
+      <div class="card">
+        <h3>👤 정ㅇㅇ 과장</h3>
+        <p style="font-size:16px">마케팅 팀 <span class="highlight">새로 입사</span><br>온보딩·직무교육 전무 상태로 투입</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="border-color:rgba(239,68,68,.3)">
+        <h3 style="color:#f87171">⚠️ 팀장</h3>
+        <p style="font-size:16px">마케팅 분야 경험 <span class="highlight">없음</span><br>"나이 있고 경력 있으니 알아서 하겠지" → 방치</p>
+      </div>
+      <div class="warn-box" style="margin-top:20px">
+        <h3 style="color:#f87171">결과</h3>
+        <p style="font-size:16px">HR 면담 → 정과장 1개월 유급휴가 → 팀장 전출 → <span class="highlight">정과장 복귀 후 퇴사</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">2 / 10</div>
+</div>
+
+<!-- Slide 3: Problem Timeline -->
+<div class="slide" id="s3">
+  <div class="bg-deco" style="width:350px;height:350px;background:#f59e0b;bottom:-80px;right:-80px"></div>
+  <h2>⏱️ 문제 발생 타임라인</h2>
+  <div class="timeline" style="margin-top:16px">
+    <div class="timeline-item">
+      <p><span class="tag">채용</span> 해당 분야 경험 없는 팀장 채용</p>
+    </div>
+    <div class="timeline-item">
+      <p><span class="tag">온보딩</span> 정과장에 대한 직무교육·케어 <span class="highlight">전무</span></p>
+    </div>
+    <div class="timeline-item">
+      <p><span class="tag">업무지시</span> 팀장이 본부장 지시 이해 못함 → 엉뚱한 지시 전달</p>
+    </div>
+    <div class="timeline-item">
+      <p><span class="tag">피드백</span> 정과장이 완료해도 처음부터 다시 하라는 상황 <span class="highlight">반복</span></p>
+    </div>
+    <div class="timeline-item danger">
+      <p><span class="tag red-tag">괴롭힘</span> 팀장이 정과장을 <span class="highlight">의도적으로 업무 배제</span> + 직장 내 괴롭힘</p>
+    </div>
+    <div class="timeline-item danger">
+      <p><span class="tag red-tag">HR 개입</span> 정과장 HR 면담 → 정신적 충격 → <span class="highlight">1개월 유급휴가</span></p>
+    </div>
+    <div class="timeline-item danger">
+      <p><span class="tag red-tag">결말</span> 팀장 전출 → 정과장 복귀 → <span class="highlight">결국 퇴사</span></p>
+    </div>
+  </div>
+  <div class="slide-number">3 / 10</div>
+</div>
+
+<!-- Slide 4: Why -->
+<div class="slide" id="s4">
+  <div class="bg-deco" style="width:400px;height:400px;background:#8b5cf6;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <h2>🔍 왜 발생했나?</h2>
+  <div class="grid-3" style="margin-top:24px">
+    <div class="card" style="border-color:rgba(251,191,36,.3)">
+      <h3 style="color:#fbbf24">🏢 회사</h3>
+      <p style="font-size:16px">"나이 있고 경력 있으니 알아서 하겠지"<br><br><span class="highlight">→ 방치</span></p>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.3)">
+      <h3 style="color:#f87171">👤 팀장</h3>
+      <p style="font-size:16px">전문성 부족 → 리더십 불안 → 능력 있는 부하를 <span class="highlight">위협</span>으로 인식<br><br><span class="highlight">→ 의도적 배제</span></p>
+    </div>
+    <div class="card" style="border-color:rgba(59,130,246,.3)">
+      <h3 style="color:#60a5fa">👤 정과장</h3>
+      <p style="font-size:16px">온보딩 없이 투입 → 업무지시 불명확 → <span class="highlight">심리적 계약 위반</span></p>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:24px">
+    <p style="font-size:17px;text-align:center">💡 <span class="highlight">핵심:</span> 무능한 리더는 능력 있는 부하를 위협으로 느끼고, <span class="highlight">괴롭힘을 방어기제</span>로 사용한다</p>
+  </div>
+  <div class="slide-number">4 / 10</div>
+</div>
+
+<!-- Slide 5: Week 1 & 5 -->
+<div class="slide" id="s5">
+  <div class="bg-deco" style="width:300px;height:300px;background:#3b82f6;top:-50px;right:100px"></div>
+  <h2>📚 수업 개념 연결 (1)</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div class="card">
+      <span class="badge" style="background:rgba(59,130,246,.2);color:#60a5fa;margin-bottom:16px">1주차</span>
+      <h3>극초기 스타트업 HRM</h3>
+      <div class="quote" style="font-size:18px">"스타트업의 65%는 사람 때문에 망한다"</div>
+      <div class="quote-author">— William Sahlman, 하버드 비즈니스 스쿨</div>
+      <ul style="margin-top:16px">
+        <li>150명 규모인데도 초기형 인사관리 체계 유지</li>
+        <li>채용·배치·평가 시스템 부재</li>
+        <li>사람 관리가 전략이 아니라 <span class="highlight">사후대응</span>으로 남음</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(139,92,246,.4)">
+      <span class="badge" style="background:rgba(139,92,246,.2);color:#a78bfa;margin-bottom:16px">5주차 — 핵심</span>
+      <h3 style="color:#a78bfa">채용과 온보딩</h3>
+      <div class="quote" style="font-size:18px">"Getting the Right People on the Bus"</div>
+      <div class="quote-author">— Jim Collins, Good to Great</div>
+      <ul style="margin-top:16px">
+        <li><span class="highlight">온보딩 실패 3가지:</span></li>
+        <li>① 직무교육 없음 → 무엇을 해야 하는지 몰랐음</li>
+        <li>② 업무지시 불명확 → 완료해도 다시 하라는 반복</li>
+        <li>③ 심리적 계약 위반 → 입사 시 기대와 실제의 괴리</li>
+      </ul>
+      <div class="glow-box" style="margin-top:16px;padding:16px">
+        <p style="font-size:15px;text-align:center">온보딩은 첫날이 아니라 <span class="highlight">90일</span>까지. 방치 = 온보딩 실패</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">5 / 10</div>
+</div>
+
+<!-- Slide 6: Week 6 & 7 -->
+<div class="slide" id="s6">
+  <div class="bg-deco" style="width:350px;height:350px;background:#f59e0b;bottom:-50px;left:-50px"></div>
+  <h2>📚 수업 개념 연결 (2)</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div class="card" style="border-color:rgba(251,191,36,.3)">
+      <span class="badge" style="background:rgba(251,191,36,.2);color:#fbbf24;margin-bottom:16px">6주차</span>
+      <h3 style="color:#fbbf24">보상의 심리적 측면</h3>
+      <ul>
+        <li>정과장이 겪은 것: 업무 인정 받지 못함</li>
+        <li>"열심히 해도 다시 하라" = <span class="highlight">성과 무효화</span></li>
+        <li>유급휴가는 <span class="highlight">진통제</span>일 뿐, 근본 원인 해결 안 됨</li>
+        <li>보상은 돈만이 아님 — <span class="highlight">인정·자율·성장</span></li>
+        <li>심리적 보상이 경제적 보상보다 먼저 깨짐</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.3)">
+      <span class="badge" style="background:rgba(239,68,68,.2);color:#f87171;margin-bottom:16px">7주차</span>
+      <h3 style="color:#f87171">Lencioni 팀 실패 5단계</h3>
+      <ul>
+        <li><span class="highlight">① 신뢰 부재</span> → 무능 들킬까봐 방어적 태도</li>
+        <li><span class="highlight">② 갈등 두려움</span> → 업무배제라는 수동공격</li>
+        <li><span class="highlight">③ 헌신 부재</span> → 팀장·팀원 모두 조직에 헌신 못함</li>
+        <li><span class="highlight">④ 책임 회피</span> → 역량 부족을 직원 탓으로 돌림</li>
+        <li><span class="highlight">⑤ 결과 무관심</span> → 핵심 인재 이탈</li>
+      </ul>
+      <div class="glow-box" style="margin-top:16px;padding:16px">
+        <p style="font-size:15px;text-align:center">팀장의 괴롭힘은 <span class="highlight">무능에 대한 방어기제</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">6 / 10</div>
+</div>
+
+<!-- Slide 7: My Decision 1 -->
+<div class="slide" id="s7">
+  <div class="bg-deco" style="width:400px;height:400px;background:#22c55e;top:-100px;left:50%;transform:translateX(-50%)"></div>
+  <h2>🎯 본인의 대안적 의사결정 (1)</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div class="success-box">
+      <h3 style="color:#4ade80">① 채용 단계</h3>
+      <ul>
+        <li>마케팅 팀장 채용 시 해당 분야 <span class="highlight">최소 3년 경력</span> 필수</li>
+        <li>경력직도 <span class="highlight">실무 테스트·프레젠테이션</span> 평가</li>
+        <li>"나이·경력 = 능력" 편견 배제</li>
+      </ul>
+    </div>
+    <div class="success-box">
+      <h3 style="color:#4ade80">② 온보딩 (입사 후 90일)</h3>
+      <ul>
+        <li><span class="highlight">1주차:</span> 직무 매뉴얼 숙지, 본부장과 1:1 목표 합의</li>
+        <li><span class="highlight">2~4주차:</span> 실무 투입 + 주간 체크인 미팅</li>
+        <li><span class="highlight">60일차:</span> 중간 평가, 역할 재조정</li>
+        <li><span class="highlight">90일차:</span> 정식 배치 여부 결정</li>
+      </ul>
+    </div>
+  </div>
+  <div class="glow-box" style="margin-top:24px">
+    <p style="font-size:16px;text-align:center">💡 팀장에게도 <span class="highlight">역할 명확화 세션</span> 진행: 본부장과 지시 체계 정리</p>
+  </div>
+  <div class="slide-number">7 / 10</div>
+</div>
+
+<!-- Slide 8: My Decision 2 -->
+<div class="slide" id="s8">
+  <div class="bg-deco" style="width:300px;height:300px;background:#3b82f6;bottom:-50px;right:-50px"></div>
+  <h2>🎯 본인의 대안적 의사결정 (2)</h2>
+  <div class="grid-2" style="margin-top:24px">
+    <div class="card" style="border-color:rgba(239,68,68,.3)">
+      <h3 style="color:#f87171">③ 갈등 발생 시 (사전 개입)</h3>
+      <ul>
+        <li>HR 1:1 면담 <span class="highlight">즉시</span> 실시 (팀장 + 정과장 개별)</li>
+        <li>업무 지시 체계 <span class="highlight">시각화</span>: 서면 지시 원칙</li>
+        <li><span class="highlight">팀장을 먼저 격리</span> (가해자를 먼저 조치)</li>
+        <li>정과장에게 <span class="highlight">전문 심리 상담</span> 지원</li>
+        <li>복귀 후 <span class="highlight">1개월 집중 케어</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>④ 시스템적 개선</h3>
+      <ul>
+        <li>150명 → <span class="highlight">HR 담당자 1명 전담</span> 배치</li>
+        <li>분기별 <span class="highlight">직장 내 괴롭힘 예방 교육</span></li>
+        <li>익명 건의함 + 사외 신고 채널 운영</li>
+        <li>모든 신규 입사자에게 <span class="highlight">직무기술서 + 90일 온보딩 계획서</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:24px">
+    <p style="font-size:17px;text-align:center">⚠️ <span class="highlight">피해자를 먼저 보내는 건 2차 가해</span> — 팀장 전출이 먼저, 정과장 케어가 나중</p>
+  </div>
+  <div class="slide-number">8 / 10</div>
+</div>
+
+<!-- Slide 9: Lessons -->
+<div class="slide" id="s9">
+  <div class="bg-deco" style="width:500px;height:500px;background:#8b5cf6;top:50%;right:-150px;transform:translateY(-50%)"></div>
+  <h2>💡 핵심 교훈</h2>
+  <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">1</div>
+      <p style="font-size:16px"><span class="highlight">"경력 있다 = 잘한다"는 착각</span><br>해당 분야 경험 없는 리더 배치는 팀 전체 붕괴</p>
+    </div>
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">2</div>
+      <p style="font-size:16px"><span class="highlight">온보딩은 선택이 아니라 필수</span><br>90일 집중 케어가 1년 뒤 퇴사율 결정</p>
+    </div>
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">3</div>
+      <p style="font-size:16px"><span class="highlight">무능한 리더의 괴롭힘은 방어기제</span><br>능력 있는 부하를 위협 → 배제·괴롭힘</p>
+    </div>
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">4</div>
+      <p style="font-size:16px"><span class="highlight">심리적 계약이 먼저 깨진다</span><br>정과장은 돈이 아니라 인정을 못 받아 떠남</p>
+    </div>
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">5</div>
+      <p style="font-size:16px"><span class="highlight">피해자 먼저 보내는 건 2차 가해</span><br>팀장 전출이 먼저, 피해자 케어가 나중</p>
+    </div>
+    <div class="card" style="display:flex;align-items:flex-start;gap:16px">
+      <div class="number" style="font-size:36px;min-width:40px">6</div>
+      <p style="font-size:16px"><span class="highlight">150명이면 '가족'이 아니다</span><br>시스템과 프로세스가 신뢰를 만든다</p>
+    </div>
+  </div>
+  <div class="slide-number">9 / 10</div>
+</div>
+
+<!-- Slide 10: What Founders Should Do -->
+<div class="slide" id="s10">
+  <div class="bg-deco" style="width:400px;height:400px;background:#22c55e;bottom:-100px;left:-100px"></div>
+  <div class="bg-deco" style="width:300px;height:300px;background:#3b82f6;top:-50px;right:-50px"></div>
+  <h2>🚀 창업가라면 미리 할 것</h2>
+  <div style="margin-top:24px">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>규모</th><th>반드시 해야 할 것</th><th>이유</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="highlight">20명</span></td><td>HR 담당자 채용</td><td>대표가 HR까지 감당 불가</td></tr>
+          <tr><td><span class="highlight">50명</span></td><td>온보딩 매뉴얼 문서화</td><td>구두 전달의 한계</td></tr>
+          <tr><td><span class="highlight">100명</span></td><td>직장 내 괴롭힘 예방 교육 정기 실시</td><td>법적 의무 + 조직 건강</td></tr>
+          <tr><td><span class="highlight">150명+</span></td><td>갈등 관리 체계 구축</td><td>가해자 조치 + 피해자 심리 케어</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="glow-box" style="margin-top:32px;text-align:center">
+    <p style="font-size:20px;font-weight:700">"스타트업의 65%는 사람 때문에 망한다"<br><span style="font-size:16px;font-weight:400;color:rgba(255,255,255,.6)">그 사람 문제가 아니라, <span class="highlight">시스템 부재</span>의 문제다.</span></p>
+  </div>
+  <div style="text-align:center;margin-top:24px;color:rgba(255,255,255,.3);font-size:14px">감사합니다 🙇</div>
+  <div class="slide-number">10 / 10</div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="btn-prev" onclick="go(-1)">← 이전</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn-next" onclick="go(1)">다음 →</button>
+</div>
+
+<script>
+const total=10;let cur=1;
+function show(n){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===n));
+  cur=n;
+}
+function go(d){let n=cur+d;if(n<1)n=1;if(n>total)n=total;show(n)}
+const dots=document.getElementById('dots');
+for(let i=1;i<=total;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.onclick=()=>show(i);dots.appendChild(d)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(1);if(e.key==='ArrowLeft')go(-1)});
+</script>
+</body>
+</html>
