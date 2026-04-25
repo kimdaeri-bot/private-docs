@@ -370,8 +370,11 @@ const dots=document.getElementById('dots');
 for(let i=1;i<=total;i++){const d=document.createElement('div');d.className='dot'+(i===1?' active':'');d.onclick=()=>show(i);dots.appendChild(d)}
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(1);if(e.key==='ArrowLeft')go(-1)});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 async function downloadPDF(){
+  if(!window.jspdf||!window.html2canvas){alert('라이브러리 로딩 중입니다. 잠시 후 다시 시도해주세요.');return;}
   const btn=document.querySelector('.nav');
   btn.style.display='none';
   const dlBtn=document.querySelector('.dl-btn');
@@ -396,8 +399,6 @@ async function downloadPDF(){
   dlBtn.style.display='flex';
 }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 .dl-btn{position:fixed;top:20px;right:20px;z-index:200;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px}
 .dl-btn:hover{transform:scale(1.05)}
