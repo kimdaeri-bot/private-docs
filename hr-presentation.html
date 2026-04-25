@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans KR',sans-serif;background:#0f172a;color:#fff;overflow:hidden;height:100vh;width:100vw}
-.slide{display:none;width:100vw;height:100vh;padding:60px 80px;position:relative;overflow:hidden}
+.slide{display:none;width:100vw;height:100vh;padding:60px 80px;position:relative;overflow:hidden;background:#0f172a}
 .slide.active{display:flex;flex-direction:column;justify-content:center}
 .slide-number{position:absolute;bottom:30px;right:40px;font-size:14px;color:rgba(255,255,255,.4);font-weight:500}
 .nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:12px;padding:20px;z-index:100;background:linear-gradient(transparent,rgba(15,23,42,.9))}
@@ -362,7 +362,7 @@ async function downloadPDF(){
   btn.style.display='none';
   const slides=document.querySelectorAll('.slide');
   const container=document.createElement('div');
-  slides.forEach(s=>{s.style.display='flex';s.style.height='100vh';s.style.width='100vw';s.style.pageBreakAfter='always';s.classList.add('active');container.appendChild(s.cloneNode(true))});
+  slides.forEach(s=>{s.style.display='flex';s.style.height='100vh';s.style.width='100vw';s.style.pageBreakAfter='always';s.style.background='#0f172a';s.classList.add('active');container.appendChild(s.cloneNode(true))});
   document.body.appendChild(container);
   const opt={margin:0,filename:'HR-발표-슬라이드.pdf',image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'px',format:[1920,1080],orientation:'landscape'}};
   await html2pdf().set(opt).from(container).save();
