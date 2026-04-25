@@ -375,14 +375,31 @@ document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')go(
 async function downloadPDF(){
   const btn=document.querySelector('.nav');
   btn.style.display='none';
+  const dlBtn=document.querySelector('.dl-btn');
+  dlBtn.style.display='none';
   const slides=document.querySelectorAll('.slide');
   const container=document.createElement('div');
-  slides.forEach(s=>{s.style.display='flex';s.style.height='100vh';s.style.width='100vw';s.style.pageBreakAfter='always';s.style.background='#0f172a';s.classList.add('active');container.appendChild(s.cloneNode(true))});
+  container.style.width='1920px';
+  container.style.background='#0f172a';
+  for(const s of slides){
+    const clone=s.cloneNode(true);
+    clone.style.display='flex';
+    clone.style.height='1080px';
+    clone.style.width='1920px';
+    clone.style.minWidth='1920px';
+    clone.style.maxWidth='1920px';
+    clone.style.background='#0f172a';
+    clone.style.overflow='hidden';
+    clone.classList.add('active');
+    clone.style.pageBreakAfter='always';
+    container.appendChild(clone);
+  }
   document.body.appendChild(container);
-  const opt={margin:0,filename:'HR-발표-슬라이드.pdf',image:{type:'jpeg',quality:0.95},html2canvas:{scale:2,useCORS:true},jsPDF:{unit:'px',format:[1920,1080],orientation:'landscape'}};
+  const opt={margin:0,filename:'HR-발표-슬라이드.pdf',image:{type:'jpeg',quality:0.95},html2canvas:{scale:1,useCORS:true,width:1920,height:1080},jsPDF:{unit:'px',format:[1920,1080],orientation:'landscape',hotfixes:['px_scaling']}};
   await html2pdf().set(opt).from(container).save();
   document.body.removeChild(container);
   btn.style.display='flex';
+  dlBtn.style.display='flex';
 }
 </script>
 <style>
