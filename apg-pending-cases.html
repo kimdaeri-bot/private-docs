@@ -157,21 +157,25 @@ let cases, archive;
 let filter='all';
 
 async function loadData(){
+  // Always try API first, ignore localStorage cache
   try{
     const res=await fetch(API_URL+'?t='+Date.now());
-    const data=await res.json();
-    if(Array.isArray(data)){
-      cases=data.filter(c=>c.status==='대기');
-      archive=data.filter(c=>c.status==='완료');
-      localStorage.setItem('apg-cases',JSON.stringify(cases));
-      localStorage.setItem('apg-archive',JSON.stringify(archive));
-      return;
+    if(res.ok){
+      const data=await res.json();
+      if(Array.isArray(data)&&data.length>0){
+        cases=data.filter(c=>c.status==='대기');
+        archive=data.filter(c=>c.status==='완료');
+        localStorage.setItem('apg-cases',JSON.stringify(cases));
+        localStorage.setItem('apg-archive',JSON.stringify(archive));
+        return;
+      }
     }
-  }catch(e){console.log('API failed, using local')}
-  try{cases=JSON.parse(localStorage.getItem('apg-cases'))||[...DEFAULT_CASES]}catch(e){cases=[...DEFAULT_CASES]}
-  try{archive=JSON.parse(localStorage.getItem('apg-archive'))||null}catch(e){archive=null}
-  if(archive===null){archive=[...DEFAULT_ARCHIVE];localStorage.setItem('apg-archive',JSON.stringify(archive))}
-  if(!localStorage.getItem('apg-cases'))localStorage.setItem('apg-cases',JSON.stringify(cases));
+  }catch(e){console.log('API failed:',e)}
+  // Only use localStorage as fallback
+  try{cases=JSON.parse(localStorage.getItem('apg-cases'))}catch(e){cases=null}
+  try{archive=JSON.parse(localStorage.getItem('apg-archive'))}catch(e){archive=null}
+  if(!cases||cases.length===0){cases=[...DEFAULT_CASES]}
+  if(!archive||archive.length===0){archive=[...DEFAULT_ARCHIVE]}
 }
 
 async function shareData(){
