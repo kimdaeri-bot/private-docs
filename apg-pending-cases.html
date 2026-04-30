@@ -28,15 +28,15 @@
     thead{background:#f1f5f9}
     th{padding:8px 10px;text-align:left;font-size:13px;font-weight:700;color:#3b82f6;letter-spacing:.5px;white-space:nowrap}
     td{padding:7px 10px;font-size:13px;border-top:1px solid #f1f5f9;vertical-align:top;color:#334155}
-    .td-seq{font-weight:900;color:#6366f1;font-size:13px;text-align:center;white-space:nowrap}
+    .td-seq{font-weight:900;color:#000;font-size:13px;text-align:center;white-space:nowrap}
     tbody tr:hover{background:#f8fafc}
     .badge{display:inline-block;padding:2px 8px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer}
     .b-wait{background:#fef3c7;color:#92400e}
     .b-done{background:#dcfce7;color:#166534}
-    .td-content{max-width:250px;line-height:1.5;color:#475569}
-    .td-date{white-space:nowrap;color:#64748b;font-size:13px}
-    .td-airline{font-weight:700;color:#1e293b;white-space:nowrap;font-size:13px}
-    .td-mail{font-family:'SF Mono',monospace;font-size:13px;color:#6366f1;white-space:nowrap}
+    .td-content{max-width:250px;line-height:1.5;color:#334155}
+    .td-date{white-space:nowrap;color:#334155;font-size:13px}
+    .td-airline{font-weight:700;color:#000;white-space:nowrap;font-size:13px}
+    .td-mail{font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:13px;color:#000;white-space:nowrap}
     .empty-msg{text-align:center;padding:60px 20px;color:#94a3b8;font-size:14px}
     .updated{font-size:11px;color:#94a3b8;text-align:right;margin-top:24px}
     .form-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
@@ -263,7 +263,7 @@ function render(){
         ${makeCell('td-mail','active',i,'mail',c.mail)}
         ${makeCell('td-date','active',i,'start',c.start)}
         ${makeCell('td-airline','active',i,'airline',c.airline)}
-        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#6366f1">${c.person||'-'}</td>
+        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#000">${c.person||'-'}</td>
         ${makeCell('td-content','active',i,'content',c.content)}
         <td><span class="badge b-wait" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">${t.wait}</span></td>
         <td style="white-space:nowrap"><button class="btn-del" onclick="deleteActive(${i})">🗑️</button></td>`;
@@ -286,7 +286,7 @@ function render(){
           ${makeCell('td-mail','archive',i,'mail',c.mail)}
           ${makeCell('td-date','archive',i,'start',c.start)}
           ${makeCell('td-airline','archive',i,'airline',c.airline)}
-          <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#6366f1">${c.person||'-'}</td>
+          <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#000">${c.person||'-'}</td>
           ${makeCell('td-content','archive',i,'content',c.content)}
           ${makeCell('td-date','archive',i,'done',c.done)}
           <td><span class="badge b-done" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">${t.done}</span></td>
