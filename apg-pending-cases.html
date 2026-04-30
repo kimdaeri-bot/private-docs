@@ -66,6 +66,9 @@
     .archive-section.collapsed .table-wrap{max-height:0 !important}
     .lang-btn{background:#fff;border:1px solid #e2e8f0;color:#64748b;padding:7px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
     .lang-btn:hover{border-color:#3b82f6;color:#1e293b}
+    .btn-share{background:#f97316;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+    .btn-share:hover{background:#ea580c}
+    .btn-share.saving{opacity:.6;cursor:wait}
     @media(max-width:640px){.form-grid{grid-template-columns:1fr}.top-bar{justify-content:center}}
   </style>
 </head>
@@ -78,6 +81,7 @@
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+      <button class="btn-share" id="shareBtn" onclick="shareData()">💾 공유저장</button>
       <button onclick="location.reload()" style="background:#f97316;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">🔄 새로고침</button>
     </div>
   </div>
@@ -148,15 +152,47 @@ const DEFAULT_ARCHIVE = [
   {mail:"#7510",start:"2026-04-08",airline:"TC",person:"-",content:"TK로 인한 MCT SHORT 케이스. 박진선(여기어때) 요청. TC에 메일 발송했으나 답변 미수신. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"}
 ];
 
+const DATA_URL='https://kimdaeri-bot.github.io/private-docs/apg-data.json';
 let cases, archive;
-let filter='all'; // 'all','대기','완료'
-function load(){
+let filter='all';
+
+async function loadData(){
+  try{
+    const res=await fetch(DATA_URL+'?t='+Date.now());
+    const data=await res.json();
+    if(data&&data.length>=0){
+      cases=data.filter(c=>c.status==='대기');
+      archive=data.filter(c=>c.status==='완료');
+      localStorage.setItem('apg-cases',JSON.stringify(cases));
+      localStorage.setItem('apg-archive',JSON.stringify(archive));
+      return;
+    }
+  }catch(e){console.log('fetch failed, using local')}
+  // fallback to localStorage
   try{cases=JSON.parse(localStorage.getItem('apg-cases'))||[...DEFAULT_CASES]}catch(e){cases=[...DEFAULT_CASES]}
   try{archive=JSON.parse(localStorage.getItem('apg-archive'))||null}catch(e){archive=null}
   if(archive===null){archive=[...DEFAULT_ARCHIVE];localStorage.setItem('apg-archive',JSON.stringify(archive))}
   if(!localStorage.getItem('apg-cases'))localStorage.setItem('apg-cases',JSON.stringify(cases));
 }
-load();
+
+async function shareData(){
+  const btn=document.getElementById('shareBtn');
+  btn.classList.add('saving');btn.textContent='저장 중...';
+  const all=[...cases,...archive];
+  let token=localStorage.getItem('apg-github-token');
+  if(!token){token=prompt('GitHub 토큰을 입력하세요 (한 번만 필요):','');if(!token){btn.textContent='💾 공유저장';btn.classList.remove('saving');return}localStorage.setItem('apg-github-token',token)}
+  try{
+    const res=await fetch('https://api.github.com/repos/kimdaeri-bot/private-docs/contents/apg-data.json',{headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token '+token}});
+    const existing=await res.json();
+    const sha=existing.sha;
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(all,null,2))));
+    const putRes=await fetch('https://api.github.com/repos/kimdaeri-bot/private-docs/contents/apg-data.json',{method:'PUT',headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token '+token,'Content-Type':'application/json'},body:JSON.stringify({message:'update apg-data',content:content,sha:sha})});
+    if(putRes.ok){btn.textContent='✅ 저장완료';setTimeout(()=>{btn.textContent='💾 공유저장';btn.classList.remove('saving')},2000)}
+    else{localStorage.removeItem('apg-github-token');throw new Error('PUT failed '+putRes.status)}
+  }catch(e){
+    alert('저장 실패. 토큰을 다시 확인해주세요.');btn.textContent='💾 공유저장';btn.classList.remove('saving');
+  }
+}
 function save(){localStorage.setItem('apg-cases',JSON.stringify(cases));localStorage.setItem('apg-archive',JSON.stringify(archive))}
 
 function autoDate(el){
@@ -297,7 +333,7 @@ function render(){
   document.getElementById('updated').textContent=(lang==='KR'?'마지막 업데이트: ':'Last updated: ')+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
   applyLang();
 }
-render();
+loadData().then(()=>render());
 </script>
 </body>
 </html>
