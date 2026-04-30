@@ -176,8 +176,9 @@ async function loadData(){
 
 async function shareData(){
   const btn=document.getElementById('shareBtn');
-  btn.classList.add('saving');btn.textContent='저장 중...';
   const all=[...cases,...archive];
+  if(all.length===0){alert('저장할 데이터가 없습니다.');return}
+  btn.classList.add('saving');btn.textContent='저장 중...';
   try{
     const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(all)});
     const result=await res.json();
