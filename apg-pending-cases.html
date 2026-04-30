@@ -91,22 +91,32 @@
   </div>
 
   <div class="top-bar" id="topBar"></div>
-  <table id="mainTable">
+
+  <!-- 대기 케이스 -->
+  <table id="waitTable">
     <thead>
-      <tr>
-        <th>번호</th>
-        <th>메일번호(PNR)</th>
-        <th>시작날짜</th>
-        <th>항공사</th>
-        <th>담당자</th>
-        <th>내용</th>
-        <th>상태</th>
-        <th>삭제</th>
-      </tr>
+      <tr><th>번호</th><th>메일번호(PNR)</th><th>시작날짜</th><th>항공사</th><th>담당자</th><th>내용</th><th>상태</th><th>삭제</th></tr>
     </thead>
-    <tbody id="tbody"></tbody>
+    <tbody id="waitBody"></tbody>
   </table>
-  <div class="empty-msg" id="empty">해당 케이스가 없습니다.</div>
+  <div class="empty-msg" id="waitEmpty">대기 케이스가 없습니다.</div>
+
+  <!-- 완료 케이스 -->
+  <div class="archive-section" id="archiveSection">
+    <div class="section-header" id="archiveHeader" onclick="toggleArchive()">
+      <h2>📁 완료 케이스 (<span id="archiveCount">0</span>) — 상태 클릭시 대기로 복원</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>번호</th><th>메일번호(PNR)</th><th>시작날짜</th><th>항공사</th><th>담당자</th><th>내용</th><th>완료날짜</th><th>상태</th><th>삭제</th></tr>
+        </thead>
+        <tbody id="doneBody"></tbody>
+      </table>
+      <div class="empty-msg" id="doneEmpty">완료 케이스가 없습니다.</div>
+    </div>
+  </div>
 
   <div class="updated" id="updated"></div>
 </div>
@@ -191,61 +201,80 @@ function editCell(el,source,idx,field){
   if(!isLong)inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();finish()}});
 }
 
-function setFilter(f){
-  filter=filter===f?'all':f;
-  render();
+function toggleArchive(){
+  const sec=document.getElementById('archiveSection');
+  const hdr=document.getElementById('archiveHeader');
+  sec.classList.toggle('collapsed');
+  hdr.classList.toggle('collapsed');
 }
+
+function setFilter(f){filter=filter===f?'all':f;render()}
 
 function makeCell(cls,source,i,field,val){
   return `<td class="${cls}" data-field onclick="editCell(this,'${source}',${i},'${field}')">${val||'-'}</td>`;
 }
 
 function render(){
-  const all=[...cases,...archive];
-  const waitCount=all.filter(c=>c.status==='대기').length;
-  const doneCount=all.filter(c=>c.status==='완료').length;
+  const waitCount=cases.length;
+  const doneCount=archive.length;
 
   // 상단 필터
   document.getElementById('topBar').innerHTML=`
     <div class="filter-btn f-all ${filter==='all'?'active':''}" onclick="setFilter('all')">
       <div><div class="f-num">${waitCount+doneCount}</div><div class="f-label">전체</div></div>
     </div>
-    <div class="filter-btn f-wait ${filter==='대기'?'active':''}" onclick="setFilter('대기')">
+    <div class="filter-btn f-wait ${filter==='대기'||filter==='all'?'active':''}" onclick="setFilter('대기')">
       <div><div class="f-num">${waitCount}</div><div class="f-label">대기</div></div>
     </div>
-    <div class="filter-btn f-done ${filter==='완료'?'active':''}" onclick="setFilter('완료')">
+    <div class="filter-btn f-done ${filter==='완료'||filter==='all'?'active':''}" onclick="setFilter('완료')">
       <div><div class="f-num">${doneCount}</div><div class="f-label">완료</div></div>
     </div>`;
 
-  // 통합 리스트
-  const list=all.filter(c=>filter==='all'||c.status===filter);
-  const tbody=document.getElementById('tbody');
-  const empty=document.getElementById('empty');
-  const table=document.getElementById('mainTable');
+  const showWait=filter==='all'||filter==='대기';
+  const showDone=filter==='all'||filter==='완료';
 
-  tbody.innerHTML='';
-  if(list.length===0){empty.style.display='block';table.style.display='none'}
-  else{
-    empty.style.display='none';table.style.display='';
-    let num=0;
-    list.forEach(c=>{
-      num++;
-      const source=cases.includes(c)?'active':'archive';
-      const i=source==='active'?cases.indexOf(c):archive.indexOf(c);
-      const bc=c.status==='대기'?'b-wait':'b-done';
-      const tr=document.createElement('tr');
-      const doneCell=c.status==='완료'?makeCell('td-date',source,i,'done',c.done):'<td class="td-date">-</td>';
-      tr.innerHTML=`
-        <td class="td-seq">${num}</td>
-        ${makeCell('td-mail',source,i,'mail',c.mail)}
-        ${makeCell('td-date',source,i,'start',c.start)}
-        ${makeCell('td-airline',source,i,'airline',c.airline)}
-        <td data-field onclick="editCell(this,'${source}',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
-        ${makeCell('td-content',source,i,'content',c.content)}
-        <td><span class="badge ${bc}" onclick="toggleStatus('${source}',${i})" title="클릭: 상태 변경">${c.status}</span></td>
-        <td style="white-space:nowrap"><button class="btn-del" onclick="${source==='active'?`deleteActive(${i})`:`deleteArchive(${i})`}">🗑️</button></td>`;
-      tbody.appendChild(tr);
-    });
+  // 대기 테이블
+  const waitTable=document.getElementById('waitTable');
+  const waitBody=document.getElementById('waitBody');
+  const waitEmpty=document.getElementById('waitEmpty');
+  waitBody.innerHTML='';
+  if(!showWait||cases.length===0){waitTable.style.display='none';if(showWait)waitEmpty.style.display='block';else waitEmpty.style.display='none'}
+  else{waitTable.style.display='';waitEmpty.style.display='none';
+    cases.forEach((c,i)=>{const tr=document.createElement('tr');
+      tr.innerHTML=`<td class="td-seq">${i+1}</td>
+        ${makeCell('td-mail','active',i,'mail',c.mail)}
+        ${makeCell('td-date','active',i,'start',c.start)}
+        ${makeCell('td-airline','active',i,'airline',c.airline)}
+        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
+        ${makeCell('td-content','active',i,'content',c.content)}
+        <td><span class="badge b-wait" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">대기</span></td>
+        <td style="white-space:nowrap"><button class="btn-del" onclick="deleteActive(${i})">🗑️</button></td>`;
+      waitBody.appendChild(tr)});
+  }
+
+  // 완료 테이블
+  const aBody=document.getElementById('doneBody');
+  const aEmpty=document.getElementById('doneEmpty');
+  const aCount=document.getElementById('archiveCount');
+  const aSec=document.getElementById('archiveSection');
+  aCount.textContent=archive.length;
+  aBody.innerHTML='';
+  if(!showDone){aSec.style.display='none'}
+  else{aSec.style.display='';
+    if(archive.length===0){aEmpty.style.display='block';aBody.parentElement.style.display='none'}
+    else{aEmpty.style.display='none';aBody.parentElement.style.display='';
+      archive.forEach((c,i)=>{const tr=document.createElement('tr');
+        tr.innerHTML=`<td class="td-seq">${i+1}</td>
+          ${makeCell('td-mail','archive',i,'mail',c.mail)}
+          ${makeCell('td-date','archive',i,'start',c.start)}
+          ${makeCell('td-airline','archive',i,'airline',c.airline)}
+          <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
+          ${makeCell('td-content','archive',i,'content',c.content)}
+          ${makeCell('td-date','archive',i,'done',c.done)}
+          <td><span class="badge b-done" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">완료</span></td>
+          <td style="white-space:nowrap"><button class="btn-del" onclick="deleteArchive(${i})">🗑️</button></td>`;
+        aBody.appendChild(tr)});
+    }
   }
   document.getElementById('updated').textContent='마지막 업데이트: '+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
 }
