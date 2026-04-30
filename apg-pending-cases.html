@@ -28,15 +28,15 @@
     thead{background:#f1f5f9}
     th{padding:8px 10px;text-align:left;font-size:13px;font-weight:700;color:#3b82f6;letter-spacing:.5px;white-space:nowrap}
     td{padding:7px 10px;font-size:13px;border-top:1px solid #f1f5f9;vertical-align:top;color:#334155}
-    .td-seq{font-weight:900;color:#6366f1;font-size:12px;text-align:center;white-space:nowrap}
+    .td-seq{font-weight:900;color:#6366f1;font-size:13px;text-align:center;white-space:nowrap}
     tbody tr:hover{background:#f8fafc}
-    .badge{display:inline-block;padding:2px 8px;border-radius:16px;font-size:10px;font-weight:700;cursor:pointer}
+    .badge{display:inline-block;padding:2px 8px;border-radius:16px;font-size:12px;font-weight:700;cursor:pointer}
     .b-wait{background:#fef3c7;color:#92400e}
     .b-done{background:#dcfce7;color:#166534}
     .td-content{max-width:250px;line-height:1.5;color:#475569}
-    .td-date{white-space:nowrap;color:#64748b;font-size:11px}
-    .td-airline{font-weight:700;color:#1e293b;white-space:nowrap;font-size:12px}
-    .td-mail{font-family:'SF Mono',monospace;font-size:11px;color:#6366f1;white-space:nowrap}
+    .td-date{white-space:nowrap;color:#64748b;font-size:13px}
+    .td-airline{font-weight:700;color:#1e293b;white-space:nowrap;font-size:13px}
+    .td-mail{font-family:'SF Mono',monospace;font-size:13px;color:#6366f1;white-space:nowrap}
     .empty-msg{text-align:center;padding:60px 20px;color:#94a3b8;font-size:14px}
     .updated{font-size:11px;color:#94a3b8;text-align:right;margin-top:24px}
     .form-wrap{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
@@ -44,17 +44,17 @@
     .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
     .form-grid .full{grid-column:1/-1}
     .form-grid label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#64748b;font-weight:600}
-    .form-grid input,.form-grid textarea{background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:7px 8px;color:#1e293b;font-size:12px;font-family:inherit;outline:none}
+    .form-grid input,.form-grid textarea{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:7px 8px;color:#000;font-size:13px;font-family:inherit;outline:none}
     .form-grid input:focus,.form-grid textarea:focus{border-color:#3b82f6;box-shadow:0 0 0 2px rgba(59,130,246,.15)}
     .form-grid textarea{resize:vertical;min-height:40px}
-    .btn-add{background:#3b82f6;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit}
+    .btn-add{background:#3b82f6;color:#fff;border:none;padding:8px 20px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit}
     .btn-add:hover{background:#2563eb}
-    .btn-del{background:transparent;border:1px solid #ef4444;color:#ef4444;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
+    .btn-del{background:transparent;border:1px solid #ef4444;color:#ef4444;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit}
     .btn-del:hover{background:#ef4444;color:#fff}
     [data-field]{cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .15s}
     [data-field]:hover{background:rgba(59,130,246,.1)}
-    .edit-input{background:#fff;border:1px solid #3b82f6;border-radius:3px;color:#1e293b;font-size:12px;font-family:inherit;padding:3px 4px;width:100%;outline:none}
-    .edit-textarea{background:#fff;border:1px solid #3b82f6;border-radius:3px;color:#1e293b;font-size:12px;font-family:inherit;padding:3px 4px;width:100%;outline:none;min-height:40px;resize:vertical}
+    .edit-input{background:#fff;border:1px solid #3b82f6;border-radius:3px;color:#000;font-size:13px;font-family:inherit;padding:3px 4px;width:100%;outline:none}
+    .edit-textarea{background:#fff;border:1px solid #3b82f6;border-radius:3px;color:#000;font-size:13px;font-family:inherit;padding:3px 4px;width:100%;outline:none;min-height:40px;resize:vertical}
     .section-header{display:flex;justify-content:space-between;align-items:center;margin:36px 0 16px;cursor:pointer;user-select:none}
     .section-header h2{font-size:18px;font-weight:700;color:#1e3a5f}
     .section-header .arrow{font-size:14px;color:#64748b;transition:transform .2s}
@@ -263,7 +263,7 @@ function render(){
         ${makeCell('td-mail','active',i,'mail',c.mail)}
         ${makeCell('td-date','active',i,'start',c.start)}
         ${makeCell('td-airline','active',i,'airline',c.airline)}
-        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;font-size:12px;color:#6366f1;font-size:12px">${c.person||'-'}</td>
+        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#6366f1">${c.person||'-'}</td>
         ${makeCell('td-content','active',i,'content',c.content)}
         <td><span class="badge b-wait" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">${t.wait}</span></td>
         <td style="white-space:nowrap"><button class="btn-del" onclick="deleteActive(${i})">🗑️</button></td>`;
@@ -286,7 +286,7 @@ function render(){
           ${makeCell('td-mail','archive',i,'mail',c.mail)}
           ${makeCell('td-date','archive',i,'start',c.start)}
           ${makeCell('td-airline','archive',i,'airline',c.airline)}
-          <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;font-size:12px;color:#6366f1;font-size:12px">${c.person||'-'}</td>
+          <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#6366f1">${c.person||'-'}</td>
           ${makeCell('td-content','archive',i,'content',c.content)}
           ${makeCell('td-date','archive',i,'done',c.done)}
           <td><span class="badge b-done" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">${t.done}</span></td>
