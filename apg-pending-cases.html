@@ -64,6 +64,8 @@
     .archive-section .table-wrap::-webkit-scrollbar-track{background:#1a2536;border-radius:4px}
     .archive-section .table-wrap::-webkit-scrollbar-thumb{background:#7c5cbf;border-radius:4px}
     .archive-section.collapsed .table-wrap{max-height:0 !important}
+    .lang-btn{background:#1a2536;border:1px solid #2a3a50;color:#6a8aaa;padding:7px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+    .lang-btn:hover{border-color:#7c5cbf;color:#e0e6f0}
     @media(max-width:640px){.form-grid{grid-template-columns:1fr}.top-bar{justify-content:center}}
   </style>
 </head>
@@ -71,23 +73,26 @@
 <header>
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <h1>📋 APG 팬딩케이스 관리</h1>
-      <p>본사 답변 대기 케이스 — 근아차장님 공유</p>
+      <h1>📋 <span data-t="title">APG 팬딩케이스 관리</span></h1>
+      <p data-t="subtitle">본사 답변 대기 케이스 — 근아차장님 공유</p>
     </div>
-    <button onclick="location.reload()" style="background:#7c5cbf;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">🔄 새로고침</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+      <button onclick="location.reload()" style="background:#7c5cbf;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">🔄 새로고침</button>
+    </div>
   </div>
 </header>
 <div class="container">
   <div class="form-wrap">
-    <div class="form-title">＋ 새 케이스 등록</div>
+    <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span></div>
     <div class="form-grid">
-      <label>메일번호 (또는 PNR)<input id="f-mail" placeholder="#7599"></label>
-      <label>시작날짜<input id="f-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
-      <label>항공사<input id="f-airline" placeholder="TC, AT, SZ…"></label>
-      <label>담당자<input id="f-person" placeholder="홍길동"></label>
-      <label class="full">내용<textarea id="f-content" rows="2"></textarea></label>
+      <label><span data-t="mailOrPnr">메일번호 (또는 PNR)</span><input id="f-mail" placeholder="#7599"></label>
+      <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
+      <label><span data-t="airline">항공사</span><input id="f-airline" placeholder="TC, AT, SZ…"></label>
+      <label><span data-t="person">담당자</span><input id="f-person" placeholder="홍길동"></label>
+      <label class="full"><span data-t="content">내용</span><textarea id="f-content" rows="2"></textarea></label>
     </div>
-    <button class="btn-add" onclick="addCase()">등록</button>
+    <button class="btn-add" onclick="addCase()" data-t="register">등록</button>
   </div>
 
   <div class="top-bar" id="topBar"></div>
@@ -95,7 +100,7 @@
   <!-- 대기 케이스 -->
   <table id="waitTable">
     <thead>
-      <tr><th>번호</th><th>메일번호 (or PNR)</th><th>시작날짜</th><th>항공사</th><th>담당자</th><th>내용</th><th>상태</th><th>삭제</th></tr>
+      <tr><th data-t="num">번호</th><th data-t="mailOrPnr2">메일번호 (or PNR)</th><th data-t="startDate">시작날짜</th><th data-t="airline">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
     </thead>
     <tbody id="waitBody"></tbody>
   </table>
@@ -110,7 +115,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>번호</th><th>메일번호 (or PNR)</th><th>시작날짜</th><th>항공사</th><th>담당자</th><th>내용</th><th>완료날짜</th><th>상태</th><th>삭제</th></tr>
+          <tr><th data-t="num">번호</th><th data-t="mailOrPnr2">메일번호 (or PNR)</th><th data-t="startDate">시작날짜</th><th data-t="airline">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="doneDate">완료날짜</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
         </thead>
         <tbody id="doneBody"></tbody>
       </table>
@@ -121,6 +126,18 @@
   <div class="updated" id="updated"></div>
 </div>
 <script>
+let lang=localStorage.getItem('apg-lang')||'KR';
+const T={
+  KR:{title:'APG 팬딩케이스 관리',subtitle:'본사 답변 대기 케이스 — 근아차장님 공유',newCase:'새 케이스 등록',mailOrPnr:'메일번호 (또는 PNR)',mailOrPnr2:'메일번호 (or PNR)',startDate:'시작날짜',airline:'항공사',person:'담당자',content:'내용',status:'상태',delete:'삭제',register:'등록',num:'번호',doneDate:'완료날짜',wait:'대기',done:'완료',all:'전체',refresh:'🔄 새로고침',waitEmpty:'대기 케이스가 없습니다.',doneEmpty:'완료 케이스가 없습니다.',doneHeader:'📁 완료 케이스 — 상태 클릭시 대기로 복원'},
+  EN:{title:'APG Pending Cases',subtitle:'Pending cases for HQ response',newCase:'New Case',mailOrPnr:'Mail No. (or PNR)',mailOrPnr2:'Mail No. (or PNR)',startDate:'Start Date',airline:'Airline',person:'PIC',content:'Content',status:'Status',delete:'Delete',register:'Register',num:'No.',doneDate:'Done Date',wait:'Pending',done:'Done',all:'All',refresh:'🔄 Refresh',waitEmpty:'No pending cases.',doneEmpty:'No completed cases.',doneHeader:'📁 Completed Cases — Click status to restore'}
+};
+function toggleLang(){lang=lang==='KR'?'EN':'KR';localStorage.setItem('apg-lang',lang);applyLang();render()}
+function applyLang(){
+  const t=T[lang];
+  document.getElementById('langBtn').textContent=lang==='KR'?'EN':'KR';
+  document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data-t');if(t[k])el.textContent=t[k]});
+  const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
+}
 const DEFAULT_CASES = [
   {mail:"#7346",start:"2026-03-06",airline:"AT",person:"-",content:"갑작스런 커미션 변경으로 인한 컴플레인. 이영롱 과장(와이페이모어) KRW 171,016 보상 요구. 베니에게 메일 발송했으나 권부장님 출장 중이라 베니와 논의 예정.",status:"대기",done:"-"},
   {mail:"#7403",start:"2026-03-17",airline:"GP (ID)",person:"-",content:"공항에서 티켓이 안 보여 탑승 거부된 사례. 김경영(하나투어부산). 본사 확인 중이며 확인 후 연락 예정.",status:"대기",done:"-"},
@@ -219,15 +236,16 @@ function render(){
   const doneCount=archive.length;
 
   // 상단 필터
+  const t=T[lang];
   document.getElementById('topBar').innerHTML=`
     <div class="filter-btn f-all ${filter==='all'?'active':''}" onclick="setFilter('all')">
-      <div><div class="f-num">${waitCount+doneCount}</div><div class="f-label">전체</div></div>
+      <div><div class="f-num">${waitCount+doneCount}</div><div class="f-label">${t.all}</div></div>
     </div>
     <div class="filter-btn f-wait ${filter==='대기'||filter==='all'?'active':''}" onclick="setFilter('대기')">
-      <div><div class="f-num">${waitCount}</div><div class="f-label">대기</div></div>
+      <div><div class="f-num">${waitCount}</div><div class="f-label">${t.wait}</div></div>
     </div>
     <div class="filter-btn f-done ${filter==='완료'||filter==='all'?'active':''}" onclick="setFilter('완료')">
-      <div><div class="f-num">${doneCount}</div><div class="f-label">완료</div></div>
+      <div><div class="f-num">${doneCount}</div><div class="f-label">${t.done}</div></div>
     </div>`;
 
   const showWait=filter==='all'||filter==='대기';
@@ -247,7 +265,7 @@ function render(){
         ${makeCell('td-airline','active',i,'airline',c.airline)}
         <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
         ${makeCell('td-content','active',i,'content',c.content)}
-        <td><span class="badge b-wait" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">대기</span></td>
+        <td><span class="badge b-wait" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">${t.wait}</span></td>
         <td style="white-space:nowrap"><button class="btn-del" onclick="deleteActive(${i})">🗑️</button></td>`;
       waitBody.appendChild(tr)});
   }
@@ -271,12 +289,13 @@ function render(){
           <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
           ${makeCell('td-content','archive',i,'content',c.content)}
           ${makeCell('td-date','archive',i,'done',c.done)}
-          <td><span class="badge b-done" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">완료</span></td>
+          <td><span class="badge b-done" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">${t.done}</span></td>
           <td style="white-space:nowrap"><button class="btn-del" onclick="deleteArchive(${i})">🗑️</button></td>`;
         aBody.appendChild(tr)});
     }
   }
-  document.getElementById('updated').textContent='마지막 업데이트: '+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
+  document.getElementById('updated').textContent=(lang==='KR'?'마지막 업데이트: ':'Last updated: ')+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
+  applyLang();
 }
 render();
 </script>
