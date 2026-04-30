@@ -180,7 +180,7 @@ async function shareData(){
   btn.classList.add('saving');btn.textContent='저장 중...';
   const all=[...cases,...archive];
   let token=localStorage.getItem('apg-github-token');
-  if(!token){token=prompt('GitHub 토큰을 입력하세요 (한 번만 필요):','');if(!token){btn.textContent='💾 공유저장';btn.classList.remove('saving');return}localStorage.setItem('apg-github-token',token)}
+  if(!token){alert("공유저장 설정이 필요합니다. 김대리에게 요청해주세요.");btn.textContent="💾 공유저장";btn.classList.remove("saving");return}
   try{
     const res=await fetch('https://api.github.com/repos/kimdaeri-bot/private-docs/contents/apg-data.json',{headers:{'Accept':'application/vnd.github.v3+json','Authorization':'token '+token}});
     const existing=await res.json();
