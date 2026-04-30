@@ -56,7 +56,10 @@
     .section-header h2{font-size:18px;font-weight:700;color:#8ab4f8}
     .section-header .arrow{font-size:14px;color:#6a8aaa;transition:transform .2s}
     .section-header.collapsed .arrow{transform:rotate(-90deg)}
-    .archive-section .table-wrap{overflow:hidden;transition:max-height .3s ease}
+    .archive-section .table-wrap{max-height:160px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#7c5cbf #1a2536}
+    .archive-section .table-wrap::-webkit-scrollbar{width:8px}
+    .archive-section .table-wrap::-webkit-scrollbar-track{background:#1a2536;border-radius:4px}
+    .archive-section .table-wrap::-webkit-scrollbar-thumb{background:#7c5cbf;border-radius:4px}
     .archive-section.collapsed .table-wrap{max-height:0 !important}
     @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
   </style>
