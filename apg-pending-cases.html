@@ -17,7 +17,7 @@
     .stat{background:#1a2536;border:1px solid #243040;border-radius:10px;padding:16px 24px;flex:1;min-width:140px;text-align:center}
     .stat-num{font-size:28px;font-weight:900}
     .stat-label{font-size:11px;color:#6a8aaa;margin-top:4px;letter-spacing:.5px}
-    .s-wait{color:#f59e0b}.s-done{color:#22c55e}.s-total{color:#e0e6f0}
+    .s-wait{color:#f59e0b}.s-done{color:#22c55e}.s-total{color:#e0e6f0}.s-archive{color:#8ab4f8}
     table{width:100%;border-collapse:collapse;background:#1a2536;border-radius:12px;overflow:hidden;border:1px solid #243040}
     thead{background:#0d2347}
     th{padding:12px 14px;text-align:left;font-size:12px;font-weight:700;color:#8ab4f8;letter-spacing:.5px;white-space:nowrap}
@@ -47,6 +47,16 @@
     .btn-del:hover{background:#f87171;color:#fff}
     .btn-status{background:transparent;border:1px solid #4ade80;color:#4ade80;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
     .btn-status:hover{background:#4ade80;color:#0f1623}
+    .btn-archive{background:transparent;border:1px solid #8ab4f8;color:#8ab4f8;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
+    .btn-archive:hover{background:#8ab4f8;color:#0f1623}
+    .btn-restore{background:transparent;border:1px solid #fbbf24;color:#fbbf24;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
+    .btn-restore:hover{background:#fbbf24;color:#0f1623}
+    .section-header{display:flex;justify-content:space-between;align-items:center;margin:36px 0 16px;cursor:pointer;user-select:none}
+    .section-header h2{font-size:18px;font-weight:700;color:#8ab4f8}
+    .section-header .arrow{font-size:14px;color:#6a8aaa;transition:transform .2s}
+    .section-header.collapsed .arrow{transform:rotate(-90deg)}
+    .archive-section .table-wrap{overflow:hidden;transition:max-height .3s ease}
+    .archive-section.collapsed .table-wrap{max-height:0 !important}
     @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -71,6 +81,8 @@
     </div>
     <button class="btn-add" onclick="addCase()">등록</button>
   </div>
+
+  <!-- 활성 케이스 -->
   <div class="stats" id="stats"></div>
   <table>
     <thead>
@@ -81,30 +93,60 @@
         <th>항공사</th>
         <th>내용</th>
         <th>상태</th>
-        <th>완료날짜</th>
         <th>관리</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
   </table>
   <div class="empty-msg" id="empty">등록된 케이스가 없습니다.</div>
+
+  <!-- 보관함 -->
+  <div class="archive-section" id="archiveSection">
+    <div class="section-header" id="archiveHeader" onclick="toggleArchive()">
+      <h2>📁 완료 케이스 보관함 (<span id="archiveCount">0</span>)</h2>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>메일번호</th>
+            <th>시작날짜</th>
+            <th>항공사</th>
+            <th>내용</th>
+            <th>완료날짜</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody id="archiveBody"></tbody>
+      </table>
+      <div class="empty-msg" id="archiveEmpty">보관된 케이스가 없습니다.</div>
+    </div>
+  </div>
+
   <div class="updated" id="updated"></div>
 </div>
 <script>
 const DEFAULT_CASES = [
-  {mail:"#7509",start:"2026-04-06",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 홍영애(투어컬쳐) 요청. TC에 메일 발송했으나 답변 미수신. 여행사 2차 재촉 상태. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"},
-  {mail:"#7510",start:"2026-04-08",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 박진선(여기어때) 요청. TC에 메일 발송했으나 답변 미수신. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"},
   {mail:"#7346",start:"2026-03-06",airline:"AT",content:"갑작스런 커미션 변경으로 인한 컴플레인. 이영롱 과장(와이페이모어) KRW 171,016 보상 요구. 베니에게 메일 발송했으나 권부장님 출장 중이라 베니와 논의 예정.",status:"대기",done:"-"},
   {mail:"#7403",start:"2026-03-17",airline:"GP (ID)",content:"공항에서 티켓이 안 보여 탑승 거부된 사례. 김경영(하나투어부산). 본사 확인 중이며 확인 후 연락 예정.",status:"대기",done:"-"},
   {mail:"#7599",start:"2026-04-23",airline:"SZ",content:"SZ 당일 헤비딜레이로 인한 환불문의 중",status:"대기",done:"-"}
 ];
+const DEFAULT_ARCHIVE = [
+  {mail:"#7509",start:"2026-04-06",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 홍영애(투어컬쳐) 요청. TC에 메일 발송했으나 답변 미수신. 여행사 2차 재촉 상태. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"},
+  {mail:"#7510",start:"2026-04-08",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 박진선(여기어때) 요청. TC에 메일 발송했으나 답변 미수신. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"}
+];
 
-let cases;
-try { cases = JSON.parse(localStorage.getItem('apg-cases')) || [...DEFAULT_CASES]; }
-catch(e) { cases = [...DEFAULT_CASES]; }
-if(!localStorage.getItem('apg-cases')) localStorage.setItem('apg-cases', JSON.stringify(cases));
-
-function saveCases(){ localStorage.setItem('apg-cases', JSON.stringify(cases)); }
+let cases, archive;
+function load(){
+  try{cases=JSON.parse(localStorage.getItem('apg-cases'))||[...DEFAULT_CASES]}catch(e){cases=[...DEFAULT_CASES]}
+  try{archive=JSON.parse(localStorage.getItem('apg-archive'))||null}catch(e){archive=null}
+  if(archive===null){archive=[...DEFAULT_ARCHIVE];localStorage.setItem('apg-archive',JSON.stringify(archive))}
+  if(!localStorage.getItem('apg-cases'))localStorage.setItem('apg-cases',JSON.stringify(cases));
+}
+load();
+function save(){localStorage.setItem('apg-cases',JSON.stringify(cases));localStorage.setItem('apg-archive',JSON.stringify(archive))}
 
 function addCase(){
   const m=document.getElementById('f-mail').value.trim();
@@ -113,40 +155,53 @@ function addCase(){
   const c=document.getElementById('f-content').value.trim();
   if(!c){alert('내용을 입력해주세요');return}
   cases.unshift({mail:m||'-',start:s||'-',airline:a||'-',content:c,status:'대기',done:'-'});
-  saveCases(); render();
+  save();render();
   document.getElementById('f-mail').value='';
   document.getElementById('f-start').value='';
   document.getElementById('f-airline').value='';
   document.getElementById('f-content').value='';
 }
 
-function toggleStatus(i){
-  if(cases[i].status==='대기'){
-    cases[i].status='완료';
-    const d=prompt('완료날짜 입력 (예: 30APR):','');
-    cases[i].done=d||'-';
-  } else {
-    cases[i].status='대기'; cases[i].done='-';
-  }
-  saveCases(); render();
+function completeCase(i){
+  const d=prompt('완료날짜 입력 (예: 30APR):','');
+  if(!d)return;
+  cases[i].status='완료';cases[i].done=d;
+  archive.unshift(cases.splice(i,1)[0]);
+  save();render();
 }
 
-function deleteCase(i){
-  if(confirm('삭제하시겠습니까?')){cases.splice(i,1);saveCases();render()}
+function restoreCase(i){
+  archive[i].status='대기';archive[i].done='-';
+  cases.unshift(archive.splice(i,1)[0]);
+  save();render();
+}
+
+function deleteActive(i){if(confirm('삭제하시겠습니까?')){cases.splice(i,1);save();render()}}
+function deleteArchive(i){if(confirm('보관함에서 삭제하시겠습니까?')){archive.splice(i,1);save();render()}}
+
+let archiveOpen=true;
+function toggleArchive(){
+  archiveOpen=!archiveOpen;
+  const sec=document.getElementById('archiveSection');
+  const hdr=document.getElementById('archiveHeader');
+  if(archiveOpen){sec.classList.remove('collapsed');hdr.classList.remove('collapsed')}
+  else{sec.classList.add('collapsed');hdr.classList.add('collapsed')}
 }
 
 function render(){
   const tbody=document.getElementById('tbody');
   const empty=document.getElementById('empty');
   const statsEl=document.getElementById('stats');
+  const aBody=document.getElementById('archiveBody');
+  const aEmpty=document.getElementById('archiveEmpty');
+  const aCount=document.getElementById('archiveCount');
   const updatedEl=document.getElementById('updated');
+
+  // 활성
   tbody.innerHTML='';
-  if(cases.length===0){
-    empty.style.display='block';
-    document.querySelector('table').style.display='none';
-  } else {
-    empty.style.display='none';
-    document.querySelector('table').style.display='';
+  if(cases.length===0){empty.style.display='block';document.querySelector('table').style.display='none'}
+  else{
+    empty.style.display='none';document.querySelector('table').style.display='';
     cases.forEach((c,i)=>{
       const tr=document.createElement('tr');
       const bc=c.status==='대기'?'b-wait':'b-done';
@@ -157,20 +212,44 @@ function render(){
         <td class="td-airline">${c.airline||'-'}</td>
         <td class="td-content">${c.content||'-'}</td>
         <td><span class="badge ${bc}">${c.status||'-'}</span></td>
-        <td class="td-date">${c.done||'-'}</td>
         <td style="white-space:nowrap">
-          <button class="btn-status" onclick="toggleStatus(${i})">상태변경</button>
-          <button class="btn-del" onclick="deleteCase(${i})">삭제</button>
+          <button class="btn-archive" onclick="completeCase(${i})">📁 보관</button>
+          <button class="btn-del" onclick="deleteActive(${i})">삭제</button>
         </td>`;
       tbody.appendChild(tr);
     });
-    const wait=cases.filter(c=>c.status==='대기').length;
-    const done=cases.filter(c=>c.status==='완료').length;
-    statsEl.innerHTML=`
-      <div class="stat"><div class="stat-num s-total">${cases.length}</div><div class="stat-label">전체</div></div>
-      <div class="stat"><div class="stat-num s-wait">${wait}</div><div class="stat-label">대기</div></div>
-      <div class="stat"><div class="stat-num s-done">${done}</div><div class="stat-label">완료</div></div>`;
   }
+
+  // 통계
+  const wait=cases.filter(c=>c.status==='대기').length;
+  statsEl.innerHTML=`
+    <div class="stat"><div class="stat-num s-total">${cases.length}</div><div class="stat-label">활성</div></div>
+    <div class="stat"><div class="stat-num s-wait">${wait}</div><div class="stat-label">대기</div></div>
+    <div class="stat"><div class="stat-num s-archive">${archive.length}</div><div class="stat-label">보관</div></div>`;
+
+  // 보관함
+  aBody.innerHTML='';
+  aCount.textContent=archive.length;
+  if(archive.length===0){aEmpty.style.display='block';aBody.parentElement.style.display='none'}
+  else{
+    aEmpty.style.display='none';aBody.parentElement.style.display='';
+    archive.forEach((c,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td class="td-seq">${i+1}</td>
+        <td class="td-mail">${c.mail||'-'}</td>
+        <td class="td-date">${c.start||'-'}</td>
+        <td class="td-airline">${c.airline||'-'}</td>
+        <td class="td-content">${c.content||'-'}</td>
+        <td class="td-date">${c.done||'-'}</td>
+        <td style="white-space:nowrap">
+          <button class="btn-restore" onclick="restoreCase(${i})">↩ 복원</button>
+          <button class="btn-del" onclick="deleteArchive(${i})">삭제</button>
+        </td>`;
+      aBody.appendChild(tr);
+    });
+  }
+
   updatedEl.textContent='마지막 업데이트: '+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
 }
 render();
