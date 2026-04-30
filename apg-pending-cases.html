@@ -91,7 +91,7 @@
     <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span></div>
     <div class="form-grid">
       <label><span data-t="mailOrPnr">메일번호 (또는 PNR)</span><input id="f-mail" placeholder="#7599"></label>
-      <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
+      <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 0430 → 2026-04-30" onblur="autoDate(this)"></label>
       <label><span data-t="airline">항공사</span><input id="f-airline" placeholder="TC, AT, SZ…"></label>
       <label><span data-t="person">담당자</span><input id="f-person" placeholder="홍길동"></label>
       <label class="full"><span data-t="content">내용</span><textarea id="f-content" rows="2"></textarea></label>
@@ -191,6 +191,8 @@ function save(){localStorage.setItem('apg-cases',JSON.stringify(cases));localSto
 
 function autoDate(el){
   let v=el.value.trim();if(!v)return;
+  // 0430 → 2026-04-30
+  if(/^\d{4}$/.test(v))v='2026-'+v.slice(0,2)+'-'+v.slice(2);
   v=v.replace(/\./g,'-').replace(/\//g,'-');
   const m=v.match(/^(\d{1,2})-(\d{1,2})$/);
   if(m)v='2026-'+m[1].padStart(2,'0')+'-'+m[2].padStart(2,'0');
