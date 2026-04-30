@@ -44,28 +44,14 @@
     .btn-add:hover{background:#9b7ed8}
     .btn-del{background:transparent;border:1px solid #f87171;color:#f87171;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
     .btn-del:hover{background:#f87171;color:#fff}
-    .btn-status{background:transparent;border:1px solid #4ade80;color:#4ade80;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
-    .btn-status:hover{background:#4ade80;color:#0f1623}
     .btn-archive{background:transparent;border:1px solid #8ab4f8;color:#8ab4f8;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
     .btn-archive:hover{background:#8ab4f8;color:#0f1623}
     .btn-restore{background:transparent;border:1px solid #fbbf24;color:#fbbf24;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
     .btn-restore:hover{background:#fbbf24;color:#0f1623}
-    .btn-edit{background:transparent;border:1px solid #a78bfa;color:#a78bfa;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
-    .btn-edit:hover{background:#a78bfa;color:#0f1623}
-    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:999;justify-content:center;align-items:center}
-    .modal-overlay.show{display:flex}
-    .modal{background:#1a2536;border:1px solid #2a3a50;border-radius:14px;padding:28px;width:90%;max-width:500px}
-    .modal h3{color:#8ab4f8;font-size:16px;margin-bottom:16px}
-    .modal label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6a8aaa;font-weight:600;margin-bottom:12px}
-    .modal input,.modal textarea{background:#0f1623;border:1px solid #2a3a50;border-radius:8px;padding:10px 12px;color:#e0e6f0;font-size:13px;font-family:inherit;outline:none}
-    .modal input:focus,.modal textarea:focus{border-color:#7c5cbf}
-    .modal textarea{resize:vertical;min-height:80px}
-    .modal-btns{display:flex;gap:10px;margin-top:8px}
-    .modal-btns button{flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none}
-    .btn-save{background:#7c5cbf;color:#fff}
-    .btn-save:hover{background:#9b7ed8}
-    .btn-cancel{background:#2a3a50;color:#e0e6f0}
-    .btn-cancel:hover{background:#3a4a60}
+    [data-field]{cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .15s}
+    [data-field]:hover{background:rgba(124,92,191,.25)}
+    .edit-input{background:#0f1623;border:1px solid #7c5cbf;border-radius:4px;color:#e0e6f0;font-size:13px;font-family:inherit;padding:4px 6px;width:100%;outline:none}
+    .edit-textarea{background:#0f1623;border:1px solid #7c5cbf;border-radius:4px;color:#e0e6f0;font-size:13px;font-family:inherit;padding:4px 6px;width:100%;outline:none;min-height:50px;resize:vertical}
     .section-header{display:flex;justify-content:space-between;align-items:center;margin:36px 0 16px;cursor:pointer;user-select:none}
     .section-header h2{font-size:18px;font-weight:700;color:#8ab4f8}
     .section-header .arrow{font-size:14px;color:#6a8aaa;transition:transform .2s}
@@ -97,8 +83,6 @@
     </div>
     <button class="btn-add" onclick="addCase()">등록</button>
   </div>
-
-  <!-- 활성 케이스 -->
   <div class="stats" id="stats"></div>
   <table>
     <thead>
@@ -117,7 +101,6 @@
   </table>
   <div class="empty-msg" id="empty">등록된 케이스가 없습니다.</div>
 
-  <!-- 보관함 -->
   <div class="archive-section" id="archiveSection">
     <div class="section-header" id="archiveHeader" onclick="toggleArchive()">
       <h2>📁 완료 케이스 보관함 (<span id="archiveCount">0</span>)</h2>
@@ -145,30 +128,15 @@
 
   <div class="updated" id="updated"></div>
 </div>
-
-<div class="modal-overlay" id="editModal">
-  <div class="modal">
-    <h3>✏️ 케이스 수정</h3>
-    <label>메일번호 (또는 PNR)<input id="e-mail"></label>
-    <label>시작날짜<input id="e-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
-    <label>항공사<input id="e-airline"></label>
-    <label>담당자<input id="e-person"></label>
-    <label>내용<textarea id="e-content" rows="4"></textarea></label>
-    <div class="modal-btns">
-      <button class="btn-save" onclick="saveEdit()">저장</button>
-      <button class="btn-cancel" onclick="closeModal()">취소</button>
-    </div>
-  </div>
-</div>
 <script>
 const DEFAULT_CASES = [
-  {mail:"#7346",start:"2026-03-06",airline:"AT",content:"갑작스런 커미션 변경으로 인한 컴플레인. 이영롱 과장(와이페이모어) KRW 171,016 보상 요구. 베니에게 메일 발송했으나 권부장님 출장 중이라 베니와 논의 예정.",status:"대기",done:"-"},
-  {mail:"#7403",start:"2026-03-17",airline:"GP (ID)",content:"공항에서 티켓이 안 보여 탑승 거부된 사례. 김경영(하나투어부산). 본사 확인 중이며 확인 후 연락 예정.",status:"대기",done:"-"},
-  {mail:"#7599",start:"2026-04-23",airline:"SZ",content:"SZ 당일 헤비딜레이로 인한 환불문의 중",status:"대기",done:"-"}
+  {mail:"#7346",start:"2026-03-06",airline:"AT",person:"-",content:"갑작스런 커미션 변경으로 인한 컴플레인. 이영롱 과장(와이페이모어) KRW 171,016 보상 요구. 베니에게 메일 발송했으나 권부장님 출장 중이라 베니와 논의 예정.",status:"대기",done:"-"},
+  {mail:"#7403",start:"2026-03-17",airline:"GP (ID)",person:"-",content:"공항에서 티켓이 안 보여 탑승 거부된 사례. 김경영(하나투어부산). 본사 확인 중이며 확인 후 연락 예정.",status:"대기",done:"-"},
+  {mail:"#7599",start:"2026-04-23",airline:"SZ",person:"-",content:"SZ 당일 헤비딜레이로 인한 환불문의 중",status:"대기",done:"-"}
 ];
 const DEFAULT_ARCHIVE = [
-  {mail:"#7509",start:"2026-04-06",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 홍영애(투어컬쳐) 요청. TC에 메일 발송했으나 답변 미수신. 여행사 2차 재촉 상태. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"},
-  {mail:"#7510",start:"2026-04-08",airline:"TC",content:"TK로 인한 MCT SHORT 케이스. 박진선(여기어때) 요청. TC에 메일 발송했으나 답변 미수신. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"}
+  {mail:"#7509",start:"2026-04-06",airline:"TC",person:"-",content:"TK로 인한 MCT SHORT 케이스. 홍영애(투어컬쳐) 요청. TC에 메일 발송했으나 답변 미수신. 여행사 2차 재촉 상태. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"},
+  {mail:"#7510",start:"2026-04-08",airline:"TC",person:"-",content:"TK로 인한 MCT SHORT 케이스. 박진선(여기어때) 요청. TC에 메일 발송했으나 답변 미수신. ★ TC본사 여러 차례 연락 시도했으나 연결 안 됨. 여행사 측 급하므로 INVOL 재발권 안내 완료. 단, ADM에 대해서는 APG 개런티 불가 안내. 추후 TC 본사 연락 오면 즉시 회신 예정. (14APR)",status:"완료",done:"17APR"}
 ];
 
 let cases, archive;
@@ -194,9 +162,9 @@ function addCase(){
   const m=document.getElementById('f-mail').value.trim();
   const s=document.getElementById('f-start').value;
   const a=document.getElementById('f-airline').value.trim();
+  const p=document.getElementById('f-person').value.trim();
   const c=document.getElementById('f-content').value.trim();
   if(!c){alert('내용을 입력해주세요');return}
-  const p=document.getElementById('f-person').value.trim();
   cases.unshift({mail:m||'-',start:s||'-',airline:a||'-',person:p||'-',content:c,status:'대기',done:'-'});
   save();render();
   document.getElementById('f-mail').value='';
@@ -213,30 +181,34 @@ function completeCase(i){
   archive.unshift(cases.splice(i,1)[0]);
   save();render();
 }
-
 function restoreCase(i){
   archive[i].status='대기';archive[i].done='-';
   cases.unshift(archive.splice(i,1)[0]);
   save();render();
 }
-
 function deleteActive(i){if(confirm('삭제하시겠습니까?')){cases.splice(i,1);save();render()}}
 function deleteArchive(i){if(confirm('보관함에서 삭제하시겠습니까?')){archive.splice(i,1);save();render()}}
 
-let editTarget=null,editSource=null;
-function fillEdit(c){document.getElementById('e-mail').value=c.mail==='-'?'':c.mail;document.getElementById('e-start').value=c.start==='-'?'':c.start;document.getElementById('e-airline').value=c.airline==='-'?'':c.airline;document.getElementById('e-person').value=(c.person&&c.person!=='-')?c.person:'';document.getElementById('e-content').value=c.content;document.getElementById('editModal').classList.add('show')}
-function editActive(i){editSource='active';editTarget=i;fillEdit(cases[i])}
-function editArchive(i){editSource='archive';editTarget=i;fillEdit(archive[i])}
-function closeModal(){document.getElementById('editModal').classList.remove('show');editTarget=null}
-function saveEdit(){
-  const list=editSource==='active'?cases:archive;
-  const c=list[editTarget];
-  c.mail=document.getElementById('e-mail').value.trim()||'-';
-  c.start=document.getElementById('e-start').value||'-';
-  c.airline=document.getElementById('e-airline').value.trim()||'-';
-  c.person=document.getElementById('e-person').value.trim()||'-';
-  c.content=document.getElementById('e-content').value.trim();
-  save();closeModal();render();
+function editCell(el,source,idx,field){
+  if(el.querySelector('input,textarea'))return;
+  const list=source==='active'?cases:archive;
+  const c=list[idx];
+  const val=(c[field]==='-')?'':c[field];
+  const isLong=field==='content';
+  const inp=document.createElement(isLong?'textarea':'input');
+  inp.className=isLong?'edit-textarea':'edit-input';
+  inp.value=val;
+  el.textContent='';
+  el.appendChild(inp);
+  inp.focus();
+  function finish(){
+    let v=inp.value.trim();
+    if(field==='start'&&v){autoDate(inp);v=inp.value.trim()}
+    c[field]=v||'-';
+    save();render();
+  }
+  inp.addEventListener('blur',finish);
+  if(!isLong)inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();finish()}});
 }
 
 let archiveOpen=true;
@@ -244,8 +216,13 @@ function toggleArchive(){
   archiveOpen=!archiveOpen;
   const sec=document.getElementById('archiveSection');
   const hdr=document.getElementById('archiveHeader');
-  if(archiveOpen){sec.classList.remove('collapsed');hdr.classList.remove('collapsed')}
-  else{sec.classList.add('collapsed');hdr.classList.add('collapsed')}
+  sec.classList.toggle('collapsed',!archiveOpen);
+  hdr.classList.toggle('collapsed',!archiveOpen);
+}
+
+function makeCell(cls,source,i,field,val,extra){
+  const style=extra?`class="${cls}" style="${extra}"`:`class="${cls}"`;
+  return `<td ${style} data-field onclick="editCell(this,'${source}',${i},'${field}')">${val||'-'}</td>`;
 }
 
 function render(){
@@ -257,39 +234,35 @@ function render(){
   const aCount=document.getElementById('archiveCount');
   const updatedEl=document.getElementById('updated');
 
-  // 활성
   tbody.innerHTML='';
   if(cases.length===0){empty.style.display='block';document.querySelector('table').style.display='none'}
   else{
     empty.style.display='none';document.querySelector('table').style.display='';
     cases.forEach((c,i)=>{
-      const tr=document.createElement('tr');
       const bc=c.status==='대기'?'b-wait':'b-done';
+      const tr=document.createElement('tr');
       tr.innerHTML=`
         <td class="td-seq">${i+1}</td>
-        <td class="td-mail">${c.mail||'-'}</td>
-        <td class="td-date">${c.start||'-'}</td>
-        <td class="td-airline">${c.airline||'-'}</td>
-        <td style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
-        <td class="td-content">${c.content||'-'}</td>
+        ${makeCell('td-mail','active',i,'mail',c.mail)}
+        ${makeCell('td-date','active',i,'start',c.start)}
+        ${makeCell('td-airline','active',i,'airline',c.airline)}
+        <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
+        ${makeCell('td-content','active',i,'content',c.content)}
         <td><span class="badge ${bc}">${c.status||'-'}</span></td>
         <td style="white-space:nowrap">
-          <button class="btn-edit" onclick="editActive(${i})">✏️ 수정</button>
           <button class="btn-archive" onclick="completeCase(${i})">📁 보관</button>
-          <button class="btn-del" onclick="deleteActive(${i})">삭제</button>
+          <button class="btn-del" onclick="deleteActive(${i})">🗑️</button>
         </td>`;
       tbody.appendChild(tr);
     });
   }
 
-  // 통계
   const wait=cases.filter(c=>c.status==='대기').length;
   statsEl.innerHTML=`
     <div class="stat"><div class="stat-num s-total">${cases.length}</div><div class="stat-label">활성</div></div>
     <div class="stat"><div class="stat-num s-wait">${wait}</div><div class="stat-label">대기</div></div>
     <div class="stat"><div class="stat-num s-archive">${archive.length}</div><div class="stat-label">보관</div></div>`;
 
-  // 보관함
   aBody.innerHTML='';
   aCount.textContent=archive.length;
   if(archive.length===0){aEmpty.style.display='block';aBody.parentElement.style.display='none'}
@@ -299,21 +272,19 @@ function render(){
       const tr=document.createElement('tr');
       tr.innerHTML=`
         <td class="td-seq">${i+1}</td>
-        <td class="td-mail">${c.mail||'-'}</td>
-        <td class="td-date">${c.start||'-'}</td>
-        <td class="td-airline">${c.airline||'-'}</td>
-        <td style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
-        <td class="td-content">${c.content||'-'}</td>
-        <td class="td-date">${c.done||'-'}</td>
+        ${makeCell('td-mail','archive',i,'mail',c.mail)}
+        ${makeCell('td-date','archive',i,'start',c.start)}
+        ${makeCell('td-airline','archive',i,'airline',c.airline)}
+        <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
+        ${makeCell('td-content','archive',i,'content',c.content)}
+        ${makeCell('td-date','archive',i,'done',c.done)}
         <td style="white-space:nowrap">
-          <button class="btn-edit" onclick="editArchive(${i})">✏️ 수정</button>
           <button class="btn-restore" onclick="restoreCase(${i})">↩ 복원</button>
-          <button class="btn-del" onclick="deleteArchive(${i})">삭제</button>
+          <button class="btn-del" onclick="deleteArchive(${i})">🗑️</button>
         </td>`;
       aBody.appendChild(tr);
     });
   }
-
   updatedEl.textContent='마지막 업데이트: '+new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'});
 }
 render();
