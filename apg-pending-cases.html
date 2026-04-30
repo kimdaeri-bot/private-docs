@@ -136,7 +136,7 @@
 <script>
 let lang=localStorage.getItem('apg-lang')||'KR';
 const T={
-  KR:{title:'APG 팬딩케이스 관리',subtitle:'본사 답변 대기 케이스 — 근아차장님 공유',newCase:'새 케이스 등록',mailOrPnr:'메일번호 (또는 PNR)',mailOrPnr2:'메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>',startDate:'시작날짜',airline:'항공사',person:'담당자',content:'내용',status:'상태',delete:'삭제',register:'등록',num:'번호',doneDate:'완료날짜',wait:'대기',done:'완료',all:'전체',refresh:'🔄 새로고침',waitEmpty:'대기 케이스가 없습니다.',doneEmpty:'완료 케이스가 없습니다.',doneHeader:'📁 완료 케이스 — 상태 클릭시 대기로 복원'},
+  KR:{title:'APG 팬딩케이스 관리',subtitle:'본사 답변 대기 케이스 — 근아차장님 공유',newCase:'새 케이스 등록',mailOrPnr:'메일번호 (또는 PNR)',mailOrPnr2:'메일번호 (or PNR)',startDate:'시작날짜',airline:'항공사',person:'담당자',content:'내용',status:'상태',delete:'삭제',register:'등록',num:'번호',doneDate:'완료날짜',wait:'대기',done:'완료',all:'전체',refresh:'🔄 새로고침',waitEmpty:'대기 케이스가 없습니다.',doneEmpty:'완료 케이스가 없습니다.',doneHeader:'📁 완료 케이스 — 상태 클릭시 대기로 복원'},
   EN:{title:'APG Pending Cases',subtitle:'Pending cases for HQ response',newCase:'New Case',mailOrPnr:'Mail No. (or PNR)',mailOrPnr2:'Mail No. (or PNR)',startDate:'Start Date',airline:'Airline',person:'PIC',content:'Content',status:'Status',delete:'Delete',register:'Register',num:'No.',doneDate:'Done Date',wait:'Pending',done:'Done',all:'All',refresh:'🔄 Refresh',waitEmpty:'No pending cases.',doneEmpty:'No completed cases.',doneHeader:'📁 Completed Cases — Click status to restore'}
 };
 function toggleLang(){lang=lang==='KR'?'EN':'KR';localStorage.setItem('apg-lang',lang);applyLang();render()}
@@ -144,6 +144,8 @@ function applyLang(){
   const t=T[lang];
   document.getElementById('langBtn').textContent=lang==='KR'?'EN':'KR';
   document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data-t');if(t[k])el.textContent=t[k]});
+  // Restore (or PNR) subtitle in table headers
+  document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{el.innerHTML='메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>'});
   const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
 }
 const DEFAULT_CASES = [
