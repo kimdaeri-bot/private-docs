@@ -50,6 +50,22 @@
     .btn-archive:hover{background:#8ab4f8;color:#0f1623}
     .btn-restore{background:transparent;border:1px solid #fbbf24;color:#fbbf24;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
     .btn-restore:hover{background:#fbbf24;color:#0f1623}
+    .btn-edit{background:transparent;border:1px solid #a78bfa;color:#a78bfa;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit}
+    .btn-edit:hover{background:#a78bfa;color:#0f1623}
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:999;justify-content:center;align-items:center}
+    .modal-overlay.show{display:flex}
+    .modal{background:#1a2536;border:1px solid #2a3a50;border-radius:14px;padding:28px;width:90%;max-width:500px}
+    .modal h3{color:#8ab4f8;font-size:16px;margin-bottom:16px}
+    .modal label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:#6a8aaa;font-weight:600;margin-bottom:12px}
+    .modal input,.modal textarea{background:#0f1623;border:1px solid #2a3a50;border-radius:8px;padding:10px 12px;color:#e0e6f0;font-size:13px;font-family:inherit;outline:none}
+    .modal input:focus,.modal textarea:focus{border-color:#7c5cbf}
+    .modal textarea{resize:vertical;min-height:80px}
+    .modal-btns{display:flex;gap:10px;margin-top:8px}
+    .modal-btns button{flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;border:none}
+    .btn-save{background:#7c5cbf;color:#fff}
+    .btn-save:hover{background:#9b7ed8}
+    .btn-cancel{background:#2a3a50;color:#e0e6f0}
+    .btn-cancel:hover{background:#3a4a60}
     .section-header{display:flex;justify-content:space-between;align-items:center;margin:36px 0 16px;cursor:pointer;user-select:none}
     .section-header h2{font-size:18px;font-weight:700;color:#8ab4f8}
     .section-header .arrow{font-size:14px;color:#6a8aaa;transition:transform .2s}
@@ -126,6 +142,20 @@
 
   <div class="updated" id="updated"></div>
 </div>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>✏️ 케이스 수정</h3>
+    <label>메일번호<input id="e-mail"></label>
+    <label>시작날짜<input id="e-start" type="date"></label>
+    <label>항공사<input id="e-airline"></label>
+    <label>내용<textarea id="e-content" rows="4"></textarea></label>
+    <div class="modal-btns">
+      <button class="btn-save" onclick="saveEdit()">저장</button>
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+    </div>
+  </div>
+</div>
 <script>
 const DEFAULT_CASES = [
   {mail:"#7346",start:"2026-03-06",airline:"AT",content:"갑작스런 커미션 변경으로 인한 컴플레인. 이영롱 과장(와이페이모어) KRW 171,016 보상 요구. 베니에게 메일 발송했으나 권부장님 출장 중이라 베니와 논의 예정.",status:"대기",done:"-"},
@@ -178,6 +208,20 @@ function restoreCase(i){
 function deleteActive(i){if(confirm('삭제하시겠습니까?')){cases.splice(i,1);save();render()}}
 function deleteArchive(i){if(confirm('보관함에서 삭제하시겠습니까?')){archive.splice(i,1);save();render()}}
 
+let editTarget=null,editSource=null;
+function editActive(i){editSource='active';editTarget=i;const c=cases[i];document.getElementById('e-mail').value=c.mail==='-'?'':c.mail;document.getElementById('e-start').value=c.start==='-'?'':c.start;document.getElementById('e-airline').value=c.airline==='-'?'':c.airline;document.getElementById('e-content').value=c.content;document.getElementById('editModal').classList.add('show')}
+function editArchive(i){editSource='archive';editTarget=i;const c=archive[i];document.getElementById('e-mail').value=c.mail==='-'?'':c.mail;document.getElementById('e-start').value=c.start==='-'?'':c.start;document.getElementById('e-airline').value=c.airline==='-'?'':c.airline;document.getElementById('e-content').value=c.content;document.getElementById('editModal').classList.add('show')}
+function closeModal(){document.getElementById('editModal').classList.remove('show');editTarget=null}
+function saveEdit(){
+  const list=editSource==='active'?cases:archive;
+  const c=list[editTarget];
+  c.mail=document.getElementById('e-mail').value.trim()||'-';
+  c.start=document.getElementById('e-start').value||'-';
+  c.airline=document.getElementById('e-airline').value.trim()||'-';
+  c.content=document.getElementById('e-content').value.trim();
+  save();closeModal();render();
+}
+
 let archiveOpen=true;
 function toggleArchive(){
   archiveOpen=!archiveOpen;
@@ -212,6 +256,7 @@ function render(){
         <td class="td-content">${c.content||'-'}</td>
         <td><span class="badge ${bc}">${c.status||'-'}</span></td>
         <td style="white-space:nowrap">
+          <button class="btn-edit" onclick="editActive(${i})">✏️ 수정</button>
           <button class="btn-archive" onclick="completeCase(${i})">📁 보관</button>
           <button class="btn-del" onclick="deleteActive(${i})">삭제</button>
         </td>`;
@@ -242,6 +287,7 @@ function render(){
         <td class="td-content">${c.content||'-'}</td>
         <td class="td-date">${c.done||'-'}</td>
         <td style="white-space:nowrap">
+          <button class="btn-edit" onclick="editArchive(${i})">✏️ 수정</button>
           <button class="btn-restore" onclick="restoreCase(${i})">↩ 복원</button>
           <button class="btn-del" onclick="deleteArchive(${i})">삭제</button>
         </td>`;
