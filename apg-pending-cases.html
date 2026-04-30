@@ -106,7 +106,7 @@
 
   <div class="archive-section" id="archiveSection">
     <div class="section-header" id="archiveHeader" onclick="toggleArchive()">
-      <h2>📁 완료 케이스 보관함 (<span id="archiveCount">0</span>)</h2>
+      <h2>📁 완료 케이스 보관함 (<span id="archiveCount">0</span>) — 상태 클릭시 대기로 복원</h2>
       <span class="arrow">▼</span>
     </div>
     <div class="table-wrap">
@@ -119,6 +119,7 @@
             <th>항공사</th>
             <th>담당자</th>
             <th>내용</th>
+            <th>상태</th>
             <th>완료날짜</th>
             <th>관리</th>
           </tr>
@@ -177,16 +178,16 @@ function addCase(){
   document.getElementById('f-content').value='';
 }
 
-function completeCase(i){
-  const d=prompt('완료날짜 입력 (예: 30APR):','');
-  if(!d)return;
-  cases[i].status='완료';cases[i].done=d;
-  archive.unshift(cases.splice(i,1)[0]);
-  save();render();
-}
-function restoreCase(i){
-  archive[i].status='대기';archive[i].done='-';
-  cases.unshift(archive.splice(i,1)[0]);
+function toggleStatus(source,i){
+  if(source==='active'){
+    const d=prompt('완료날짜 입력 (예: 30APR):','');
+    if(!d)return;
+    cases[i].status='완료';cases[i].done=d;
+    archive.unshift(cases.splice(i,1)[0]);
+  } else {
+    archive[i].status='대기';archive[i].done='-';
+    cases.unshift(archive.splice(i,1)[0]);
+  }
   save();render();
 }
 function deleteActive(i){if(confirm('삭제하시겠습니까?')){cases.splice(i,1);save();render()}}
@@ -251,9 +252,8 @@ function render(){
         ${makeCell('td-airline','active',i,'airline',c.airline)}
         <td data-field onclick="editCell(this,'active',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
         ${makeCell('td-content','active',i,'content',c.content)}
-        <td><span class="badge ${bc}">${c.status||'-'}</span></td>
+        <td><span class="badge ${bc}" style="cursor:pointer" onclick="toggleStatus('active',${i})" title="클릭: 완료로 변경">${c.status||'-'}</span></td>
         <td style="white-space:nowrap">
-          <button class="btn-archive" onclick="completeCase(${i})">📁 보관</button>
           <button class="btn-del" onclick="deleteActive(${i})">🗑️</button>
         </td>`;
       tbody.appendChild(tr);
@@ -280,9 +280,9 @@ function render(){
         ${makeCell('td-airline','archive',i,'airline',c.airline)}
         <td data-field onclick="editCell(this,'archive',${i},'person')" style="white-space:nowrap;color:#c4b5fd;font-size:12px">${c.person||'-'}</td>
         ${makeCell('td-content','archive',i,'content',c.content)}
+        <td><span class="badge b-done" style="cursor:pointer" onclick="toggleStatus('archive',${i})" title="클릭: 대기로 복원">완료</span></td>
         ${makeCell('td-date','archive',i,'done',c.done)}
         <td style="white-space:nowrap">
-          <button class="btn-restore" onclick="restoreCase(${i})">↩ 복원</button>
           <button class="btn-del" onclick="deleteArchive(${i})">🗑️</button>
         </td>`;
       aBody.appendChild(tr);
