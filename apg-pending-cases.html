@@ -89,7 +89,7 @@
   <div class="form-wrap">
     <div class="form-title">＋ 새 케이스 등록</div>
     <div class="form-grid">
-      <label>메일번호<input id="f-mail" placeholder="#7599"></label>
+      <label>메일번호 (또는 PNR)<input id="f-mail" placeholder="#7599"></label>
       <label>시작날짜<input id="f-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
       <label>항공사<input id="f-airline" placeholder="TC, AT, SZ…"></label>
       <label>담당자<input id="f-person" placeholder="홍길동"></label>
@@ -104,7 +104,7 @@
     <thead>
       <tr>
         <th>번호</th>
-        <th>메일번호</th>
+        <th>메일번호(PNR)</th>
         <th>시작날짜</th>
         <th>항공사</th>
         <th>담당자</th>
@@ -128,7 +128,7 @@
         <thead>
           <tr>
             <th>번호</th>
-            <th>메일번호</th>
+            <th>메일번호(PNR)</th>
             <th>시작날짜</th>
             <th>항공사</th>
             <th>담당자</th>
@@ -149,7 +149,7 @@
 <div class="modal-overlay" id="editModal">
   <div class="modal">
     <h3>✏️ 케이스 수정</h3>
-    <label>메일번호<input id="e-mail"></label>
+    <label>메일번호 (또는 PNR)<input id="e-mail"></label>
     <label>시작날짜<input id="e-start" placeholder="예: 04-30 → 2026-04-30" onblur="autoDate(this)"></label>
     <label>항공사<input id="e-airline"></label>
     <label>담당자<input id="e-person"></label>
