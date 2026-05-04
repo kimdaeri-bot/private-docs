@@ -229,8 +229,8 @@ function setActiveTab(tab){
   const inp=document.getElementById('f-airline');
   const tabLbl=document.getElementById('tab-label');
   if(tab==='열차'){
-    lbl.textContent='철도/구간';
-    inp.placeholder='TGV, 유레일, 구간명…';
+    lbl.textContent='철도청';
+    inp.placeholder='TGV, 유레일, SNCF…';
     tabLbl.textContent='🚆 열차';
   }else{
     lbl.textContent='항공사';
@@ -241,13 +241,22 @@ function setActiveTab(tab){
   const thAirline=document.getElementById('th-airline');
   const thAirlineArchive=document.getElementById('th-airline-archive');
   if(tab==='열차'){
-    thAirline.textContent='철도/구간';
-    thAirlineArchive.textContent='철도/구간';
+    thAirline.textContent='철도청';
+    thAirlineArchive.textContent='철도청';
   }else{
     thAirline.textContent='항공사';
     thAirlineArchive.textContent='항공사';
   }
-  // Reset filters
+  // Update form mail label
+  const mailLabel=document.querySelector('label:nth-child(1) [data-t="mailOrPnr"]');
+  if(mailLabel)mailLabel.textContent=tab==='열차'?'참조코드 (또는 PNR)':'메일번호 (또는 PNR)';
+  // Update table mail headers
+  document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{
+    const sub=tab==='열차'?'참조코드':'메일번호';
+    el.innerHTML=sub+'<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>';
+  });
+  // Update form placeholder
+  document.getElementById('f-mail').placeholder=tab==='열차'?'참조코드 또는 PNR':'#7599 또는 PNR';
   filterAirline='';
   filterPerson='';
   render();
@@ -347,7 +356,7 @@ function render(){
   const all=[...tabCases,...tabArchive];
   const airlines=[...new Set(all.map(c=>c.airline))].sort();
   const persons=[...new Set(all.map(c=>c.person))].sort();
-  const airlineLabel=activeTab==='열차'?'철도/구간':'항공사';
+  const airlineLabel=activeTab==='열차'?'철도청':'항공사';
   document.getElementById('subBar').innerHTML=`
     <select onchange="setAirlineFilter(this.value)"><option value="">${airlineLabel} 전체</option>${airlines.map(a=>`<option value="${a}" ${filterAirline===a?'selected':''}>${a}</option>`).join('')}</select>
     <select onchange="setPersonFilter(this.value)"><option value="">담당자 전체</option>${persons.map(p=>`<option value="${p}" ${filterPerson===p?'selected':''}>${p}</option>`).join('')}</select>`;
