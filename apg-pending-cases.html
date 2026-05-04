@@ -152,6 +152,15 @@ function applyLang(){
   const t=T[lang];
   document.getElementById('langBtn').textContent=lang==='KR'?'EN':'KR';
   document.querySelectorAll('[data-t]').forEach(el=>{const k=el.getAttribute('data-t');if(t[k])el.textContent=t[k]});
+  // Override tab-specific labels after lang reset
+  const lbl=document.getElementById('f-airline-label');
+  if(lbl)lbl.textContent=activeTab==='열차'?'철도청':'항공사';
+  const tabLbl=document.getElementById('tab-label');
+  if(tabLbl)tabLbl.textContent=activeTab==='열차'?'🚆 열차':'✈️ 항공';
+  const thA=document.getElementById('th-airline');if(thA)thA.textContent=activeTab==='열차'?'철도청':'항공사';
+  const thAA=document.getElementById('th-airline-archive');if(thAA)thAA.textContent=activeTab==='열차'?'철도청':'항공사';
+  const mailLbl=document.querySelector('[data-t="mailOrPnr"]');
+  if(mailLbl)mailLbl.textContent=activeTab==='열차'?'참조코드 (또는 PNR)':'메일번호 (또는 PNR)';
   // Restore (or PNR) subtitle in table headers
   document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{el.innerHTML='메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>'});
   const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
