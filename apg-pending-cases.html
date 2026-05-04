@@ -72,7 +72,11 @@
     .btn-share{background:#f97316;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
     .btn-share:hover{background:#ea580c}
     .btn-share.saving{opacity:.6;cursor:wait}
-    @media(max-width:640px){.form-grid{grid-template-columns:1fr}.top-bar{justify-content:center}}
+    .tab-bar{display:flex;gap:0;border-bottom:2px solid #e2e8f0;margin-bottom:20px;background:#fff;border-radius:8px 8px 0 0;overflow:hidden}
+    .tab{flex:1;padding:14px 20px;text-align:center;font-size:15px;font-weight:700;cursor:pointer;background:#f8fafc;color:#64748b;transition:all .2s;border-bottom:3px solid transparent}
+    .tab:hover{background:#f1f5f9;color:#1e3a5f}
+    .tab.active{background:#fff;color:#3b82f6;border-bottom-color:#3b82f6}
+    @media(max-width:640px){.form-grid{grid-template-columns:1fr}.top-bar{justify-content:center}.tab{font-size:13px;padding:12px 10px}}
   </style>
 </head>
 <body>
@@ -90,13 +94,16 @@
   </div>
 </header>
 <div class="container">
+  <div class="tab-bar">
+    <div class="tab active" onclick="setActiveTab('항공')">✈️ 항공</div>
+    <div class="tab" onclick="setActiveTab('열차')">🚆 열차</div>
+  </div>
   <div class="form-wrap">
     <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span></div>
     <div class="form-grid">
-      <label><span data-t="category">구분</span><select id="f-category" onchange="onCategoryChange()" style="background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:8px 10px;color:#000;font-size:15px;font-family:inherit;outline:none"><option value="항공">✈️ 항공</option><option value="열차">🚆 열차</option></select></label>
       <label><span data-t="mailOrPnr">메일번호</span><input id="f-mail" placeholder="#7599 또는 PNR"></label>
       <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 0430 → 2026-04-30" onblur="autoDate(this)"></label>
-      <label id="f-airline-wrap"><span data-t="airline">항공사</span><input id="f-airline" placeholder="TC, AT, SZ…"></label>
+      <label id="f-airline-wrap"><span data-t="airline" id="f-airline-label">항공사</span><input id="f-airline" placeholder="TC, AT, SZ…"></label>
       <label><span data-t="person">담당자</span><input id="f-person" placeholder="홍길동"></label>
       <label class="full"><span data-t="content">내용</span><textarea id="f-content" rows="2"></textarea></label>
     </div>
@@ -109,7 +116,7 @@
   <!-- 대기 케이스 -->
   <table id="waitTable">
     <thead>
-      <tr><th data-t="num">번호</th><th data-t="cat">구분</th><th data-t="mailOrPnr2">메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div></th><th data-t="startDate">시작날짜</th><th data-t="airline">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
+      <tr><th data-t="num">번호</th><th data-t="mailOrPnr2">메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div></th><th data-t="startDate">시작날짜</th><th data-t="airline" id="th-airline">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
     </thead>
     <tbody id="waitBody"></tbody>
   </table>
@@ -124,7 +131,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th data-t="num">번호</th><th data-t="cat">구분</th><th data-t="mailOrPnr2">메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div></th><th data-t="startDate">시작날짜</th><th data-t="airline">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="doneDate">완료날짜</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
+          <tr><th data-t="num">번호</th><th data-t="mailOrPnr2">메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div></th><th data-t="startDate">시작날짜</th><th data-t="airline" id="th-airline-archive">항공사</th><th data-t="person">담당자</th><th data-t="content">내용</th><th data-t="doneDate">완료날짜</th><th data-t="status">상태</th><th data-t="delete">삭제</th></tr>
         </thead>
         <tbody id="doneBody"></tbody>
       </table>
@@ -162,6 +169,7 @@ const DEFAULT_ARCHIVE = [
 const API_URL='https://enttix-omega.vercel.app/api/apg-data';
 let cases, archive;
 let filter='all',filterAirline='',filterPerson='';
+let activeTab='항공';
 
 async function loadData(){
   // Always try API first, ignore localStorage cache
@@ -211,23 +219,44 @@ function autoDate(el){
   el.value=v;
 }
 
-function onCategoryChange(){
-  const cat=document.getElementById('f-category').value;
-  const wrap=document.getElementById('f-airline-wrap');
+function setActiveTab(tab){
+  activeTab=tab;
+  // Update tab UI
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  // Update form label and placeholder
+  const lbl=document.getElementById('f-airline-label');
   const inp=document.getElementById('f-airline');
-  const lbl=wrap.querySelector('[data-t="airline"]');
-  if(cat==='열차'){lbl.textContent='철도/구간';inp.placeholder='TGV, 유레일, 구간명…'}
-  else{lbl.textContent='항공사';inp.placeholder='TC, AT, SZ…'}
+  if(tab==='열차'){
+    lbl.textContent='철도/구간';
+    inp.placeholder='TGV, 유레일, 구간명…';
+  }else{
+    lbl.textContent='항공사';
+    inp.placeholder='TC, AT, SZ…';
+  }
+  // Update table header
+  const thAirline=document.getElementById('th-airline');
+  const thAirlineArchive=document.getElementById('th-airline-archive');
+  if(tab==='열차'){
+    thAirline.textContent='철도/구간';
+    thAirlineArchive.textContent='철도/구간';
+  }else{
+    thAirline.textContent='항공사';
+    thAirlineArchive.textContent='항공사';
+  }
+  // Reset filters
+  filterAirline='';
+  filterPerson='';
+  render();
 }
 function addCase(){
-  const cat=document.getElementById('f-category').value;
   const m=document.getElementById('f-mail').value.trim();
   const s=document.getElementById('f-start').value;
   const a=document.getElementById('f-airline').value.trim();
   const p=document.getElementById('f-person').value.trim();
   const c=document.getElementById('f-content').value.trim();
   if(!c){alert('내용을 입력해주세요');return}
-  cases.unshift({category:cat,mail:m||'-',start:s||'-',airline:a||'-',person:p||'-',content:c,status:'대기',done:'-'});
+  cases.unshift({category:activeTab,mail:m||'-',start:s||'-',airline:a||'-',person:p||'-',content:c,status:'대기',done:'-'});
   save();render();
   document.getElementById('f-mail').value='';
   document.getElementById('f-start').value='';
@@ -279,18 +308,24 @@ function toggleArchive(){
 }
 
 function setFilter(f){filter=filter===f?'all':f;render()}
-function setCatFilter(v){filterCat=v;render()}
 function setAirlineFilter(v){filterAirline=v;render()}
 function setPersonFilter(v){filterPerson=v;render()}
-let filterCat='';
 
 function makeCell(cls,source,i,field,val){
   return `<td class="${cls}" data-field onclick="editCell(this,'${source}',${i},'${field}')">${val||'-'}</td>`;
 }
 
 function render(){
-  const waitCount=cases.length;
-  const doneCount=archive.length;
+  // Ensure all cases have category
+  cases.forEach(c=>{if(!c.category)c.category='항공'});
+  archive.forEach(c=>{if(!c.category)c.category='항공'});
+
+  // Filter by active tab
+  const tabCases=cases.filter(c=>c.category===activeTab);
+  const tabArchive=archive.filter(c=>c.category===activeTab);
+
+  const waitCount=tabCases.length;
+  const doneCount=tabArchive.length;
 
   // 상단 필터
   const t=T[lang];
@@ -305,25 +340,21 @@ function render(){
       <div><div class="f-num">${doneCount}</div><div class="f-label">${t.done}</div></div>
     </div>`;
 
-  // Ensure all cases have category
-  cases.forEach(c=>{if(!c.category)c.category='항공'});
-  archive.forEach(c=>{if(!c.category)c.category='항공'});
-  // 항공사/담당자 필터
-  const all=[...cases,...archive];
-  const categories=[...new Set(all.map(c=>c.category))].sort();
+  // 항공사/담당자 필터 (only for current tab)
+  const all=[...tabCases,...tabArchive];
   const airlines=[...new Set(all.map(c=>c.airline))].sort();
   const persons=[...new Set(all.map(c=>c.person))].sort();
+  const airlineLabel=activeTab==='열차'?'철도/구간':'항공사';
   document.getElementById('subBar').innerHTML=`
-    <select onchange="setCatFilter(this.value)"><option value="">구분 전체</option>${categories.map(a=>`<option value="${a}">${a}</option>`).join('')}</select>
-    <select onchange="setAirlineFilter(this.value)"><option value="">항공사/철도 전체</option>${airlines.map(a=>`<option value="${a}" ${filterAirline===a?'selected':''}>${a}</option>`).join('')}</select>
+    <select onchange="setAirlineFilter(this.value)"><option value="">${airlineLabel} 전체</option>${airlines.map(a=>`<option value="${a}" ${filterAirline===a?'selected':''}>${a}</option>`).join('')}</select>
     <select onchange="setPersonFilter(this.value)"><option value="">담당자 전체</option>${persons.map(p=>`<option value="${p}" ${filterPerson===p?'selected':''}>${p}</option>`).join('')}</select>`;
 
   const showWait=filter==='all'||filter==='대기';
   const showDone=filter==='all'||filter==='완료';
 
-  function applyFilter(list){return list.filter(c=>(!filterCat||c.category===filterCat)&&(!filterAirline||c.airline===filterAirline)&&(!filterPerson||c.person===filterPerson))}
-  const filteredCases=applyFilter(cases);
-  const filteredArchive=applyFilter(archive);
+  function applyFilter(list){return list.filter(c=>(!filterAirline||c.airline===filterAirline)&&(!filterPerson||c.person===filterPerson))}
+  const filteredCases=applyFilter(tabCases);
+  const filteredArchive=applyFilter(tabArchive);
 
   // 대기 테이블
   const waitTable=document.getElementById('waitTable');
@@ -334,7 +365,6 @@ function render(){
   else{waitTable.style.display='';waitEmpty.style.display='none';
     filteredCases.forEach((c)=>{const i=cases.indexOf(c);const tr=document.createElement('tr');
       tr.innerHTML=`<td class="td-seq">${i+1}</td>
-        <td style="font-weight:700;white-space:nowrap">${c.category==='열차'?'🚆 열차':'✈️ 항공'}</td>
         ${makeCell('td-mail','active',i,'mail',c.mail)}
         ${makeCell('td-date','active',i,'start',c.start)}
         ${makeCell('td-airline','active',i,'airline',c.airline)}
@@ -358,7 +388,6 @@ function render(){
     else{aEmpty.style.display='none';aBody.parentElement.style.display='';
       filteredArchive.forEach((c)=>{const i=archive.indexOf(c);const tr=document.createElement('tr');
         tr.innerHTML=`<td class="td-seq">${i+1}</td>
-          <td style="font-weight:700;white-space:nowrap">${c.category==='열차'?'🚆 열차':'✈️ 항공'}</td>
           ${makeCell('td-mail','archive',i,'mail',c.mail)}
           ${makeCell('td-date','archive',i,'start',c.start)}
           ${makeCell('td-airline','archive',i,'airline',c.airline)}
