@@ -99,7 +99,7 @@
     <div class="tab" onclick="setActiveTab('열차')">🚆 열차</div>
   </div>
   <div class="form-wrap">
-    <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span></div>
+    <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span> (<span id="tab-label">✈️ 항공</span>)</div>
     <div class="form-grid">
       <label><span data-t="mailOrPnr">메일번호</span><input id="f-mail" placeholder="#7599 또는 PNR"></label>
       <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 0430 → 2026-04-30" onblur="autoDate(this)"></label>
@@ -227,12 +227,15 @@ function setActiveTab(tab){
   // Update form label and placeholder
   const lbl=document.getElementById('f-airline-label');
   const inp=document.getElementById('f-airline');
+  const tabLbl=document.getElementById('tab-label');
   if(tab==='열차'){
     lbl.textContent='철도/구간';
     inp.placeholder='TGV, 유레일, 구간명…';
+    tabLbl.textContent='🚆 열차';
   }else{
     lbl.textContent='항공사';
     inp.placeholder='TC, AT, SZ…';
+    tabLbl.textContent='✈️ 항공';
   }
   // Update table header
   const thAirline=document.getElementById('th-airline');
