@@ -162,7 +162,7 @@ function applyLang(){
   const mailLbl=document.querySelector('[data-t="mailOrPnr"]');
   if(mailLbl)mailLbl.textContent=activeTab==='열차'?'참조코드 (또는 PNR)':'메일번호 (또는 PNR)';
   // Restore (or PNR) subtitle in table headers
-  document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{el.innerHTML='메일번호<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>'});
+  document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{const sub=activeTab==='열차'?'참조코드':'메일번호';el.innerHTML=sub+'<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>';});
   const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
 }
 const DEFAULT_CASES = [
