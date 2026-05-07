@@ -1,6 +1,46 @@
 [
   {
     "category": "열차",
+    "mail": "2197279",
+    "start": "2026-04-23",
+    "airline": "TGV",
+    "person": "최윤심",
+    "content": "출발전에 취소했으나, 환불 오류로 떠서 엘리사가 5월초에 리마인드 해달라고 했음.",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
+    "mail": "1892406",
+    "start": "2026-03-31",
+    "airline": "IRYO",
+    "person": "최윤심",
+    "content": "열차사고로 인한 보상 요청",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
+    "mail": "1957888",
+    "start": "2026-01-29",
+    "airline": "OBB (B-RAIL)",
+    "person": "최윤심",
+    "content": "열차취소로 인한 보상",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
+    "mail": "1422848",
+    "start": "2025-10-10",
+    "airline": "TGV",
+    "person": "최윤심",
+    "content": "지연 보상",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "1491290",
     "start": "2025-10-13",
     "airline": "TGV",
