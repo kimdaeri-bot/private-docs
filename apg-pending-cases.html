@@ -396,8 +396,9 @@ function render(){
   waitBody.innerHTML='';
   if(!showWait||filteredCases.length===0){waitTable.style.display='none';if(showWait)waitEmpty.style.display='block';else waitEmpty.style.display='none'}
   else{waitTable.style.display='';waitEmpty.style.display='none';
-    filteredCases.forEach((c)=>{const i=cases.indexOf(c);const tr=document.createElement('tr');
-      tr.innerHTML=`<td class="td-seq">${i+1}</td>
+    let seq=1;
+  filteredCases.forEach((c)=>{const i=cases.indexOf(c);const tr=document.createElement('tr');
+      tr.innerHTML=`<td class="td-seq">${seq++}</td>
         ${makeCell('td-mail','active',i,'mail',c.mail)}
         ${makeCell('td-date','active',i,'start',c.start)}
         ${makeCell('td-airline','active',i,'airline',c.airline)}
@@ -419,8 +420,9 @@ function render(){
   else{aSec.style.display='';
     if(filteredArchive.length===0){aEmpty.style.display='block';aBody.parentElement.style.display='none'}
     else{aEmpty.style.display='none';aBody.parentElement.style.display='';
+      let aseq=1;
       filteredArchive.forEach((c)=>{const i=archive.indexOf(c);const tr=document.createElement('tr');
-        tr.innerHTML=`<td class="td-seq">${i+1}</td>
+        tr.innerHTML=`<td class="td-seq">${aseq++}</td>
           ${makeCell('td-mail','archive',i,'mail',c.mail)}
           ${makeCell('td-date','archive',i,'start',c.start)}
           ${makeCell('td-airline','archive',i,'airline',c.airline)}
