@@ -281,7 +281,7 @@ function addCase(){
   const c=document.getElementById('f-content').value.trim();
   if(!c){alert('내용을 입력해주세요');return}
   cases.unshift({category:activeTab,mail:m||'-',start:s||'-',airline:a||'-',person:p||'-',content:c,status:'대기',done:'-'});
-  save();render();
+  save();shareData();render();
   document.getElementById('f-mail').value='';
   document.getElementById('f-start').value='';
   document.getElementById('f-airline').value='';
