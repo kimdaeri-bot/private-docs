@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "1974093",
+    "start": "2026-02-13",
+    "airline": "RENFE",
+    "person": "최윤심",
+    "content": "열차 취소 환불 보상",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "MMXHMU",
     "start": "2026-04-27",
     "airline": "RENFE",
