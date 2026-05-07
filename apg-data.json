@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "1491290",
+    "start": "2025-10-13",
+    "airline": "TGV",
+    "person": "최윤심",
+    "content": "선로 화재로 인한 지연 보상",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2013448",
     "start": "2026-01-30",
     "airline": "RENFE",
