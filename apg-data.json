@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2013448",
+    "start": "2026-01-30",
+    "airline": "RENFE",
+    "person": "최윤심",
+    "content": "티켓변경 하신 후, 1월30일날 취소 요청 및 폭풍으로 인한 열차 취소 메일 받으셨다고 함.",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2054889",
     "start": "2026-02-10",
     "airline": "RENFE",
