@@ -354,8 +354,8 @@ function render(){
 
   // Filter by active tab
   // Sort by date descending
-  const tabCases=cases.filter(c=>c.category===activeTab).sort((a,b)=>(b.start||'').localeCompare(a.start||''));
-  const tabArchive=archive.filter(c=>c.category===activeTab).sort((a,b)=>(b.start||'').localeCompare(a.start||''));
+  const tabCases=cases.filter(c=>c.category===activeTab).sort((a,b)=>(a.start||'').localeCompare(b.start||''));
+  const tabArchive=archive.filter(c=>c.category===activeTab).sort((a,b)=>(a.start||'').localeCompare(b.start||''));
 
   const waitCount=tabCases.length;
   const doneCount=tabArchive.length;
