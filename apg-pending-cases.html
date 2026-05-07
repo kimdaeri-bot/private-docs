@@ -105,7 +105,7 @@
     <div class="form-title">＋ <span data-t="newCase">새 케이스 등록</span> (<span id="tab-label">✈️ 항공</span>)</div>
     <div class="form-grid">
       <label><span data-t="mailOrPnr">메일번호</span><input id="f-mail" placeholder="#7599 또는 PNR"></label>
-      <label><span data-t="startDate">시작날짜</span><input id="f-start" placeholder="예: 0430 → 2026-04-30" onblur="autoDate(this)"></label>
+      <label><span data-t="startDate" id="f-start-label">시작날짜</span><input id="f-start" placeholder="예: 0430 → 2026-04-30" onblur="autoDate(this)"></label>
       <label id="f-airline-wrap"><span data-t="airline" id="f-airline-label">항공사</span><input id="f-airline" placeholder="TC, AT, SZ…"></label>
       <label><span data-t="person">담당자</span><input id="f-person" placeholder="홍길동"></label>
       <label class="full"><span data-t="content">내용</span><textarea id="f-content" rows="2"></textarea></label>
@@ -166,6 +166,8 @@ function applyLang(){
   if(mailLbl)mailLbl.textContent=activeTab==='열차'?'참조코드 (또는 PNR)':'메일번호 (또는 PNR)';
   // Override date label
   document.querySelectorAll('[data-t="startDate"]').forEach(el=>{el.textContent=activeTab==='열차'?'접수일자':'시작날짜'});
+  const fStartLbl=document.getElementById('f-start-label');
+  if(fStartLbl)fStartLbl.textContent=activeTab==='열차'?'접수일자':'시작날짜';
   // Restore (or PNR) subtitle in table headers
   document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{const sub=activeTab==='열차'?'참조코드':'메일번호';el.innerHTML=sub+'<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>';});
   const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
