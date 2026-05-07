@@ -164,6 +164,8 @@ function applyLang(){
   const thAA=document.getElementById('th-airline-archive');if(thAA)thAA.textContent=activeTab==='열차'?'철도청':'항공사';
   const mailLbl=document.querySelector('[data-t="mailOrPnr"]');
   if(mailLbl)mailLbl.textContent=activeTab==='열차'?'참조코드 (또는 PNR)':'메일번호 (또는 PNR)';
+  // Override date label
+  document.querySelectorAll('[data-t="startDate"]').forEach(el=>{el.textContent=activeTab==='열차'?'접수일자':'시작날짜'});
   // Restore (or PNR) subtitle in table headers
   document.querySelectorAll('th[data-t="mailOrPnr2"]').forEach(el=>{const sub=activeTab==='열차'?'참조코드':'메일번호';el.innerHTML=sub+'<div style="font-size:10px;font-weight:400;color:#64748b">(or PNR)</div>';});
   const rb=document.querySelector('[onclick="location.reload()"]');if(rb)rb.textContent=t.refresh;
@@ -249,6 +251,10 @@ function setActiveTab(tab){
     inp.placeholder='TC, AT, SZ…';
     tabLbl.textContent='✈️ 항공';
   }
+  // Update date label
+  const dateLabels=document.querySelectorAll('[data-t="startDate"]');
+  dateLabels.forEach(el=>{el.textContent=tab==='열차'?'접수일자':'시작날짜'});
+  document.getElementById('f-start').placeholder='접수일자';
   // Update table header
   const thAirline=document.getElementById('th-airline');
   const thAirlineArchive=document.getElementById('th-airline-archive');
@@ -345,8 +351,9 @@ function render(){
   archive.forEach(c=>{if(!c.category)c.category='항공'});
 
   // Filter by active tab
-  const tabCases=cases.filter(c=>c.category===activeTab);
-  const tabArchive=archive.filter(c=>c.category===activeTab);
+  // Sort by date descending
+  const tabCases=cases.filter(c=>c.category===activeTab).sort((a,b)=>(b.start||'').localeCompare(a.start||''));
+  const tabArchive=archive.filter(c=>c.category===activeTab).sort((a,b)=>(b.start||'').localeCompare(a.start||''));
 
   const waitCount=tabCases.length;
   const doneCount=tabArchive.length;
