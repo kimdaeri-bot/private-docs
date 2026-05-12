@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "-",
+    "start": "2026-05-12",
+    "airline": "DB",
+    "person": "최윤심",
+    "content": "프랑크푸르트 공항 도착 조회 후, 결제하기 누르면 PG 창이 안뜸.",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2125596",
     "start": "2026-05-12",
     "airline": "페이코멧",
