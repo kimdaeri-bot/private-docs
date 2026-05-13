@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2236630",
+    "start": "2026-05-13",
+    "airline": "EUROSTAR",
+    "person": "최윤심",
+    "content": "고객인 직접 환불시도했으나, 에러남. 백오피스에서 해도 에러가 나서 엘리사에게 환불 요청 // 환불액 102유로",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "-",
     "start": "2026-05-12",
     "airline": "DB",
