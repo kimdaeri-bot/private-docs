@@ -1,5 +1,15 @@
 [
   {
+    "category": "열차",
+    "mail": "2418819",
+    "start": "2026-05-29",
+    "airline": "RENFE",
+    "person": "최윤심",
+    "content": "동일루트/동일요금으로 중복 결제; 2418819, 2418817",
+    "status": "대기",
+    "done": "-"
+  },
+  {
     "category": "항공",
     "mail": "YUXIAC / CMWILH",
     "start": "28MAY26",
