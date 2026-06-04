@@ -81,16 +81,6 @@
   },
   {
     "category": "열차",
-    "mail": "MMXHMU",
-    "start": "2026-04-27",
-    "airline": "RENFE",
-    "person": "최윤심",
-    "content": "시휠유럽; 렌페 그룹티켓 발권건 통보없이 스케줄 변경되어 환불 요청 // € 1,571.30",
-    "status": "대기",
-    "done": "-"
-  },
-  {
-    "category": "열차",
     "mail": "2197279",
     "start": "2026-04-23",
     "airline": "TGV",
@@ -238,6 +228,16 @@
     "status": "대기",
     "done": "-",
     "category": "항공"
+  },
+  {
+    "category": "열차",
+    "mail": "MMXHMU",
+    "start": "2026-04-27",
+    "airline": "RENFE",
+    "person": "최윤심",
+    "content": "시휠유럽; 렌페 그룹티켓 발권건 통보없이 스케줄 변경되어 환불 요청 // € 1,571.30",
+    "status": "완료",
+    "done": "2026-06-03"
   },
   {
     "category": "열차",
