@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2456343",
+    "start": "2026-06-08",
+    "airline": "TRENITALIA",
+    "person": "최윤심",
+    "content": "베니스 산타루치아역으로 선택했으나, 베니스 오스페달레역으로 발권되어 환불 요청했음.",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "-",
     "start": "-",
     "airline": "-",
