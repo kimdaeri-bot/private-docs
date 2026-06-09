@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2349066",
+    "start": "2026-06-09",
+    "airline": "TRENITALIA",
+    "person": "최윤심",
+    "content": "유선으로 요청 주셨음. 고객이 직접 환불했으나, 환불에러로 인해 슬",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2456343",
     "start": "2026-06-08",
     "airline": "TRENITALIA",
