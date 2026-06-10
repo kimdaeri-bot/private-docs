@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2443575",
+    "start": "2026-06-10",
+    "airline": "TGV",
+    "person": "최윤심",
+    "content": "환불에러나서 슬랙에 요청했음.",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2398732",
     "start": "2026-06-10",
     "airline": "EUROSTAR",
