@@ -50,16 +50,6 @@
     "done": "-"
   },
   {
-    "category": "열차",
-    "mail": "2289392",
-    "start": "2026-05-29",
-    "airline": "RENFE",
-    "person": "최윤심",
-    "content": "* 2289392; 그라나다->마드리드 구간 지연\n* 2289415; 연결편은 아니지만, 마드->바셀 구간 까지 영향으로 탑승 못하셨음.",
-    "status": "대기",
-    "done": "-"
-  },
-  {
     "category": "항공",
     "mail": "YUXIAC / CMWILH",
     "start": "28MAY26",
