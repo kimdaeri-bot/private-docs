@@ -1,6 +1,16 @@
 [
   {
     "category": "열차",
+    "mail": "2398732",
+    "start": "2026-06-10",
+    "airline": "EUROSTAR",
+    "person": "최윤심",
+    "content": "유로스타 환불",
+    "status": "대기",
+    "done": "-"
+  },
+  {
+    "category": "열차",
     "mail": "2349066",
     "start": "2026-06-09",
     "airline": "TRENITALIA",
