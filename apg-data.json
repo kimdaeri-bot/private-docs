@@ -1,5 +1,15 @@
 [
   {
+    "category": "항공",
+    "mail": "#7883",
+    "start": "10JUN'26",
+    "airline": "GP(AZ)",
+    "person": "정근아",
+    "content": "GP티켓을 AZ에서 INVOL 재발행-->손님 환불원함 -->AZ은 GP에서 환불하라-->GP는 확인하고 연락주겠다",
+    "status": "대기",
+    "done": "-"
+  },
+  {
     "category": "열차",
     "mail": "2456343",
     "start": "2026-06-08",
