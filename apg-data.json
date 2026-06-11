@@ -30,16 +30,6 @@
     "done": "-"
   },
   {
-    "category": "항공",
-    "mail": "YUXIAC / CMWILH",
-    "start": "28MAY26",
-    "airline": "WS",
-    "person": "정근아",
-    "content": "PNR의 스펠변경 하고 재발행 했는데 EMD가 있어 ASSO했으나 EMD이름은 그대로라서 헬프데스크에 문의해야함",
-    "status": "대기",
-    "done": "-"
-  },
-  {
     "category": "열차",
     "mail": "2371442",
     "start": "2026-05-15",
@@ -228,6 +218,16 @@
     "status": "대기",
     "done": "-",
     "category": "항공"
+  },
+  {
+    "category": "항공",
+    "mail": "YUXIAC / CMWILH",
+    "start": "28MAY26",
+    "airline": "WS",
+    "person": "정근아",
+    "content": "PNR의 스펠변경 하고 재발행 했는데 EMD가 있어 ASSO했으나 EMD이름은 그대로라서 헬프데스크에 문의해야함-->환불하고 다시 구매해야 하는 게 결론",
+    "status": "완료",
+    "done": "09JUN'26"
   },
   {
     "category": "열차",
