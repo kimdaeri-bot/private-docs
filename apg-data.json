@@ -41,16 +41,6 @@
   },
   {
     "category": "열차",
-    "mail": "2374425",
-    "start": "2026-05-15",
-    "airline": "TGV",
-    "person": "최윤심",
-    "content": "하나투어 박유진님: 환불에러, 100% 환불 가능 티켓; € 143.00",
-    "status": "대기",
-    "done": "-"
-  },
-  {
-    "category": "열차",
     "mail": "-",
     "start": "2026-05-12",
     "airline": "DB",
@@ -218,6 +208,16 @@
     "status": "대기",
     "done": "-",
     "category": "항공"
+  },
+  {
+    "category": "열차",
+    "mail": "2374425",
+    "start": "2026-05-15",
+    "airline": "TGV",
+    "person": "최윤심",
+    "content": "하나투어 박유진님: 환불에러, 100% 환불 가능 티켓; € 143.00",
+    "status": "완료",
+    "done": "2026-05-20"
   },
   {
     "category": "항공",
