@@ -22,17 +22,6 @@
   },
   {
     "category": "열차",
-    "mail": "1961317",
-    "start": "2026-06-04",
-    "airline": "TRENITALIA",
-    "person": "최윤심",
-    "content": "열차취소, 클레임 신청했으나 트렌이탈리아측에서 구매처에 환불 받으라고 했음.// 6월 10일: 보상신청 재작성 요청",
-    "status": "대기",
-    "done": "-",
-    "refund": "-"
-  },
-  {
-    "category": "열차",
     "mail": "-",
     "start": "2026-05-15",
     "airline": "TGV",
@@ -224,6 +213,17 @@
     "status": "대기",
     "done": "-",
     "category": "항공"
+  },
+  {
+    "category": "열차",
+    "mail": "1961317",
+    "start": "2026-06-04",
+    "airline": "TRENITALIA",
+    "person": "최윤심",
+    "content": "열차취소, 클레임 신청했으나 트렌이탈리아측에서 구매처에 환불 받으라고 했음.// 6월 10일: 보상신청 재작성 요청",
+    "status": "완료",
+    "done": "2026-06-10",
+    "refund": "철도청 직접 보상"
   },
   {
     "category": "열차",
